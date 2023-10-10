@@ -1,12 +1,31 @@
 const express=require('express');
 const user_route=express();
 
+user_route.use(express.urlencoded({ extended: true }));
+
 user_route.set('view engine','ejs');
 user_route.set('views','./views/user')
 
-user_route.get('/',(req,res)=>{
-    res.render("login")
-})
+
+const userController=require('../controllers/userController')
+
+
+
+user_route.get('/login',userController.loginLoad)
+// user_route.get('/signup',(req,res)=>{
+//     res.render("registration")
+// })
+user_route.get('/signup',userController.loadRegister);
+
+// user_route.post('/signup',(req,res)=>{
+//     res.redirect("/otpverification")
+// })
+user_route.post('/signup',userController.insertUser);
+// user_route.get('/otpverification',(req,res)=>{
+//     res.render("otp")
+// })
+user_route.get('/otpverification',userController.loadOtp);
+user_route.post('/otpverification',userController.verifyOTP);
 
 module.exports=user_route;
 

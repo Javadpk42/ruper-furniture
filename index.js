@@ -1,21 +1,20 @@
-const express=require('express')
-const app=express()
+const express = require("express");
+const session = require("express-session");
+const mongoos = require("mongoose");
+const userRoute = require("./routes/userRoute");
+const path = require("path");
 
-const mongoos=require('mongoose');
-const path=require('path')
+const app = express();
+
 mongoos.connect("mongodb://127.0.0.1:27017/zudio");
-// app.get('/',(req,res)=>{
-//     res.send("javad")
-// })
-app.use("/public", express.static(path.join(__dirname, './public')));
+app.use(session({ secret: "secret", saveUninitialized: true, resave: false }));
 
-const userRoute=require('./routes/userRoute')
-app.use('/',userRoute)
+app.use("/public", express.static(path.join(__dirname, "./public")));
 
-// const port=3000 
-// app.listen(port,()=>{
-//     console.log(`server running at http://localhost:${port}`)
-// }) 
-app.listen(3000,function(){
-    console.log("server is running @ http://localhost:3000")
-})            
+app.use("/", userRoute);
+
+
+app.listen(3000, function () {
+  console.log("server is running @ http://localhost:3000");
+});
+ 
