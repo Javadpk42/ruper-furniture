@@ -40,13 +40,52 @@ const sendVerificationEmail = async (email, otp) => {
     }
 }
 
-// const generateOTP=()=>{
-//     return Math.floor(100000+Math.random()*900000).toString();
-// }
+
+const homeLoad=async(req,res)=>{
+    try {
+        res.render('home')
+    } catch (error) {
+        console.log(error.message )
+    }
+}
+const shopLoad=async(req,res)=>{
+    try {
+        res.render('shop')
+    } catch (error) {
+        console.log(error.message )
+    }
+}
 
 const loginLoad=async(req,res)=>{
     try {
         res.render('login')
+    } catch (error) {
+        console.log(error.message )
+    }
+}
+const verifyLogin=async(req,res)=>{
+    try {
+        const email=req.body.email
+        const password=req.body.password
+        const userData=await userModel.findOne({email:email})
+        console.log(userData)
+        if(userData){
+           const passwordMatch= await bcrypt.compare(password,userData.password)
+          
+           if(passwordMatch){
+            
+                    req.session.user_id=userData._id
+                    res.redirect('/')
+                
+           } 
+           else{
+
+            res.render('login',{message:"Email and password is incorrect"})
+           }
+        }
+        else{
+            res.render('login',{message:"Email and password is incorrectt"})
+        }
     } catch (error) {
         console.log(error.message )
     }
@@ -94,7 +133,7 @@ const insertUser = async (req, res) => {
                     req.session.password = spassword;
                     console.log("Password stored in session:", req.session.password);
 
-                    req.session.otp = {
+                    req.session.otp = { 
                         code: otpCode,
                         expiry: otpExpiry,
                     };
@@ -148,7 +187,10 @@ const verifyOTP = async (req, res) => {
 
  
 module.exports={
+    homeLoad,
+    shopLoad,
     loginLoad,
+    verifyLogin,
     loadRegister,
     loadOtp,
     insertUser,

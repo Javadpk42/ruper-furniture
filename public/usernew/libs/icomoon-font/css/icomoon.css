@@ -1,0 +1,112 @@
+@font-face {
+  font-family: icomoon;
+  src: url(../fonts/icomoon6dbe.eot?fzv6fp);
+  src: url(../fonts/icomoon6dbe.eot?fzv6fp#iefix) format("embedded-opentype"), url(../fonts/icomoon6dbe.ttf?fzv6fp) format("truetype"), url(../fonts/icomoon6dbe.woff?fzv6fp) format("woff"), url(../fonts/icomoon6dbe.svg?fzv6fp#icomoon) format("svg");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap
+}
+
+[class*=" icon-"], [class^=icon-] {
+  font-family: icomoon;
+  speak: none;
+  font-style: normal;
+  font-weight: 400;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale
+}
+
+.icon-bed-bath:before {
+  content: "\e910"
+}
+
+.icon-furniture:before {
+  content: "\e911"
+}
+
+.icon-home-decor:before {
+  content: "\e912"
+}
+
+.icon-lighting:before {
+  content: "\e913"
+}
+
+.icon-office:before {
+  content: "\e914"
+}
+
+.icon-outdoor:before {
+  content: "\e915"
+}
+
+.icon-user:before {
+  content: "\e90d"
+}
+
+.icon-compare:before {
+  content: "\e90f"
+}
+
+.icon-box:before {
+  content: "\e90e"
+}
+
+.icon-quote:before {
+  content: "\e902"
+}
+
+.icon-arrow-down:before {
+  content: "\e903"
+}
+
+.icon-star:before {
+  content: "\e904"
+}
+
+.icon-plus:before {
+  content: "\e905"
+}
+
+.icon-envelope:before {
+  content: "\e906"
+}
+
+.icon-pin:before {
+  content: "\e907"
+}
+
+.icon-email2:before {
+  content: "\e908"
+}
+
+.icon-email-1:before {
+  content: "\e909"
+}
+
+.icon-heart2:before {
+  content: "\e90"
+}
+
+.icon-delivery-truck:before {
+  content: "\e90b"
+}
+
+.icon-search:before {
+  content: "\e90c"
+}
+
+.icon-right-arrow:before {
+  content: "\e90a"
+}
+
+.icon-large-paper-bag:before {
+  content: "\e901"
+}
+
+.icon-heart:before {
+  content: "\e900"
+}

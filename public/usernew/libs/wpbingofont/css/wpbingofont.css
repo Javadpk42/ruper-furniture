@@ -1,0 +1,152 @@
+@font-face {
+  font-family: wpbingofont;
+  src: url(../fonts/wpbingo6dbe.eot?fzv6fp);
+  src: url(../fonts/wpbingo6dbe.eot?fzv6fp#iefix) format("embedded-opentype"), url(../fonts/wpbingo6dbe.ttf?fzv6fp) format("truetype"), url(../fonts/wpbingo6dbe.woff?fzv6fp) format("woff"), url(../fonts/wpbingo6dbe.svg?fzv6fp#wpbingo) format("svg");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap
+}
+
+[class*=" wpb-icon-"], [class^=wpb-icon-] {
+  font-family: wpbingofont;
+  speak: none;
+  font-style: normal;
+  font-weight: 400;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale
+}
+
+.wpb-icon-info:before {
+  content: "\e91e"
+}
+
+.wpb-icon-comment:before {
+  content: "\e91d"
+}
+
+.wpb-icon-gift-voucher:before {
+  content: "\e91c"
+}
+
+.wpb-icon-left-arrow:before {
+  content: "\e91a"
+}
+
+.wpb-icon-right-arrow:before {
+  content: "\e91b"
+}
+
+.wpb-icon-chat:before {
+  content: "\e919"
+}
+
+.wpb-icon-content-writing:before {
+  content: "\e918"
+}
+
+.wpb-icon-levels:before {
+  content: "\e917"
+}
+
+.wpb-icon-play-video:before {
+  content: "\e912"
+}
+
+.wpb-icon-d-design:before {
+  content: "\e911"
+}
+
+.wpb-icon-login1:before {
+  content: "\e915"
+}
+
+.wpb-icon-user2:before {
+  content: "\e916"
+}
+
+.wpb-icon-large-paper-bag-empty:before {
+  content: "\e914"
+}
+
+.wpb-icon-ruler:before {
+  content: "\e913"
+}
+
+.wpb-icon-shopping-cart:before {
+  content: "\e912"
+}
+
+.wpb-icon-mail:before {
+  content: "\e90e"
+}
+
+.wpb-icon-lock:before {
+  content: "\e90f"
+}
+
+.wpb-icon-user1:before {
+  content: "\e910"
+}
+
+.wpb-icon-login:before {
+  content: "\e911"
+}
+
+.wpb-icon-circular:before {
+  content: "\e90d"
+}
+
+.wpb-icon-shop:before {
+  content: "\e907"
+}
+
+.wpb-icon-menu-vertical:before {
+  content: "\e908"
+}
+
+.wpb-icon-menu:before {
+  content: "\e909"
+}
+
+.wpb-icon-heart:before {
+  content: "\e90a"
+}
+
+.wpb-icon-magnifying-glass:before {
+  content: "\e90b"
+}
+
+.wpb-icon-user:before {
+  content: "\e90c"
+}
+
+.wpb-icon-shield2:before {
+  content: "\e900"
+}
+
+.wpb-icon-delivery:before {
+  content: "\e901"
+}
+
+.wpb-icon-refund:before {
+  content: "\e902"
+}
+
+.wpb-icon-plane:before {
+  content: "\e903"
+}
+
+.wpb-icon-ship-car:before {
+  content: "\e904"
+}
+
+.wpb-icon-sticker:before {
+  content: "\e905"
+}
+
+.wpb-icon-security-on:before {
+  content: "\e906"
+}
