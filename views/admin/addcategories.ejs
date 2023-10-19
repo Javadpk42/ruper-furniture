@@ -106,8 +106,9 @@
                
             </li>
           </ol> -->
-          <!-- <span class="badge badge-sm bg-gradient-success">Add Categories</span>
-          <h6 class="font-weight-bolder mb-0"> -->
+          <span class="badge badge-sm" style="background-color:#e91e63;">
+            <a class="nav-link text-white" href="/admin/categories">Go Back</a>
+        </span>
           
           </h6>
         </nav>
@@ -236,8 +237,11 @@
                       <div class="card-body">
                           <!-- <h4 class="card-title">Add New Category</h4> -->
                           <hr class="white-line">
-                          <form class="forms-sample" action="/admin/addcategories" method="post">
-                              <!-- <h3 class="card-title">Add New Category</h3> -->
+                          <% if (typeof message!== 'undefined') { %>
+                            <p class="error-message text-center mt-4"><%= message %></p>
+                          <% } %>
+                          <!-- <form class="forms-sample" action="/admin/addcategories" method="post">
+                              
                               <div class="form-group row">
                                   <div class="col-12 col-md-9 mt-2">
                                       <label for="exampleInputName1">Category Name</label>
@@ -249,7 +253,24 @@
                                           <button type="submit" class="btn btn-lg btn-primary mr-2 mt-5">Add category</button>
                                   </div>
                               </div>
-                          </form>
+                          </form> -->
+                          <form class="forms-sample border p-4" action="/admin/addcategories" method="post">
+                            <div class="form-group">
+                                <label for="exampleInputName1">Category Name</label>
+                                <input type="text" class="form-control" name="category_name" id="exampleInputName1"
+                                    placeholder="Enter Category Name" required>
+                            </div>
+                        
+                            <div class="form-group">
+                                <label for="exampleInputDescription">Category Description</label>
+                                <textarea class="form-control" name="category_description" id="exampleInputDescription"
+                                    placeholder="Enter Category Description" rows="4" required></textarea>
+                            </div>
+                        
+                            <button type="submit" class="btn btn-lg btn-primary mt-3">Add Category</button>
+                        </form>
+                        
+                        
                       </div>
                   </div>
               </div>

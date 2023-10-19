@@ -277,17 +277,19 @@
                         <!-- <p class="text-xs text-secondary mb-0">Organization</p> -->
                       </td>
                       <td class="align-middle text-center text-sm">
-                        <span class="text-secondary text-xs font-weight-bold">10/10/23</span>
+                        <span class="text-secondary text-xs font-weight-bold">
+                          <%= new Date(userss[i].createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })%>
+                        </span>
                         <!-- <span class="badge badge-sm bg-gradient-success">Online</span> -->
                         <td class="align-middle text-center text-sm">
                           <!-- <span class="badge badge-sm bg-gradient-success">Online</span> -->
                           <% if( userss[i].is_verified === 1){ %>
                             <a href="/admin/is_verified?id=<%= userss[i]._id %>">
-                              <h6 class="mb-0 text-sm">Inactive</h6>
+                              <h6 class="mb-0 text-sm"></h6>
                           <button type="button" class="btn btn-success btn-md">Unblock</button></a>
                             <% }else{ %>
                               <a href="/admin/is_verified?id=<%= userss[i]._id %>">
-                                <h6 class="mb-0 text-sm">Active</h6>
+                                <h6 class="mb-0 text-sm"></h6>
                                 <button type="button" class="btn btn-outline-secondary btn-md">Block</button></a>
                               <%}%>
   

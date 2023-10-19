@@ -49,7 +49,7 @@ const addProduct = async (req, res) => {
       product_name: details.product_name,
       product_price: details.product_price,
       category: details.category,
-      gender: details.gender,
+      // gender: details.gender,
       stock: details.stock,
       product_description: details.product_description,
       "images.image1": files.image1[0].filename,
@@ -65,6 +65,7 @@ const addProduct = async (req, res) => {
     console.log(error);
   }
 };
+
 
 
 //===================to unlist the Product===========================//

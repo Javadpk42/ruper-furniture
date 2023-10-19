@@ -7,7 +7,7 @@
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Login / Register | Ruper</title>
+		<title>Ruper</title>
 		
 		<!-- Favicon -->
 		<link rel="shortcut icon" type="image/x-icon" href="/public/usernew/media/favicon.png">
@@ -48,7 +48,8 @@
 								<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-6 header-center">
 									<div class="site-logo">
 										<a href="index.html">
-											<img width="400" height="79" src="/public/usernew/media/logo.png" alt="Ruper – Furniture HTML Theme" />
+											<!-- <img width="400" height="79" src="/public/usernew/media/logo.png" alt="Ruper – Furniture HTML Theme" /> -->
+											<img width="400" height="79" src="/public/usernew/media/logo.png"  />
 										</a>
 									</div>
 								</div>
@@ -139,7 +140,8 @@
 									<div class="col-xl-3 col-lg-2 col-md-12 col-sm-12 col-12 header-left">
 										<div class="site-logo">
 											<a href="index.html">
-												<img width="400" height="79" src="media/logo.png" alt="Ruper – Furniture HTML Theme" />
+												<!-- <img width="400" height="79" src="media/logo.png" alt="Ruper – Furniture HTML Theme" /> -->
+												<img width="400" height="79" src="/public/usernew/media/logo.png" alt="Ruper – Furniture HTML Theme" />
 											</a>
 										</div>
 									</div>
@@ -149,7 +151,7 @@
 											<nav id="main-navigation">
 												<ul id="menu-main-menu" class="menu">
 													<li class="level-0 menu-item menu-item-has-children mega-menu">
-														<a href="index.html"><span class="menu-item-text">Home</span></a>
+														<a href="/"><span class="menu-item-text">Home</span></a>
 														<div class="sub-menu">
 															<div class="row">
 																<div class="col-md-6">
@@ -215,7 +217,7 @@
 														</div>
 													</li>
 													<li class="level-0 menu-item menu-item-has-children">
-														<a href="shop-grid-left.html"><span class="menu-item-text">Shop</span></a>
+														<a href="/shop"><span class="menu-item-text">Shop</span></a>
 														<ul class="sub-menu">
 															<li class="level-1 menu-item menu-item-has-children">
 																<a href="shop-grid-left.html"><span class="menu-item-text">Shop - Products</span></a>
@@ -421,6 +423,14 @@
 																		<div class="button-next-reregister">Create An Account</div>
 																	</div>						
 																</form>
+
+
+
+															
+																
+																
+																
+
 															</div>
 															<div class="form-register">
 																<form method="post" class="register">
@@ -524,7 +534,8 @@
 									</h1>
 								</div>
 								<div class="breadcrumbs">
-									<a href="index.html">Home</a><span class="delimiter"></span>Register
+									<a href="/">Home</a>
+									<!-- <span class="delimiter"></span>Register -->
 								</div>
 							</div>
 						</div>
@@ -533,12 +544,35 @@
 							<div class="section-padding">
 								<div class="section-container p-l-r">
 									<div class="page-login-register">
-										<div class="row">
+										<div class="row justify-content-center">
 											<div class="col-lg-6 col-md-6 col-sm-12 sm-m-b-50">
 												<div class="box-form-login">
 													<h2>Login</h2>
 													<div class="box-content">
 														<div class="form-login">
+															<!-- <form method="post" class="login">
+																<div class="username">
+																	<label>Email address <span class="required">*</span></label>
+																	<input type="text" class="input-text" name="email" id="username">
+																</div>
+																<div class="password">
+																	<label for="password">Password <span class="required">*</span></label>
+																	<input class="input-text" type="password" name="password">
+																</div>
+																<div class="rememberme-lost">
+																	<div class="remember-me">
+																		
+																		<a href="/signup"><span class="menu-item-text">Create an Account</span></a>
+																	</div>
+																	<div class="lost-password">
+																		<a href="page-forgot-password.html">Lost your password?</a>
+																	</div>
+																</div>
+																<div class="button-login">
+																	<input type="submit" class="button" name="login" value="Login"> 
+																</div>
+															</form> -->
+
 															<form method="post" class="login">
 																<div class="username">
 																	<label>Email address <span class="required">*</span></label>
@@ -550,18 +584,20 @@
 																</div>
 																<div class="rememberme-lost">
 																	<div class="remember-me">
-																		<!-- <input name="rememberme" type="checkbox" value="forever">
-																		<label class="inline">Remember me</label> -->
 																		<a href="/signup"><span class="menu-item-text">Create an Account</span></a>
 																	</div>
 																	<div class="lost-password">
 																		<a href="page-forgot-password.html">Lost your password?</a>
 																	</div>
 																</div>
+																<% if (typeof errors !== 'undefined') { %>
+																	<p class="error-message alert-danger mt-4 text-center "><%= errors %></p>
+																<% } %>
 																<div class="button-login">
 																	<input type="submit" class="button" name="login" value="Login"> 
 																</div>
 															</form>
+															
 														</div>
 													</div>
 												</div>
@@ -571,8 +607,7 @@
 
 
 											 <!-- <div class="col-lg-6 col-md-6 col-sm-12"> -->
-												<div class="col-lg-6 col-md-6 col-sm-12 d-flex align-items-center justify-content-center">
-													<img class="img-fluid mw-100" src="/public/usernew/media/logo.png" alt="">
+												
 												
 												
 
@@ -596,7 +631,7 @@
 														</div>
 													</div>
 												</div> -->
-											</div> 
+											<!-- </div>  -->
 
 
 

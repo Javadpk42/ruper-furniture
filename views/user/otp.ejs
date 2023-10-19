@@ -139,7 +139,7 @@
 									<div class="col-xl-3 col-lg-2 col-md-12 col-sm-12 col-12 header-left">
 										<div class="site-logo">
 											<a href="index.html">
-												<img width="400" height="79" src="media/logo.png" alt="Ruper – Furniture HTML Theme" />
+												<img width="400" height="79" src="/public/usernew/media/logo.png" alt="Ruper – Furniture HTML Theme" />
 											</a>
 										</div>
 									</div>
@@ -524,7 +524,8 @@
 									</h1>
 								</div>
 								<div class="breadcrumbs">
-									<!-- <a href="index.html">Home</a><span class="delimiter"></span>Register -->
+									<a href="/">Home</a>
+									<!-- <span class="delimiter"></span>Register -->
 								</div>
 							</div>
 						</div>
@@ -533,12 +534,15 @@
 							<div class="section-padding">
 								<div class="section-container p-l-r">
 									<div class="page-login-register">
-										<div class="row">
+										<div class="row justify-content-center">
 											<div class="col-lg-6 col-md-6 col-sm-12 sm-m-b-50">
 												<div class="box-form-login">
 													<h2>Verification</h2>
 													<div class="box-content">
 														<div class="form-login">
+															<% if (typeof message!== 'undefined') { %>
+																<p class="error-message alert-danger text-center mt-4"><%= message %></p>
+															<% } %>
 															<form method="post" class="login" action="/otpverification">
 																<!-- <div class="username">
 																	<label>Username or email address <span class="required">*</span></label>
@@ -554,14 +558,26 @@
 																		<label class="inline">Remember me</label>
 																	</div> -->
 																	<div class="lost-password">
-																		<a href="page-forgot-password.html">Resend OTP</a>
+																		<a href="page-forgot-password.html"></a>
 																	</div>
 																</div>
 																<div class="button-login">
 																	<input type="submit" class="button" name="login" value="SUBMIT"> 
 																</div>
+																
 															</form>
+														
 														</div>
+														
+														<form action="resendOTP" method="post">
+
+														   <div class="lost-password mt-3" >
+															<!-- <a href="page-forgot-password.html">Resend OTP</a> -->
+															<input type="submit" value="Resend OTP">
+														   </div>
+														</form>
+														
+													</div>
 													</div>
 												</div>
 											</div>

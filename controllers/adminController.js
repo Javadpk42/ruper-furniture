@@ -109,22 +109,38 @@ const usersLoad = async (req,res)=>{
   
   //=============================to add the category ===================//
   
-  const addCategory = async (req, res) => {
-    try {
+ 
+
+const addCategory = async (req, res) => {
+  try {
       console.log(req.body);
-      let category = await new Category({
-        category_name: req.body.category_name,
-        category_description: req.body.category_description,
-        is_listed: true,
+
+      // Convert the category name to lowercase for case-insensitive comparison
+      const categoryName = req.body.category_name.toLowerCase();
+
+      // Check if a category with the same name already exists (case-insensitive)
+      const existingCategory = await Category.findOne({
+          category_name: { $regex: new RegExp(`^${categoryName}$`, 'i') }
       });
-  
+
+      if (existingCategory) {
+          return res.render('addcategories', { message: "Category Already Created" });
+      }
+
+      let category = await new Category({
+          category_name: req.body.category_name,  // Save the original case
+          category_description: req.body.category_description,
+          is_listed: true,
+      });
+
       let result = await category.save();
       console.log(result);
       res.redirect("/admin/categories");
-    } catch (error) {
+  } catch (error) {
       console.log(error);
-    }
-  };
+      res.status(500).send("Internal Server Error");
+  }
+};
 
 
 

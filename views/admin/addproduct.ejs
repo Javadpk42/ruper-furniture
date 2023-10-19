@@ -113,8 +113,9 @@
                
             </li>
           </ol> -->
-          <!-- <span class="badge badge-sm bg-gradient-success">Add Products</span>
-          <h6 class="font-weight-bolder mb-0"> -->
+          <span class="badge badge-sm" style="background-color:#e91e63;">
+            <a class="nav-link text-white" href="/admin/products" style="color: white !important;">Go Back</a>
+        </span>
           
           </h6>
         </nav>
@@ -250,6 +251,9 @@
                           <div class="card">
                               <div class="card-body">
                                   <!-- <h4 class="card-title">Add New Product</h4> -->
+                                  <% if (typeof message!== 'undefined') { %>
+                                    <p class="error-message text-center mt-4"><%= message %></p>
+                                  <% } %>
                                   <form class="forms-sample border p-3" action="/admin/addproducts" method="post" enctype="multipart/form-data">
                                       <div class="form-group row">
                                           <div class="col-6">
@@ -277,14 +281,14 @@
                                           </div>
                                           <div class="col-md-6">
                                               <div class="form-group row">
-                                                  <div class="col-sm-12">
+                                                  <!-- <div class="col-sm-12">
                                                       <label class="col-form-label">Gender</label>
                                                       <select name="gender" class="form-control" required>
                                                           <option value="" disabled selected>Select Gender</option>
                                                           <option>Men's</option>
                                                           <option>Women's</option>
                                                       </select>
-                                                  </div>
+                                                  </div> -->
                                               </div>
                                           </div>
                                       </div>

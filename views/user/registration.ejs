@@ -139,7 +139,7 @@
 									<div class="col-xl-3 col-lg-2 col-md-12 col-sm-12 col-12 header-left">
 										<div class="site-logo">
 											<a href="index.html">
-												<img width="400" height="79" src="media/logo.png" alt="Ruper – Furniture HTML Theme" />
+												<img width="400" height="79" src="/public/usernew/media/logo.png" alt="Ruper – Furniture HTML Theme" />
 											</a>
 										</div>
 									</div>
@@ -149,7 +149,7 @@
 											<nav id="main-navigation">
 												<ul id="menu-main-menu" class="menu">
 													<li class="level-0 menu-item menu-item-has-children mega-menu">
-														<a href="index.html"><span class="menu-item-text">Home</span></a>
+														<a href=""><span class="menu-item-text">Home</span></a>
 														<div class="sub-menu">
 															<div class="row">
 																<div class="col-md-6">
@@ -215,7 +215,7 @@
 														</div>
 													</li>
 													<li class="level-0 menu-item menu-item-has-children">
-														<a href="shop-grid-left.html"><span class="menu-item-text">Shop</span></a>
+														<a href="/shop"><span class="menu-item-text">Shop</span></a>
 														<ul class="sub-menu">
 															<li class="level-1 menu-item menu-item-has-children">
 																<a href="shop-grid-left.html"><span class="menu-item-text">Shop - Products</span></a>
@@ -524,7 +524,8 @@
 									</h1>
 								</div>
 								<div class="breadcrumbs">
-									<a href="index.html">Home</a><span class="delimiter"></span>Login
+									<a href="/">Home</a>
+									<!-- <span class="delimiter"></span>Login -->
 								</div>
 							</div>
 						</div>
@@ -533,48 +534,13 @@
 							<div class="section-padding">
 								<div class="section-container p-l-r">
 									<div class="page-login-register">
-										<div class="row">
+										<div class="row justify-content-center">
 
 
-											<div class="col-lg-6 col-md-6 col-sm-12 d-flex align-items-center justify-content-center">
-												<img class="img-fluid mw-100" src="/public/usernew/media/logo.png" alt="">
-											</div>
-											
-											<!-- <div class="col-lg-6 col-md-6 col-sm-12 sm-m-b-50">
-												<div class="box-form-login">
-													<h2>Login</h2>
-													<div class="box-content">
-														<div class="form-login">
-															<form method="post" class="login">
-																<div class="username">
-																	<label>Username or email address <span class="required">*</span></label>
-																	<input type="text" class="input-text" name="username" id="username">
-																</div>
-																<div class="password">
-																	<label for="password">Password <span class="required">*</span></label>
-																	<input class="input-text" type="password" name="password">
-																</div>
-																<div class="rememberme-lost">
-																	<div class="remember-me">
-																		<input name="rememberme" type="checkbox" value="forever">
-																		<label class="inline">Remember me</label>
-																	</div>
-																	<div class="lost-password">
-																		<a href="page-forgot-password.html">Lost your password?</a>
-																	</div>
-																</div>
-																<div class="button-login">
-																	<input type="submit" class="button" name="login" value="Login"> 
-																</div>
-															</form>
-														</div>
-													</div>
-												</div>
-											</div>
-											 -->
+										
 											
 											
-											<div class="col-lg-6 col-md-6 col-sm-12">
+											<!-- <div class="col-lg-6 col-md-6 col-sm-12">
 												<div class="box-form-login">
 													<h2 class="register">Register</h2>
 													<div class="box-content">
@@ -617,8 +583,68 @@
 														</div>
 													</div>
 												</div>
+											</div> -->
+											<div class="col-lg-6 col-md-6 col-sm-12">
+												<div class="box-form-login">
+													<h2 class="register">Register</h2>
+													<div class="box-content">
+														<div class="form-register">
+											
+															<!-- Display error message if any -->
+															<% if (typeof message !== 'undefined') { %>
+																<p class="error-message alert-danger mt-4 text-center"><%= message %></p>
+															<% } %>
+											
+															<form method="post" class="register" action="/signup">
+																<div class="username">
+																	<label>Username <span class="required">*</span></label>
+																	<input type="text" class="input-text" name="username" id="username" required>
+																</div>
+											
+																<div class="email">
+																	<label>Email address <span class="required">*</span></label>
+																	<input type="email" class="input-text" name="email" value="" required>
+																	<!-- Display email validation error message if any -->
+																	<% if (typeof emailError !== 'undefined') { %>
+																		<p class="error-message alert-danger mt-4 text-center"><%= emailError %></p>
+																	<% } %>
+																</div>
+											
+																<div class="username">
+																	<label>Mobile <span class="required">*</span></label>
+																	<input type="tel" class="input-text" name="mobile" id="username" required>
+																</div>
+											
+																<div class="password">
+																	<label>Password <span class="required">*</span></label>
+																	<input type="password" class="input-text" name="password" required>
+																	<!-- Display password length validation error message if any -->
+																	<% if (typeof passwordLengthError !== 'undefined') { %>
+																		<p class="error-message alert-danger mt-4 text-center"><%= passwordLengthError %></p>
+																	<% } %>
+																</div>
+											
+																<div class="password">
+																	<label>Confirm Password <span class="required">*</span></label>
+																	<input type="password" class="input-text" name="cpassword" required>
+																	<!-- Display password matching validation error message if any -->
+																	<% if (typeof passwordMatchError !== 'undefined') { %>
+																		<p class="error-message alert-danger mt-4 text-center"><%= passwordMatchError %></p>
+																	<% } %>
+																</div>
+											
+																<div class="button-register">
+																	<input type="submit" class="button" name="register" value="Register">
+																</div>
+															</form>
+											
+														</div>
+													</div>
+												</div>
 											</div>
-
+											
+											
+											
 
 
 
