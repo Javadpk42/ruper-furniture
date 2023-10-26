@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 	
-<!-- Mirrored from caketheme.com/html/ruper/page-login.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2023 09:39:08 GMT -->
+<!-- Mirrored from caketheme.com/html/ruper/page-forgot-password.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2023 09:39:08 GMT -->
 <head>
 		<!-- Meta Data -->
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Ruper</title>
+		<title>Forgot Password | Ruper</title>
 		
 		<!-- Favicon -->
 		<link rel="shortcut icon" type="image/x-icon" href="/public/usernew/media/favicon.png">
@@ -48,8 +48,7 @@
 								<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-6 header-center">
 									<div class="site-logo">
 										<a href="index.html">
-											<!-- <img width="400" height="79" src="/public/usernew/media/logo.png" alt="Ruper – Furniture HTML Theme" /> -->
-											<img width="400" height="79" src="/public/usernew/media/logo.png"  />
+											<img width="400" height="79" src="media/logo.png" alt="Ruper – Furniture HTML Theme" />
 										</a>
 									</div>
 								</div>
@@ -140,8 +139,7 @@
 									<div class="col-xl-3 col-lg-2 col-md-12 col-sm-12 col-12 header-left">
 										<div class="site-logo">
 											<a href="index.html">
-												<!-- <img width="400" height="79" src="media/logo.png" alt="Ruper – Furniture HTML Theme" /> -->
-												<img width="400" height="79" src="/public/usernew/media/logo.png" alt="Ruper – Furniture HTML Theme" />
+												<img width="400" height="79" src="media/logo.png" alt="Ruper – Furniture HTML Theme" />
 											</a>
 										</div>
 									</div>
@@ -151,7 +149,7 @@
 											<nav id="main-navigation">
 												<ul id="menu-main-menu" class="menu">
 													<li class="level-0 menu-item menu-item-has-children mega-menu">
-														<a href="/"><span class="menu-item-text">Home</span></a>
+														<a href="index.html"><span class="menu-item-text">Home</span></a>
 														<div class="sub-menu">
 															<div class="row">
 																<div class="col-md-6">
@@ -217,7 +215,7 @@
 														</div>
 													</li>
 													<li class="level-0 menu-item menu-item-has-children">
-														<a href="/shop"><span class="menu-item-text">Shop</span></a>
+														<a href="shop-grid-left.html"><span class="menu-item-text">Shop</span></a>
 														<ul class="sub-menu">
 															<li class="level-1 menu-item menu-item-has-children">
 																<a href="shop-grid-left.html"><span class="menu-item-text">Shop - Products</span></a>
@@ -358,7 +356,7 @@
 														<a href="#"><span class="menu-item-text">Pages</span></a>
 														<ul class="sub-menu">
 															<li>
-																<a href="page-login.html"><span class="menu-item-text">Login</span></a>
+																<a href="page-login.html"><span class="menu-item-text">Login / Register</span></a>
 															</li>
 															<li>
 																<a href="page-forgot-password.html"><span class="menu-item-text">Forgot Password</span></a>
@@ -423,14 +421,6 @@
 																		<div class="button-next-reregister">Create An Account</div>
 																	</div>						
 																</form>
-
-
-
-															
-																
-																
-																
-
 															</div>
 															<div class="form-register">
 																<form method="post" class="register">
@@ -530,12 +520,11 @@
 							<div class="section-container">
 								<div class="content-title-heading">
 									<h1 class="text-title-heading">
-										Login
+										Reset Password
 									</h1>
 								</div>
 								<div class="breadcrumbs">
-									<a href="/">Home</a>
-									<!-- <span class="delimiter"></span>Register -->
+									<a href="index.html">Home</a><span class="delimiter"></span> 
 								</div>
 							</div>
 						</div>
@@ -543,101 +532,21 @@
 						<div id="content" class="site-content" role="main">
 							<div class="section-padding">
 								<div class="section-container p-l-r">
-									<div class="page-login-register">
-										<div class="row justify-content-center">
-											<div class="col-lg-6 col-md-6 col-sm-12 sm-m-b-50">
-												<div class="box-form-login">
-													<h2>Login</h2>
-													<div class="box-content">
-														<div class="form-login">
-															<!-- <form method="post" class="login">
-																<div class="username">
-																	<label>Email address <span class="required">*</span></label>
-																	<input type="text" class="input-text" name="email" id="username">
-																</div>
-																<div class="password">
-																	<label for="password">Password <span class="required">*</span></label>
-																	<input class="input-text" type="password" name="password">
-																</div>
-																<div class="rememberme-lost">
-																	<div class="remember-me">
-																		
-																		<a href="/signup"><span class="menu-item-text">Create an Account</span></a>
-																	</div>
-																	<div class="lost-password">
-																		<a href="page-forgot-password.html">Lost your password?</a>
-																	</div>
-																</div>
-																<div class="button-login">
-																	<input type="submit" class="button" name="login" value="Login"> 
-																</div>
-															</form> -->
+									<div class="page-forget-password">
+										<form method="post" action="/resetpassword">
+											<p>reset password</p>
+											<p class="form-row form-row-first">
+												<label></label>
+												<input class="input-text form-control" type="text" name="password" placeholder="enter new password" autocomplete="username">
+												<input type="hidden" name="id" value="<%= user_id %>">
 
-															<form method="post" class="login">
-																<div class="username">
-																	<label>Email address <span class="required">*</span></label>
-																	<input type="text" class="input-text" name="email" id="username">
-																</div>
-																<div class="password">
-																	<label for="password">Password <span class="required">*</span></label>
-																	<input class="input-text" type="password" name="password">
-																</div>
-																<div class="rememberme-lost">
-																	<div class="remember-me">
-																		<a href="/signup"><span class="menu-item-text">Create an Account</span></a>
-																	</div>
-																	<div class="lost-password">
-																		<a href="/forgotpassword">Lost your password?</a>
-																	</div>
-																</div>
-																<% if (typeof errors !== 'undefined') { %>
-																	<p class="error-message alert-danger mt-4 text-center "><%= errors %></p>
-																<% } %>
-																<div class="button-login">
-																	<input type="submit" class="button" name="login" value="Login"> 
-																</div>
-															</form>
-															
-														</div>
-													</div>
-												</div>
-											</div>
-
-
-
-
-											 <!-- <div class="col-lg-6 col-md-6 col-sm-12"> -->
-												
-												
-												
-
-												<!-- <div class="box-form-login">
-													<h2 class="register">Register</h2>
-													<div class="box-content">
-														<div class="form-register">
-															<form method="post" class="register">
-																<div class="email">
-																	<label>Email address <span class="required">*</span></label>
-																	<input type="email" class="input-text" name="email" value="">
-																</div>
-																<div class="password">
-																	<label>Password <span class="required">*</span></label>
-																	<input type="password" class="input-text" name="password">
-																</div>
-																<div class="button-register">
-																	<input type="submit" class="button" name="register" value="Register">
-																</div>
-															</form>
-														</div>
-													</div>
-												</div> -->
-											<!-- </div>  -->
-
-
-
-
-
-										</div>
+											</p>
+											<div class="clear"></div>
+											<p class="form-row">
+												<button type="submit" class="button" value="Reset password">Reset password</button>
+											</p>
+										</form>
+									
 									</div>
 								</div>
 							</div>
@@ -1081,5 +990,5 @@
 		<script src="/public/usernew/assets/js/app.js"></script>
 	</body>
 
-<!-- Mirrored from caketheme.com/html/ruper/page-login.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2023 09:39:08 GMT -->
+<!-- Mirrored from caketheme.com/html/ruper/page-forgot-password.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2023 09:39:08 GMT -->
 </html>

@@ -21,7 +21,11 @@ const userSchema=new mongoose.Schema({
    is_verified:{
     type:Number,
     default:0
-   }
+   },
+   token:{
+      type:String,
+      default:''
+    }
          
 
 });

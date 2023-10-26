@@ -15,14 +15,87 @@ const getProductDetails = async(id)=>{
 
 //===================load the Product Page==============================//
 
+// const productsLoad = async (req, res) => {
+//   try {
+//     let products = await Product.find({});
+//     res.render("products", { products: products });
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+
+
+// const productsLoad = async (req, res) => {
+//   try {
+//     const search = req.query.search || ''; // Get search query from request parameters
+//     let products;
+
+//     if (search) {
+//       products = await Product.find({
+//         $or: [
+//           { product_name: { $regex: '.*' + search + '.*', $options: 'i' } },
+//           { category: { $regex: '.*' + search + '.*', $options: 'i' } },
+//         ],
+//       });
+//     } else {
+//       products = await Product.find({});
+//     }
+
+//     res.render("products", { products: products, search: search }); // Pass search query to the template
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).send("Internal Server Error");
+//   }
+// };
+
 const productsLoad = async (req, res) => {
   try {
-    let products = await Product.find({});
-    res.render("products", { products: products });
+    const search = req.query.search || ''; // Get search query from request parameters
+    const page = parseInt(req.query.page) || 1; // Get page number from request parameters, default to 1
+    const limit = 4; // Set the number of items per page
+ 
+    let products;
+    let count;
+
+    if (search) {
+      products = await Product.find({
+        $or: [
+          { product_name: { $regex: '.*' + search + '.*', $options: 'i' } },
+          { category: { $regex: '.*' + search + '.*', $options: 'i' } },
+        ],
+      })
+        .skip((page - 1) * limit)
+        .limit(limit);
+
+      count = await Product.find({
+        $or: [
+          { product_name: { $regex: '.*' + search + '.*', $options: 'i' } },
+          { category: { $regex: '.*' + search + '.*', $options: 'i' } },
+        ],
+      }).countDocuments();
+    } else {
+      products = await Product.find({})
+        .skip((page - 1) * limit)
+        .limit(limit);
+
+      count = await Product.countDocuments({});
+    }
+
+    const totalPages = Math.ceil(count / limit);
+
+    res.render("products", {
+      products: products,
+      search: search,
+      currentPage: page,
+      totalPages: totalPages,
+    }); // Pass search query and pagination details to the template
   } catch (error) {
     console.log(error);
+    res.status(500).send("Internal Server Error");
   }
 };
+
+
 
 
 //==========================to load the add to product Page=======================//
@@ -49,6 +122,7 @@ const addProduct = async (req, res) => {
       product_name: details.product_name,
       product_price: details.product_price,
       category: details.category,
+      is_listed: true,
       // gender: details.gender,
       stock: details.stock,
       product_description: details.product_description,
@@ -80,7 +154,8 @@ const unlistProduct = async (req, res) => {
   }
 
   const products = await Product.find({});
-  res.render("products", { products: products });
+  // res.render("products", { products: products });
+  res.redirect("/admin/products");
 };
 
 //==================to load the edit product page=================//

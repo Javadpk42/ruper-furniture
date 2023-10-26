@@ -14,10 +14,6 @@ const productSchema = mongoose.Schema({
     type:String,
     required:true,
   },
-  // gender:{
-  //   type:String,
-  //   required:true
-  // },
   stock:{
     type:Number,
     required:true

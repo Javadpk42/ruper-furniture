@@ -59,15 +59,107 @@ const loaddashboard=async(req,res)=>{
     }
 }
 
-const usersLoad = async (req,res)=>{
-    try {
-      let users= await getAllUserData() 
-      res.render('customers',{userss:users})
-    } catch (error) {
-      console.log(error);
+// const usersLoad = async (req,res)=>{
+//     try {
+//       let users= await getAllUserData() 
+//       res.render('customers',{userss:users})
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   }
+// const usersLoad = async (req, res) => {
+//   try {
+//     const { search } = req.query;
+//     let users;
+
+//     if (search) {
+//       users = await userModel.find({
+//         username: { $regex: '.*' + search + '.*', $options: 'i' },
+//       });
+//     } else {
+//       users = await getAllUserData();
+//     }
+
+//     res.render('customers', { userss: users });
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+
+
+// const usersLoad = async (req, res) => {
+//   try {
+//     const { search } = req.query;
+//     let users;
+
+//     // Pagination settings
+//     const page = req.query.page || 1;
+//     const limit = 5;
+
+//     // Calculate skip value based on page and limit
+//     const skip = (page - 1) * limit;
+
+//     if (search) {
+//       // Fetch users with search and pagination
+//       users = await userModel
+//         .find({ username: { $regex: '.*' + search + '.*', $options: 'i' } })
+//         .skip(skip)
+//         .limit(limit);
+//     } else {
+//       // Fetch all users with pagination
+//       users = await userModel.find().skip(skip).limit(limit);
+//     }
+
+//     res.render('customers', {
+//       userss: users,
+//       currentPage: parseInt(page),
+//       totalPages: Math.ceil(users.length / limit),
+//     });
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+
+const usersLoad = async (req, res) => {
+  try {
+    const { search } = req.query;
+
+    // Pagination settings
+    const page = req.query.page || 1;
+    const limit = 5;
+
+    // Calculate skip value based on page and limit
+    const skip = (page - 1) * limit;
+
+    let users;
+
+    if (search) {
+      // Fetch users with search and pagination
+      users = await userModel
+        .find({ username: { $regex: '.*' + search + '.*', $options: 'i' } })
+        .skip(skip)
+        .limit(limit);
+    } else {
+      // Fetch all users with pagination
+      users = await userModel.find().skip(skip).limit(limit);
     }
+
+    // Get total count of users (for calculating totalPages)
+    const totalCount = await userModel.countDocuments();
+
+    res.render('customers', {
+      userss: users,
+      currentPage: parseInt(page),
+      totalPages: Math.ceil(totalCount / limit),
+      search: search, // Add search to your render data
+    });
+  } catch (error) {
+    console.log(error);
   }
-   
+};
+
+
+
   
   const getAllUserData = async (req,res)=>{
     return new Promise(async(resolve,reject)=>{
@@ -76,14 +168,111 @@ const usersLoad = async (req,res)=>{
     })
   }
 
+  // const categoryLoad = async (req, res) => {
+  //   try {
+  //     let categories = await getAllCategoriesData();
+  //     res.render("categories", { categories: categories });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+  
+  // const categoryLoad = async (req, res) => {
+  //   try {
+  //     const search = req.query.search || ''; // Get search query from request parameters
+  //     let categories;
+  
+  //     if (search) {
+  //       categories = await Category.find({
+  //         $or: [
+  //           { category_name: { $regex: '.*' + search + '.*', $options: 'i' } },
+  //           { category_description: { $regex: '.*' + search + '.*', $options: 'i' } },
+  //         ],
+  //       });
+  //     } else {
+  //       categories = await Category.find({});
+  //     }
+  
+  //     res.render("categories", { categories: categories, search: search }); // Pass search query to the template
+  //   } catch (error) {
+  //     console.log(error);
+  //     res.status(500).send("Internal Server Error");
+  //   }
+  // };
+  
   const categoryLoad = async (req, res) => {
     try {
-      let categories = await getAllCategoriesData();
-      res.render("categories", { categories: categories });
+      const search = req.query.search || ''; // Get search query from request parameters
+      const page = parseInt(req.query.page) || 1; // Get page number from request parameters, default to 1
+      const limit = 5; // Set the number of items per page
+  
+      let categories;
+      let count;
+  
+      if (search) {
+        categories = await Category.find({
+          $or: [
+            { category_name: { $regex: '.*' + search + '.*', $options: 'i' } },
+            { category_description: { $regex: '.*' + search + '.*', $options: 'i' } },
+          ],
+        })
+          .skip((page - 1) * limit)
+          .limit(limit);
+  
+        count = await Category.find({
+          $or: [
+            { category_name: { $regex: '.*' + search + '.*', $options: 'i' } },
+            { category_description: { $regex: '.*' + search + '.*', $options: 'i' } },
+          ],
+        }).countDocuments();
+      } else {
+        categories = await Category.find({})
+          .skip((page - 1) * limit)
+          .limit(limit);
+  
+        count = await Category.countDocuments({});
+      }
+  
+      const totalPages = Math.ceil(count / limit);
+  
+      res.render("categories", {
+        categories: categories,
+        search: search,
+        currentPage: page,
+        totalPages: totalPages,
+      }); // Pass search query and pagination details to the template
     } catch (error) {
       console.log(error);
+      res.status(500).send("Internal Server Error");
     }
   };
+  
+  
+  
+
+  const adminDashboard=async(req,res)=>{
+    try{
+        
+        var search=''
+        if(req.query.search){
+            search=req.query.search
+        }
+        const usersData=await User.find({is_admin:0,
+            $or:[
+                {name:{$regex:'.*'+search+'.*',$options:'i'}},
+                {email:{$regex:'.*'+search+'.*',$options:'i'}},
+                {mobile:{$regex:'.*'+search+'.*',$options:'i'}},
+            ]
+        })
+        console.log("DAsh board")
+        res.render('dashboard',{users:usersData})
+    }
+    catch(error){
+       console.log(error.message)
+    }
+}
+  
+  
   
   
   //===========================get All the Categories===============================//
@@ -106,6 +295,12 @@ const usersLoad = async (req,res)=>{
       console.log(error);
     }
   };
+
+  
+
+ 
+  
+  
   
   //=============================to add the category ===================//
   
@@ -198,7 +393,8 @@ const unlistCategory = async (req, res) => {
     }
 
     const categories = await Category.find({});
-    res.render("categories", { categories: categories });
+    // res.render("categories", { categories: categories });
+    res.redirect("/admin/categories");
   } catch (error) {
     console.log(error);
   }
@@ -230,6 +426,49 @@ const blockOrNot = async (req, res) => {
     console.log(error);
   }
 }; 
+
+// const blockOrNot = async (req, res) => {
+//   try {
+//     const id = req.query.id;
+//     const userData = await userModel.findOne({ _id: id });
+
+//     // Display a confirmation dialog
+//     const confirmed = window.confirm(
+//       userData.is_verified
+//         ? "Are you sure you want to block this user?"
+//         : "Are you sure you want to unblock this user?"
+//     );
+
+//     if (!confirmed) {
+//       // If the user cancels the confirmation, do nothing
+//       res.redirect("/admin/customers");
+//       return;
+//     }
+
+//     if (userData.is_verified == true) {
+//       const List = await userModel.updateOne(
+//         { _id: id },
+//         { $set: { is_verified: false } }
+//       );
+
+//       if (List) {
+//         req.session.user_id = false;
+//       }
+//       res.redirect("/admin/customers");
+//     }
+
+//     if (userData.is_verified == false) {
+//       await userModel.updateOne({ _id: id }, { $set: { is_verified: true } });
+
+//       res.redirect("/admin/customers");
+//     }
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+
+
+
 const productLoadd = async (req, res) => {
   try {
       let products = await productModel.find().populate("category");

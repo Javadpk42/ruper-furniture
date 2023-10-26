@@ -27,7 +27,7 @@
 		<!-- Site Stylesheet -->
 		<link rel="stylesheet" href="/public/usernew/assets/css/app.css" type="text/css">
 		<link rel="stylesheet" href="/public/usernew/assets/css/responsive.css" type="text/css">
-		
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 		<!-- Google Web Fonts -->
 		<link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@100;200;300;400;500;600;700&amp;display=swap" rel="stylesheet">
 		<link href="https://fonts.googleapis.com/css?family=EB+Garamond:100,100italic,200,200italic,300,300italic,400,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic&amp;display=swap" rel="stylesheet">
@@ -674,7 +674,7 @@
 													<h1 class="title"><%= product.product_name %></h1>
 													<span class="price">
 														<del aria-hidden="true"><span></span></del> 
-														<ins><span>$<%= product.product_price.toFixed(2) %></span></ins>
+														<ins><span>₹<%= product.product_price.toFixed(2) %></span></ins> 
 													</span>
 													<div class="rating">
 														<div class="star star-5"></div>
@@ -718,12 +718,21 @@
 																<input type="number" class="qty" step="1" min="0" max="" name="quantity" value="1" title="Qty" size="4" placeholder="" inputmode="numeric" autocomplete="off">
 																<button type="button" class="minus">-</button>	
 															</div>
-															<div class="btn-add-to-cart">
+															<!-- <div class="btn-add-to-cart">
 																<a href="#" class="button" tabindex="0">Add to cart</a>
+															</div> -->
+															<div class="btn-add-to-cart">
+																<a  onclick="addToCart('<%= product._id %>')" class="button" tabindex="0"> Add To Cart</a>
+																 
+																
 															</div>
+															
+														
+
 														</div>
 														<div class="btn-quick-buy" data-title="Wishlist">
-															<button class="product-btn">Buy It Now</button>
+															<!-- <button class="product-btn">Buy It Now</button> -->
+															<a href="/view-cart" class="btn btn-success">VIEW CART</a>
 														</div>
 														<div class="btn-wishlist" data-title="Wishlist">
 															<button class="product-btn">Add to wishlist</button>
@@ -1429,6 +1438,32 @@
 	    	</div>
 	    </div>
 
+
+		<script>
+
+			function addToCart(id) {
+			   
+							$.ajax({
+							  url: "/add-to-cart",
+							  method: "post",
+							  encoded: true,
+							  data: {
+								id: id,
+							  },
+							}).done((data) => {
+							  if (data) {
+								console.log('data',data);
+							   alert(data)
+							// swal('Item added to cart')
+							   
+							  }else{
+								
+								alert('failed')
+							  }
+							});
+						  }
+			  </script>
+
 		<!-- Dependency Scripts -->
 		<script src="/public/usernew/libs/popper/js/popper.min.js"></script>
 		<script src="/public/usernew/libs/jquery/js/jquery.min.js"></script>
@@ -1447,4 +1482,4 @@
 	</body>
 
 <!-- Mirrored from caketheme.com/html/ruper/shop-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2023 09:38:23 GMT -->
-</html>/public/usernew/
+</html>
