@@ -27,6 +27,9 @@
 		<!-- Site Stylesheet -->
 		<link rel="stylesheet" href="/public/usernew/assets/css/app.css" type="text/css">
 		<link rel="stylesheet" href="/public/usernew/assets/css/responsive.css" type="text/css">
+
+		<!-- Add this in the head section of your HTML -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 		
 		<!-- Google Web Fonts -->
 		<link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@100;200;300;400;500;600;700&amp;display=swap" rel="stylesheet">
@@ -546,6 +549,9 @@
 														<a class="nav-link" data-toggle="tab" href="#addresses" role="tab">Addresses</a>
 													</li>
 													<li class="nav-item">
+														<a class="nav-link" data-toggle="tab" href="#addaddresses" role="tab">Add Address</a>
+													</li>
+													<li class="nav-item">
 														<a class="nav-link" data-toggle="tab" href="#account-details" role="tab">Account details</a>
 													</li>
 													<li class="nav-item">
@@ -555,17 +561,12 @@
 											</nav>
 											<div class="my-account-content tab-content">
 												<div class="tab-pane fade show active" id="dashboard" role="tabpanel">
-													<div class="my-account-dashboard">
-														<!-- <p>
-															Hello <strong>Rosie</strong> (not <strong>Rosie</strong>? <a href="page-login.html">Log out</a>)
-														</p>
-														<p>
-															From your account dashboard you can view your <a href="#">recent orders</a>, manage your <a href="#">shipping and billing addresses</a>, and <a href="#">edit your password and account details</a>.
-														</p> -->
+													<!-- <div class="my-account-dashboard">
+													
 
 														
 															<h1 class="text-center">My Profile</h1>
-													<!-- Add additional checks for users before accessing properties -->
+													
 <p>Full Name: <%= users ? users.username : 'N/A' %></p>
 <p>Email Address: <%= users ? users.email : 'N/A' %></p>
 <p>Phone Number: <%= users ? users.mobile : 'N/A' %></p>
@@ -575,7 +576,38 @@
 
 														  
 														  
+													</div> -->
+
+													<div class="my-account-dashboard">
+														<h1 class="">Profile Information</h1>
+													
+														<% if (users) { %>
+															<p>Full Name: <%= users.username || 'N/A' %></p>
+															<p>Email Address: <%= users.email || 'N/A' %></p>
+															<p>Phone Number: <%= users.mobile || 'N/A' %></p>
+															
+													
+															<% if (address && address.length > 0) { %>
+																<h2>Addresses:</h2>
+																<% address.forEach(addressItem => { %>
+																	<p>
+																		Full Name: <%= addressItem.fullname || 'N/A' %><br>
+																		Mobile: <%= addressItem.mobile || 'N/A' %><br>
+																		House Name: <%= addressItem.housename || 'N/A' %><br>
+																		City: <%= addressItem.city || 'N/A' %>, State: <%= addressItem.state || 'N/A' %>, District: <%= addressItem.district || 'N/A' %><br>
+																		Pin: <%= addressItem.pin || 'N/A' %>
+																	</p>
+																<% }); %>
+															<% } else { %>
+																<p>No addresses found.</p>
+															<% } %>
+														<% } else { %>
+															<p>No user data available.</p>
+														<% } %>
 													</div>
+													
+													
+
 												</div>
 												<div class="tab-pane fade" id="orders" role="tabpanel">
 													<div class="my-account-orders">
@@ -622,7 +654,7 @@
 														<p>
 															The following addresses will be used on the checkout page by default.
 														</p>
-														<div class="addresses">
+														<!-- <div class="addresses">
 															<div class="addresses-col">
 																<header class="col-title">
 																	<h3>Billing address</h3>
@@ -647,26 +679,159 @@
 		                                                            Phone: 1.941.227.4444
 		                                                        </address>
 															</div>
-														</div>
+														</div> -->
+
+
+														<!-- <div class="addresses">
+															<% if (address && address.length > 0) { %>
+															  <% address.forEach(addressItem => { %>
+																<div class="addresses-col">
+																  <header class="col-title">
+																	<h3>Billing address</h3>
+																	<a  class="edit" href="/edit_address/<%= addressItem._id %>">Edit</a>
+																	
+																	<button
+																	class="btn btn-danger delete-address"
+																	
+																>
+																	Delete Address
+																</button>
+																																
+
+																  </header>
+																  <address>
+
+																	<strong><%= addressItem.fullname %></strong><br>
+																	Mobile: <%= addressItem.mobile %><br>
+																	
+
+																	<%= addressItem.housename %><br>
+																	<%= addressItem.city %>, <%= addressItem.state %>, <%= addressItem.district %><br>
+																	Pin: <%= addressItem.pin %><br>
+																	
+																  </address>
+																</div>
+															  <% }); %>
+															<% } else { %>
+															  <p>No addresses found.</p>
+															<% } %>
+														  </div> -->
+
+														  <!-- profile.ejs -->
+<div class="addresses">
+    <% if (address && address.length > 0) { %>
+        <% address.forEach(addressItem => { %>
+            <div class="addresses-col">
+                <header class="col-title">
+                    <h3>Billing address</h3>
+                    <a class="edit" href="/edit_address/<%= addressItem._id %>">Edit</a>
+                    <!-- Add a button to delete the address -->
+					<button
+					class="btn btn-danger delete-address"
+					data-address-id="<%= addressItem._id %>"
+				>
+					Delete Address
+				</button>
+				
+                </header>
+                <address>
+                    <strong><%= addressItem.fullname %></strong><br>
+                    Mobile: <%= addressItem.mobile %><br>
+                    <%= addressItem.housename %><br>
+                    <%= addressItem.city %>, <%= addressItem.state %>, <%= addressItem.district %><br>
+                    Pin: <%= addressItem.pin %><br>
+                </address>
+            </div>
+        <% }); %>
+    <% } else { %>
+        <p>No addresses found.</p>
+    <% } %>
+</div>
+
+														  
 													</div>
 												</div>
+
+												<div class="tab-pane fade" id="addaddresses" role="tabpanel">
+													<div class="my-account-addresses">
+														<!-- <p>
+															The following addresses will be used on the checkout page by addaddress
+														</p> -->
+														<h1>Add address</h1>
+														<div class="my-account-account-details">
+															<form class="edit-account" action="/add_address" method="post">
+																<p class="form-row">
+																	<label for="account_first_name">fullname<span class="required">*</span></label>
+																	<input type="text" class="input-text" name="fullname">
+																</p>
+																<p class="form-row">
+																	<label>mobile<span class="required">*</span></label>
+																	<input type="text" class="input-text" name="mobile">
+																</p>
+																<div class="clear"></div>
+																<p class="form-row">
+																	<!-- <label>email<span class="required">*</span></label>
+																	<input type="text" class="input-text" name="email">  -->
+																	<!-- <span><em>This will be how your name will be displayed in the account section and in reviews</em></span> -->
+																</p>
+																<div class="clear"></div>
+																<p class="form-row">
+																	<label>housename <span class="required">*</span></label>
+																	<input type="text" class="input-text" name="housename">
+																</p>
+																<p class="form-row">
+																	<label>pincode<span class="required">*</span></label>
+																	<input type="text" class="input-text" name="pin">
+																</p>
+																<p class="form-row">
+																	<label>city <span class="required">*</span></label>
+																	<input type="text" class="input-text" name="city">
+																</p>
+																<p class="form-row">
+																	<label>district <span class="required">*</span></label>
+																	<input type="text" class="input-text" name="district">
+																</p>
+																<p class="form-row">
+																	<label>state <span class="required">*</span></label>
+																	<input type="text" class="input-text" name="state">
+																</p>
+																<!-- <fieldset>
+																	<legend>Password change</legend>
+																	<p class="form-row">
+																		<label>Current password (leave blank to leave unchanged)</label>
+																		<input type="password" class="input-text" name="password_current" autocomplete="off">
+																	</p>
+																	<p class="form-row">
+																		<label>New password (leave blank to leave unchanged)</label>
+																		<input type="password" class="input-text" name="password_1" autocomplete="off">
+																	</p>
+																	<p class="form-row">
+																		<label>Confirm new password</label>
+																		<input type="password" class="input-text" name="password_2" autocomplete="off">
+																	</p>
+																</fieldset> -->
+																<div class="clear"></div>
+																<p class="form-row">
+																	<button type="submit" class="button" name="save_account_details" value="Save changes">Save address</button>
+																</p>
+															</form>
+													</div>
+												</div>
+												</div>
+
 												<div class="tab-pane fade" id="account-details" role="tabpanel">
 													<div class="my-account-account-details">
-														<form class="edit-account" action="#" method="post">
+														<!-- <form class="edit-account" action="#" method="post">
 															<p class="form-row">
-																<label for="account_first_name">First name <span class="required">*</span></label>
+																<label for="account_first_name">User Name <span class="required">*</span></label>
 																<input type="text" class="input-text" name="account_first_name">
 															</p>
 															<p class="form-row">
-																<label>Last name <span class="required">*</span></label>
+																<label>Mobile <span class="required">*</span></label>
 																<input type="text" class="input-text" name="account_last_name">
 															</p>
 															<div class="clear"></div>
-															<p class="form-row">
-																<label>Display name <span class="required">*</span></label>
-																<input type="text" class="input-text" name="account_display_name"> 
-																<span><em>This will be how your name will be displayed in the account section and in reviews</em></span>
-															</p>
+															
 															<div class="clear"></div>
 															<p class="form-row">
 																<label>Email address <span class="required">*</span></label>
@@ -691,7 +856,45 @@
 															<p class="form-row">
 																<button type="submit" class="button" name="save_account_details" value="Save changes">Save changes</button>
 															</p>
+														</form> -->
+
+														<form class="edit-account" action="/update_profile" method="post">
+															<p class="form-row">
+																<label for="account_username">User Name <span class="required">*</span></label>
+																<input type="text" class="input-text" id="account_username" name="username" value="<%= users.username %>" required>
+															</p>
+															<div class="clear"></div>
+															<p class="form-row">
+																<label for="account_mobile">Mobile <span class="required">*</span></label>
+																<input type="text" class="input-text" id="account_mobile" name="mobile" value="<%= users.mobile %>" required>
+															</p>
+															<div class="clear"></div>
+															<!-- <p class="form-row">
+																<label for="account_email">Email address <span class="required">*</span></label>
+																<input type="email" class="input-text" id="account_email" name="email" value="<%= user.email %>" required>
+															</p> -->
+															<fieldset>
+																<legend>Password change</legend>
+																<p class="form-row">
+																	<label for="password_current">Current password (leave blank to leave unchanged)</label>
+																	<input type="password" class="input-text" id="password_current" name="currentPassword" autocomplete="off">
+																</p>
+																<p class="form-row">
+																	<label for="password_1">New password (leave blank to leave unchanged)</label>
+																	<input type="password" class="input-text" id="password_1" name="newPassword" autocomplete="off">
+																</p>
+																<p class="form-row">
+																	<label for="password_2">Confirm new password</label>
+																	<input type="password" class="input-text" id="password_2" name="confirmPassword" autocomplete="off">
+																</p>
+															</fieldset>
+															<div class="clear"></div>
+															<p class="form-row">
+																<button type="submit" class="button" name="save_account_details" value="Save changes">Save changes</button>
+															</p>
 														</form>
+														
+
 													</div>
 												</div>
 											</div>
@@ -1122,6 +1325,67 @@
 	    		<div></div>
 	    	</div>
 	    </div>
+
+
+
+
+<!-- Add this script at the end of your profile.ejs file or in a separate script file -->
+<!-- <script>
+    // Example using jQuery for AJAX
+    $('.delete-address').on('click', function () {
+        console.log('Button clicked!');  // Add this line
+        const addressId = $(this).data('address-id');
+        const button = $(this);  // Store reference to the button
+
+        $.ajax({
+            url: `/delete_address/${addressId}`,
+            method: 'GET',
+            success: function (response) {
+                alert(response.message); // Display success or error message
+                // Optionally, remove the deleted address from the UI
+                button.closest('.addresses-col').remove();
+            },
+            error: function (error) {
+                console.error('Error deleting address', error);
+                // Handle UI updates for error scenario
+            }
+        });
+    });
+</script> -->
+
+<script>
+    // Example using jQuery for AJAX
+    $('.delete-address').on('click', function () {
+        const button = $(this); // Store reference to the button
+        const addressId = button.data('address-id');
+        $.ajax({
+            url: `/delete_address/${addressId}`,
+            method: 'GET',
+            success: function (response) {
+                alert(response.message); // Display success or error message
+                if (response.message === 'Address deleted successfully') {
+                    // Remove the deleted address from the UI without reloading
+                    button.closest('.addresses-col').remove();
+                    // Reload the page after a short delay
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000); // You can adjust the delay as needed
+                }
+            },
+            error: function (error) {
+                console.error('Error deleting address', error);
+                // Handle UI updates for error scenario
+            }
+        });
+    });
+</script>
+
+
+
+
+
+
+
 
 		<!-- Dependency Scripts -->
 		<script src="/public/usernew/libs/popper/js/popper.min.js"></script>

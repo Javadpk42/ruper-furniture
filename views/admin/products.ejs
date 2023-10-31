@@ -339,11 +339,12 @@
                           <td><%= products[i].category %></td>
                           <td><%= products[i].product_price %></td>
                           <td>
-                            <% if (products[i].stock <= 0) { %>
+                            <!-- <% if (products[i].stock <= 0) { %>
                               <span class="text-danger text-center">Out Of Stock</span>
                             <% } else { %>
                               <span class="text-success text-center">In Stock</span>
-                            <% } %>
+                            <% } %> -->
+                            <%= products[i].stock %>
                           </td>
                           <td>
                             <a href="/admin/editproduct?id=<%= products[i]._id %>" class="btn btn-inverse-info">Edit</a>

@@ -713,16 +713,17 @@
 													</div>
 													<div class="buttons">
 														<div class="add-to-cart-wrap">
-															<div class="quantity">
+															<!-- <div class="quantity">
 																<button type="button" class="plus">+</button>
 																<input type="number" class="qty" step="1" min="0" max="" name="quantity" value="1" title="Qty" size="4" placeholder="" inputmode="numeric" autocomplete="off">
 																<button type="button" class="minus">-</button>	
-															</div>
+															</div> -->
 															<!-- <div class="btn-add-to-cart">
 																<a href="#" class="button" tabindex="0">Add to cart</a>
 															</div> -->
-															<div class="btn-add-to-cart">
-																<a  onclick="addToCart('<%= product._id %>')" class="button" tabindex="0"> Add To Cart</a>
+															<!-- <div class="btn-add-to-cart"> -->
+																<div class="btn btn-dark">
+																<a  onclick="addToCart('<%= product._id %>')" class="button text-white" tabindex="0"> Add To Cart</a>
 																 
 																
 															</div>
@@ -732,7 +733,7 @@
 														</div>
 														<div class="btn-quick-buy" data-title="Wishlist">
 															<!-- <button class="product-btn">Buy It Now</button> -->
-															<a href="/view-cart" class="btn btn-success">VIEW CART</a>
+															<a href="/view-cart" class="btn btn-default">VIEW CART</a>
 														</div>
 														<div class="btn-wishlist" data-title="Wishlist">
 															<button class="product-btn">Add to wishlist</button>
@@ -1439,7 +1440,7 @@
 	    </div>
 
 
-		<script>
+		<!-- <script>
 
 			function addToCart(id) {
 			   
@@ -1462,7 +1463,32 @@
 							  }
 							});
 						  }
-			  </script>
+			  </script> -->
+
+			  <script>
+				function addToCart(id) {
+					$.ajax({
+						url: "/add-to-cart",
+						method: "post",
+						data: { id: id },
+					}).done((data) => {
+						if (data.outofstock) {
+							// alert('product is out of stock');
+							Swal.fire('product is out of stock')
+						} else if (data.success) {
+							Swal.fire('product added to cart')
+						} else {
+							Swal("failed to add ")
+					
+						}
+					}).fail(() => {
+						alert('An error occurred');
+					});
+				}
+			</script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+			
 
 		<!-- Dependency Scripts -->
 		<script src="/public/usernew/libs/popper/js/popper.min.js"></script>
