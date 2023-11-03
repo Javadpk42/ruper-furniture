@@ -390,7 +390,7 @@
 										<div class="header-page-link">
 											<!-- Login -->
 											<div class="login-header">
-												<a class="active-login" href="#">Login</a>
+												<a href="/logout"><span class="menu-item-text">Logout</span></a>
 												<div class="form-login-register">
 													<div class="box-form-login">
 														<div class="active-login"></div>
@@ -578,7 +578,7 @@
 																</p>
 															</form> -->
 
-															<form class="edit-account" action="/edit_address/<%= addressId %>" method="post">
+															<!-- <form class="edit-account" action="/edit_address/<%= addressId %>" method="post">
 																<input type="hidden" name="addressId" value="<%= addressId %>">
 															
 																<div class="form-row">
@@ -621,7 +621,55 @@
 																<div class="form-row">
 																	<button type="submit" class="button" name="save_account_details" value="Save Address">Save Address</button>
 																</div>
-															</form>
+															</form> -->
+
+															<form class="edit-account" action="/edit_address/<%= addressId %>" method="post">
+																<input type="hidden" name="addressId" value="<%= addressId %>">
+															  
+																<% const selectedAddress = address.address.find(addr => addr._id.toString() === addressId); %>
+															  
+																<div class="form-row">
+																  <label for="fullname">Full Name<span class="required">*</span></label>
+																  <input type="text" class="input-text" name="fullname" value="<%= selectedAddress.fullname %>" required>
+																</div>
+															  
+																<div class="form-row">
+																  <label for="mobile">Mobile<span class="required">*</span></label>
+																  <input type="text" class="input-text" name="mobile" value="<%= selectedAddress.mobile %>" required>
+																</div>
+															  
+																<div class="form-row">
+																  <label for="housename">House Name<span class="required">*</span></label>
+																  <input type="text" class="input-text" name="housename" value="<%= selectedAddress.housename %>" required>
+																</div>
+															  
+																<div class="form-row">
+																  <label for="pin">Pincode<span class="required">*</span></label>
+																  <input type="text" class="input-text" name="pin" value="<%= selectedAddress.pin %>" required>
+																</div>
+															  
+																<div class="form-row">
+																  <label for="city">City<span class="required">*</span></label>
+																  <input type="text" class="input-text" name="city" value="<%= selectedAddress.city %>" required>
+																</div>
+															  
+																<div class="form-row">
+																  <label for="district">District<span class="required">*</span></label>
+																  <input type="text" class="input-text" name="district" value="<%= selectedAddress.district %>" required>
+																</div>
+															  
+																<div class="form-row">
+																  <label for="state">State<span class="required">*</span></label>
+																  <input type="text" class="input-text" name="state" value="<%= selectedAddress.state %>" required>
+																</div>
+															  
+																<div class="clear"></div>
+															  
+																<div class="form-row">
+																  <button type="submit" class="button" name="save_account_details" value="Save Address">Save Address</button>
+																</div>
+															  </form>
+															  
 															
 
 														</div>

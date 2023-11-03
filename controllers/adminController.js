@@ -4,6 +4,8 @@ const adminModel = require("../model/userModel")
 const Category = require("../model/productModel").category;
 const { category } = require("../model/productModel");
 
+const Order = require("../model/orderModel")
+
 const bcrypt=require('bcrypt');
 const { name } = require('ejs');
 const path=require("path")
@@ -412,9 +414,9 @@ const blockOrNot = async (req, res) => {
         { $set: { is_verified: false } }
       );
 
-      if (List) {
-        req.session.user_id = false;
-      }
+      // if (List) {
+      //   req.session.user_id = false;
+      // }
       res.redirect("/admin/customers");
     }
     if (userData.is_verified == false) {
@@ -551,6 +553,38 @@ const updateproducts=async(req,res)=>{
      console.log(error.message)
   }
 }
+
+// const orderLoad=async(req,res)=>{
+//   try {
+//       res.render('orders')
+//   } catch (error) {
+//       console.log(error.message )
+//   }
+// }
+const orderLoad = async (req, res) => {
+  try {
+    // Check if there is an active admin session
+    // if (!req.session.admin_id) {
+    //   return res.redirect('/admin/login?errors=Please log in to view');
+    // }
+
+    // Fetch all orders
+    const orders = await Order.find({}).sort({ orderDate: -1 });
+
+    // Check if orders data is not null or undefined
+    if (orders) {
+      res.render('orders', { orders });
+    } else {
+      console.log('Orders Data is null or undefined');
+      res.render('orders', { orders: [] });
+    }
+  } catch (error) {
+    console.log(error);
+    res.render('orders', { orders: [], error: 'Error fetching orders data' });
+  }
+};
+
+
 module.exports={
     loginLoad,
     loaddashboard,
@@ -564,6 +598,7 @@ module.exports={
     blockOrNot,
     editproductLoad,
     updateproducts,
-    verifyLogin
+    verifyLogin,
+    orderLoad
    
 }

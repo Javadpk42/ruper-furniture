@@ -30,7 +30,7 @@ const securePassword=async(password)=>{
 
 const homeLoad=async(req,res)=>{
     try {
-        res.render('home')
+        res.render('home',{ user: req.session.user_id })
     } catch (error) {
         console.log(error.message )
     }
@@ -245,6 +245,15 @@ const verifyLogin = async (req, res) => {
   }
 };
 
+const userLogout=async(req,res)=>{
+  try {
+      req.session.destroy()
+      res.redirect('/')
+  } catch (error) {
+      console.log(error.message)
+  }
+}
+
 //forgot
 
 const forgotLoad=async(req,res)=>{
@@ -386,31 +395,267 @@ const takeUserData = async (userId) => {
 };
 
 
+// const profileLoad = async (req, res) => {
+//   try { 
+//     const userId = req.session.user_id;
+
+//     // Fetch user data 
+//     const userData = await takeUserData(userId);
+
+//     // Fetch user address data
+//     const addressData = await Address.findOne({ user_id: userId });
+
+//     // console.log('User Data:', userData);
+//     // console.log('Address Data:', addressData);
+
+//     // Check if userData is not null or undefined
+//     if (userData) {
+//       res.render('profile', { users: userData, user: userId, address: addressData ? addressData.address : null });
+//     } else {
+//       console.log('User Data is null or undefined');
+//       res.render('profile', { users: null, user: userId });
+//     }
+//   } catch (error) {
+//     console.log(error);
+//     res.render('profile', { users: null, user: req.session.user_id, address: null, error: 'Error fetching user data' });
+//   }
+// }
+
+// const profileLoad = async (req, res) => {
+//   try { 
+//     // Check if there is an active login session
+//     if (!req.session.user_id) {
+//       return res.redirect('/login?errors=Please log in to view');
+//     }
+
+//     const userId = req.session.user_id;
+
+//     // Fetch user data 
+//     const userData = await takeUserData(userId);
+
+//     // Fetch user address data
+//     const addressData = await Address.findOne({ user_id: userId });
+
+//     // console.log('User Data:', userData);
+//     // console.log('Address Data:', addressData);
+
+//     // Check if userData is not null or undefined
+//     if (userData) {
+//       res.render('profile', { users: userData, user: userId, address: addressData ? addressData.address : null });
+//     } else {
+//       console.log('User Data is null or undefined');
+//       res.render('profile', { users: null, user: userId });
+//     }
+//   } catch (error) {
+//     console.log(error);
+//     res.render('profile', { users: null, user: req.session.user_id, address: null, error: 'Error fetching user data' });
+//   }
+// }
+
+// const profileLoad = async (req, res) => {
+//   try {
+//     // Check if there is an active login session
+//     if (!req.session.user_id) {
+//       return res.redirect('/login?errors=Please log in to view');
+//     }
+
+//     const userId = req.session.user_id;
+
+//     // Fetch user data
+//     const userData = await takeUserData(userId);
+
+//     // Fetch user address data
+//     const addressData = await Address.findOne({ user_id: userId });
+
+//     // Fetch user orders
+//     const orders = await Order.find({ user: userId }).sort({ orderDate: -1 });
+
+//     // Check if userData is not null or undefined
+//     if (userData) {
+//       res.render('profile', { users: userData, user: userId, address: addressData ? addressData.address : null, orders });
+//     } else {
+//       console.log('User Data is null or undefined');
+//       res.render('profile', { users: null, user: userId, orders: [] });
+//     }
+//   } catch (error) {
+//     console.log(error);
+//     res.render('profile', { users: null, user: req.session.user_id, address: null, orders: [], error: 'Error fetching user data' });
+//   }
+// };
+
 const profileLoad = async (req, res) => {
-  try { 
+  try {
+    // Check if there is an active login session
+    if (!req.session.user_id) {
+      return res.redirect('/login?errors=Please log in to view');
+    }
+
     const userId = req.session.user_id;
 
-    // Fetch user data 
+    // Fetch user data
     const userData = await takeUserData(userId);
 
     // Fetch user address data
     const addressData = await Address.findOne({ user_id: userId });
 
-    // console.log('User Data:', userData);
-    // console.log('Address Data:', addressData);
+    // Fetch user orders
+    const orders = await Order.find({ user: userId }).sort({ orderDate: -1 });
+
+    // Fetch user cart
+    const cart = await Cart.findOne({ user: userId }).populate('products.productId');
 
     // Check if userData is not null or undefined
     if (userData) {
-      res.render('profile', { users: userData, user: userId, address: addressData ? addressData.address : null });
+      res.render('profile', { users: userData, user: userId, address: addressData ? addressData.address : null, orders, cart });
     } else {
       console.log('User Data is null or undefined');
-      res.render('profile', { users: null, user: userId });
+      res.render('profile', { users: null, user: userId, orders: [], cart: null });
     }
   } catch (error) {
     console.log(error);
-    res.render('profile', { users: null, user: req.session.user_id, address: null, error: 'Error fetching user data' });
+    res.render('profile', { users: null, user: req.session.user_id, address: null, orders: [], cart: null, error: 'Error fetching user data' });
   }
-}
+};
+
+// const orderDetails = async (req, res) => {
+//   try {
+//     const orderId = req.params.orderId;
+
+//     // Fetch order details with populated references
+//     const order = await Order.findById(orderId)
+//       .populate({
+//         path: 'cart',
+//         populate: {
+//           path: 'products.productId',
+//           model: 'product',
+//         },
+//       })
+      
+
+//     // Check if the order exists
+//     if (!order) {
+//       return res.status(404).render('error', { message: 'Order not found' });
+//     }
+
+//     // Render order details view
+//     res.render('orderdetails', { order });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).render('error', { message: 'Error fetching order details' });
+//   }
+// };
+
+// const orderDetails = async (req, res) => {
+//   try {
+//     const orderId = req.params.orderId;
+
+//     // Fetch order details with populated references
+
+     
+
+//     // Check if the order exists
+//     if (!order) {
+//       return res.status(404).render('error', { message: 'Order not found' });
+//     }
+
+//     // Render order details view
+//     res.render('orderdetails', { order });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).render('error', { message: 'Error fetching order details' });
+//   }
+// };
+
+// const orderDetails = async (req, res) => {
+//   try {
+//     const orderId = req.params.orderId;
+
+//     // Fetch order details
+//     const order = await Order.findById(orderId);
+
+//     // Check if the order exists
+//     if (!order) {
+//       return res.status(404).render('error', { message: 'Order not found' });
+//     }
+
+//     // Fetch delivery address, cart, and products separately
+//     const address = await Address.findOne(
+//       { user_id: order.user, 'address._id': order.deliveryAddress },
+//       { 'address.$': 1 }
+//     );
+//     const product = await Order.findById(orderId).populate({
+//       path: 'cart.products.productId',
+//       model: 'product',
+//     });
+
+//     // Check if the address exists
+//     if (!address || !address.address || address.address.length === 0) {
+//       // Handle the case where the address is not found
+//       console.log('Address not found');
+//     } else {
+//       // Access the address details
+//       const specificAddress = address.address[0];
+
+//       // Render order details view with order, address, and cart data
+//       res.render('orderdetails', { order, address: specificAddress, cart });
+//     }
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).render('error', { message: 'Error fetching order details' });
+//   }
+// };
+
+
+const orderDetails = async (req, res) => {
+  try {
+    const orderId = req.params.orderId;
+
+    // Fetch order details
+    const order = await Order.findById(orderId);
+
+    // Check if the order exists
+    if (!order) {
+      return res.status(404).render('error', { message: 'Order not found' });
+    }
+
+    // Fetch delivery address, cart, and products separately
+    const address = await Address.findOne(
+      { user_id: order.user, 'address._id': order.deliveryAddress },
+      { 'address.$': 1 }
+    );
+    const orderWithProducts = await Order.findById(orderId).populate({
+      path: 'cart.products.productId',
+      model: 'product',
+    });
+
+    // Check if the address exists
+    if (!address || !address.address || address.address.length === 0) {
+      // Handle the case where the address is not found
+      console.log('Address not found');
+    } else {
+      // Access the address and product details
+      const specificAddress = address.address[0];
+      const orderedProducts = orderWithProducts.cart.products;
+
+      let total = 0;
+      orderedProducts.forEach((product) => {
+        total += product.quantity * product.productId.product_price;
+      });
+
+      // Render order details view with order, address, and product data
+      res.render('orderdetails', { order, address: specificAddress, orderedProducts,total });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).render('error', { message: 'Error fetching order details' });
+  }
+};
+
+
+
+
+
+
 
 const updateProfile = async (req, res, next) => {
   try {
@@ -516,9 +761,6 @@ const addAddress = async (req, res, next) => {
 
 
 
-
-
-
 const editAddressPage = async (req, res) => {
   try {
     const userId = req.session.user_id;
@@ -527,6 +769,10 @@ const editAddressPage = async (req, res) => {
 
     // Fetch the user's address data
     const address = await Address.findOne({ user_id: userId });
+
+    console.log('Address data:', address); 
+console.log('Address ID:', addressId);
+
 
     if (usersData && address) {
       res.render('editaddress', { users: usersData, address: address, addressId: addressId });
@@ -548,7 +794,7 @@ const editAddress = async (req, res) => {
   try {
     console.log('Edit Address Page accessed');
     const userId = req.session.user_id;
-    const addressId = req.body.addressId; // Retrieve addressId from the request body
+    const addressId = req.body.addressId; // Retrieve addressId from the request body its passing as hidden in form
 
     // Fetch the existing address data
     const existingAddress = await Address.findOne({ user_id: userId, 'address._id': addressId });
@@ -667,7 +913,7 @@ const shopLoad = async (req, res) => {
 
     const totalPages = Math.ceil(count / limit);
 
-    res.render('shop', { categories, products, search, currentPage: page, totalPages });
+    res.render('shop', { categories, products, search, currentPage: page, totalPages, user: req.session.user_id });
   } catch (error) {
     console.log(error.message);
     res.status(500).send('Internal Server Error');
@@ -685,7 +931,7 @@ const shopdetailsLoad = async (req, res) => {
       const product = await Product.findById(productId);
 
       // Render the shopdetails template with the product data
-      res.render('shopdetails', { product });
+      res.render('shopdetails', { product, user: req.session.user_id });
   } catch (error) {
       console.log(error.message);
       // Handle errors, e.g., render an error page
@@ -873,7 +1119,7 @@ const loadCheckout = async (req, res, next) => {
     // Fetch user addresses
     const addresses = await Address.findOne({ user_id: userId });
 
-    console.log(addresses);
+    // console.log(addresses);
 
     // console.log('Addresses:', addresses); 
 
@@ -899,7 +1145,7 @@ const loadCheckout = async (req, res, next) => {
           total: 0
         });
       }
-    } else {
+    } else { 
       console.log('Cart not found');
       res.redirect('/view-cart');
     }
@@ -954,7 +1200,7 @@ const addShippingAddress = async (req, res, next) => {
       });
 
       const saveResult = await newAddress.save();
-      console.log('Save Result:', saveResult);
+      // console.log('Save Result:', saveResult);
     }
 
     // Redirect to the checkout success or profile page
@@ -964,25 +1210,382 @@ const addShippingAddress = async (req, res, next) => {
     next(err);
   }
 };
+
+// const editAddressPagecheckout = async (req, res) => {
+//   try {
+//     const userId = req.session.user_id;
+//     const usersData = await takeUserData(userId);
+//     const addressId = req.params.addressId;
+
+//     // Fetch the user's address data
+//     const address = await Address.findOne({ user_id: userId });
+
+//     console.log('Address data:', address);
+//     console.log('Address ID:', addressId);
+
+//     if (usersData && address) {
+//       res.render('editaddress', { users: usersData, address: address, addressIdcheckout: addressId });
+//     } else {
+//       console.log('User Data or Address is null or undefined');
+//       res.redirect('/checkout');
+//     }
+//   } catch (error) {
+//     console.log(error);
+//     res.redirect('/checkout');
+//   }
+// };
+
+// const editAddresscheckout = async (req, res) => {
+//   try {
+//     console.log('Edit Address Page accessed');
+//     const userId = req.session.user_id;
+//     const addressId = req.body.addressId; // Retrieve addressId from the request body it's passing as hidden in the form
+
+//     // Fetch the existing address data
+//     const existingAddress = await Address.findOne({ user_id: userId, 'address._id': addressId });
+
+//     if (existingAddress) {
+//       // Find the specific address within the user's addresses
+//       const targetAddress = existingAddress.address.find(addressItem => addressItem._id.toString() === addressId);
+
+//       console.log('Existing Address:', existingAddress);
+//       console.log('Target Address:', targetAddress);
+
+//       if (targetAddress) {
+//         console.log('Target Address Fullname:', targetAddress.fullname);
+
+//         // Update the address fields based on the form data
+//         targetAddress.fullname = req.body.fullname;
+//         targetAddress.mobile = req.body.mobile;
+//         targetAddress.housename = req.body.housename;
+//         targetAddress.city = req.body.city;
+//         targetAddress.state = req.body.state;
+//         targetAddress.district = req.body.district;
+//         targetAddress.pin = req.body.pin;
+//         // Add other fields as needed
+
+//         // Save the updated address data
+//         await existingAddress.save();
+
+//         res.redirect('/checkout'); // Redirect to checkout after a successful update
+//       } else {
+//         console.log('Address not found for user');
+//         res.redirect('/checkout'); // Redirect to checkout if address data not found
+//       }
+//     } else {
+//       console.log('User not found or address not found for user');
+//       res.redirect('/checkout'); // Redirect to checkout if user or address data not found
+//     }
+//   } catch (error) {
+//     console.log(error);
+//     res.redirect('/checkout'); // Redirect to checkout in case of an error
+//   }
+// };
+
+const editAddressPagecheckout = async (req, res) => {
+  try {
+    const userId = req.session.user_id;
+    const usersData = await takeUserData(userId);
+    const addressId = req.params.addressId;
+
+    // Fetch the user's address data
+    const address = await Address.findOne({ user_id: userId });
+
+    console.log('Address data:', address);
+    console.log('Address ID:', addressId);
+
+    if (usersData && address) {
+      res.render('editaddresscheckout', { users: usersData, address: address, addressId: addressId });
+    } else {
+      console.log('User Data or Address is null or undefined');
+      res.redirect('/checkout'); // Redirect to checkout page if user data or address data not found
+    }
+  } catch (error) {
+    console.log(error);
+    res.redirect('/checkout'); // Redirect to checkout page in case of an error
+  }
+};
+
+const editAddresscheckout = async (req, res) => {
+  try {
+    console.log('Edit Address Checkout Page accessed');
+    const userId = req.session.user_id;
+    const addressId = req.body.addressId; // Retrieve addressId from the request body, it's passing as hidden in the form
+
+    // Fetch the existing address data
+    const existingAddress = await Address.findOne({ user_id: userId, 'address._id': addressId });
+
+    if (existingAddress) {
+      // Find the specific address within the user's addresses
+      const targetAddress = existingAddress.address.find(addressItem => addressItem._id.toString() === addressId);
+
+      if (targetAddress) {
+        // Update the address fields based on the form data
+        targetAddress.fullname = req.body.fullname;
+        targetAddress.mobile = req.body.mobile;
+        targetAddress.housename = req.body.housename;
+        targetAddress.city = req.body.city;
+        targetAddress.state = req.body.state;
+        targetAddress.district = req.body.district;
+        targetAddress.pin = req.body.pin;
+        // Add other fields as needed
+
+        // Save the updated address data
+        await existingAddress.save();
+
+        res.redirect('/checkout'); // Redirect to checkout page after successful update
+      } else {
+        console.log('Address not found for user');
+        res.redirect('/checkout'); // Redirect to checkout page if address data not found
+      }
+    } else {
+      console.log('User not found or address not found for user');
+      res.redirect('/checkout'); // Redirect to checkout page if user or address data not found
+    }
+  } catch (error) {
+    console.log(error);
+    res.redirect('/checkout'); // Redirect to checkout page in case of an error
+  }
+};
+
  
+// const placeOrder = async (req, res) => {
+//   try {
+//     const { selected_address, payment_method, totalAmount } = req.body;
+//     const userId = req.session.user_id;
+
+//     console.log('User ID:', userId);
+//     console.log('Address ID:', selected_address);
+//     console.log('Payment Option:', payment_method);
+//     console.log('Total Amount:', totalAmount);
+
+//     const cartItems = await Cart.findOne({ user: userId }).populate({ 
+//       path: 'products.productId',
+//       model: 'product',
+//     });
+
+//     console.log('Cart Items:', cartItems);
+
+//     if (!cartItems || !cartItems.products || cartItems.products.length === 0) { 
+//       console.log('Cart is empty. Unable to place an order.');
+//       return res.status(400).json({
+//         success: false,
+//         message: 'Cart is empty. Unable to place an order.',
+//       });
+//     }
+
+//     // Parse totalAmount as a number
+//     const numericTotal = parseFloat(totalAmount);
+
+//     // Create a new order
+//     const newOrder = new Order({
+//       user: userId,
+      
+//       deliveryAddress: selected_address,
+//       paymentOption: payment_method,
+//       totalAmount: numericTotal,
+//       orderDate: new Date(),
+//       // Add more details to the order as needed
+//     });
+
+//     console.log('New Order:', newOrder);
+
+//     // Save the order to the database
+//     await newOrder.save();
+
+//     // Update product stock (for COD payments)
+//     if (payment_method === 'COD') {
+//       for (const item of cartItems.products) {
+//         const productId = item.productId._id;
+//         const quantity = parseInt(item.quantity, 10);
+//         console.log('Updating product stock for Product ID:', productId, 'Quantity:', quantity);
+
+//         // Assuming you have a Product model with a 'quantity' field
+//         await Product.findByIdAndUpdate(productId, {
+//           $inc: { quantity: -quantity },
+//         });
+//       }
+//     }
+
+//     // Clear the user's cart
+//     await Cart.findOneAndUpdate({ user: userId }, { $set: { products: [] } });
+
+//     // Redirect to the orderplaced route
+//     res.redirect('/orderplaced');
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ success: false, message: 'Failed to place the order' });
+//   }
+// };
+
+ 
+// 
+// const placeOrder = async (req, res) => {
+//   try {
+//     const { selected_address, payment_method, totalAmount } = req.body;
+//     const userId = req.session.user_id;
+
+//     console.log('User ID:', userId);
+//     console.log('Address ID:', selected_address);
+//     console.log('Payment Option:', payment_method);
+//     console.log('Total Amount:', totalAmount);
+
+//     const cartItems = await Cart.findOne({ user: userId }).populate({ 
+//       path: 'products.productId',
+//       model: 'product',
+//     });
+
+//     console.log('Cart Items:', cartItems);
+
+//     if (!cartItems || !cartItems.products || cartItems.products.length === 0) { 
+//       console.log('Cart is empty. Unable to place an order.');
+//       return res.status(400).json({
+//         success: false,
+//         message: 'Cart is empty. Unable to place an order.',
+//       });
+//     }
+
+//     // Parse totalAmount as a number
+//     const numericTotal = parseFloat(totalAmount);
+
+//     // Create a new order
+//     const newOrder = new Order({
+//       user: userId,
+//       cart: {
+//         user: userId,
+//         products: cartItems.products, // Include product details directly in the cart
+//       },
+//       deliveryAddress: selected_address,
+//       paymentOption: payment_method,
+//       totalAmount: numericTotal,
+//       orderDate: new Date(),
+//       // Add more details to the order as needed
+//     });
+
+//     console.log('New Order:', newOrder);
+
+//     // Save the order to the database
+//     await newOrder.save();
+
+//     // Update product stock (for COD payments)
+//     if (payment_method === 'COD') {
+//       for (const item of cartItems.products) {
+//         const productId = item.productId._id;
+//         const quantity = parseInt(item.quantity, 10);
+//         console.log('Updating product stock for Product ID:', productId, 'Quantity:', quantity);
+
+//         // Assuming you have a Product model with a 'quantity' field
+//         await Product.findByIdAndUpdate(productId, {
+//           $inc: { quantity: -quantity },
+//         });
+//       }
+//     }
+
+//     // Clear the user's cart
+//     await Cart.findOneAndUpdate({ user: userId }, { $set: { products: [] } });
+
+//     // Redirect to the orderplaced route
+//     res.redirect('/orderplaced');
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ success: false, message: 'Failed to place the order' });
+//   }
+// };
+
+
+// const placeOrder = async (req, res) => {
+//   try {
+//     const { selected_address, payment_method, totalAmount } = req.body;
+//     const userId = req.session.user_id;
+
+//     // Fetch cart items
+//     const cartItems = await Cart.findOne({ user: userId }).populate({
+//       path: 'products.productId',
+//       model: 'product',
+//     });
+
+//     // Check if the cart is empty
+//     if (!cartItems || !cartItems.products || cartItems.products.length === 0) {
+//       console.log('Cart is empty. Unable to place an order.');
+//       return res.status(400).json({
+//         success: false,
+//         message: 'Cart is empty. Unable to place an order.',
+//       });
+//     }
+
+//     // Parse totalAmount as a number
+//     const numericTotal = parseFloat(totalAmount);
+
+//     // Create a new order
+//     const newOrder = new Order({
+//       user: userId,
+//       cart: {
+//         user: userId,
+//         products: cartItems.products, // Include product details directly in the cart
+//       },
+//       deliveryAddress: selected_address,
+//       paymentOption: payment_method,
+//       totalAmount: numericTotal,
+//       orderDate: new Date(),
+//       // Add more details to the order as needed
+//     });
+
+//     // Save the order to the database
+//     await newOrder.save();
+
+//     // Update product stock (for COD payments)
+//     if (payment_method === 'COD') {
+//       // Use bulkWrite to update stock atomically
+//       const stockUpdateOperations = cartItems.products.map((item) => {
+//         const productId = item.productId._id;
+//         const quantity = parseInt(item.quantity, 10);
+
+//         return {
+//           updateOne: {
+//             filter: { _id: productId, stock: { $gte: quantity } }, // Ensure enough stock
+//             update: { $inc: { stock: -quantity } },
+//           },
+//         };
+//       });
+
+//       // Execute the bulkWrite operation
+//       const stockUpdateResult = await Product.bulkWrite(stockUpdateOperations);
+
+//       // Check if any stock update failed
+//       if (stockUpdateResult.writeErrors.length > 0) {
+//         console.log('Failed to update stock for some products');
+//         // Handle the case where the stock update failed, e.g., redirect to an error page
+//         return res.status(500).json({
+//           success: false,
+//           message: 'Failed to update stock for some products',
+//         });
+//       }
+//     }
+
+//     // Clear the user's cart
+//     await Cart.findOneAndUpdate({ user: userId }, { $set: { products: [] } });
+
+//     // Redirect to the orderplaced route
+//     res.redirect('/orderplaced');
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ success: false, message: 'Failed to place the order' });
+//   }
+// };
+
 const placeOrder = async (req, res) => {
   try {
     const { selected_address, payment_method, totalAmount } = req.body;
     const userId = req.session.user_id;
 
-    console.log('User ID:', userId);
-    console.log('Address ID:', selected_address);
-    console.log('Payment Option:', payment_method);
-    console.log('Total Amount:', totalAmount);
-
-    const cartItems = await Cart.findOne({ user: userId }).populate({ 
+    // Fetch cart items
+    const cartItems = await Cart.findOne({ user: userId }).populate({
       path: 'products.productId',
       model: 'product',
     });
 
-    console.log('Cart Items:', cartItems);
-
-    if (!cartItems || !cartItems.products || cartItems.products.length === 0) { 
+    // Check if the cart is empty or cartItems is null
+    if (!cartItems || !cartItems.products || !Array.isArray(cartItems.products) || cartItems.products.length === 0) {
       console.log('Cart is empty. Unable to place an order.');
       return res.status(400).json({
         success: false,
@@ -996,6 +1599,10 @@ const placeOrder = async (req, res) => {
     // Create a new order
     const newOrder = new Order({
       user: userId,
+      cart: {
+        user: userId,
+        products: cartItems.products, // Include product details directly in the cart
+      },
       deliveryAddress: selected_address,
       paymentOption: payment_method,
       totalAmount: numericTotal,
@@ -1003,21 +1610,34 @@ const placeOrder = async (req, res) => {
       // Add more details to the order as needed
     });
 
-    console.log('New Order:', newOrder);
-
     // Save the order to the database
     await newOrder.save();
 
     // Update product stock (for COD payments)
     if (payment_method === 'COD') {
-      for (const item of cartItems.products) {
+      // Use bulkWrite to update stock atomically
+      const stockUpdateOperations = cartItems.products.map((item) => {
         const productId = item.productId._id;
         const quantity = parseInt(item.quantity, 10);
-        console.log('Updating product stock for Product ID:', productId, 'Quantity:', quantity);
 
-        // Assuming you have a Product model with a 'quantity' field
-        await Product.findByIdAndUpdate(productId, {
-          $inc: { quantity: -quantity },
+        return {
+          updateOne: {
+            filter: { _id: productId, stock: { $gte: quantity } }, // Ensure enough stock
+            update: { $inc: { stock: -quantity } },
+          },
+        };
+      });
+
+      // Execute the bulkWrite operation
+      const stockUpdateResult = await Product.bulkWrite(stockUpdateOperations);
+
+      // Check if any stock update failed
+      if (stockUpdateResult.writeErrors && stockUpdateResult.writeErrors.length > 0) {
+        console.log('Failed to update stock for some products');
+        // Handle the case where the stock update failed, e.g., redirect to an error page
+        return res.status(500).json({
+          success: false,
+          message: 'Failed to update stock for some products',
         });
       }
     }
@@ -1033,7 +1653,6 @@ const placeOrder = async (req, res) => {
   }
 };
 
- 
  
 
 
@@ -1059,6 +1678,7 @@ module.exports={
 
     loginLoad,
     verifyLogin,
+    userLogout,
 
     forgotLoad,
     forgotVerify,
@@ -1066,6 +1686,7 @@ module.exports={
     resetPassword,
 
     profileLoad,
+    orderDetails,
     updateProfile,
     addAddress,
     editAddressPage,
@@ -1082,6 +1703,8 @@ module.exports={
 
     loadCheckout, 
     addShippingAddress,
+    editAddressPagecheckout,
+    editAddresscheckout,
     placeOrder, 
 
     orderPlaced

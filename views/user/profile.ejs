@@ -51,7 +51,7 @@
 								<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-6 header-center">
 									<div class="site-logo">
 										<a href="index.html">
-											<img width="400" height="79" src="media/logo.png" alt="Ruper – Furniture HTML Theme" />
+											<img width="400" height="79" src="/public/usernew/media/" alt="Ruper – Furniture HTML Theme" />
 										</a>
 									</div>
 								</div>
@@ -142,7 +142,7 @@
 									<div class="col-xl-3 col-lg-2 col-md-12 col-sm-12 col-12 header-left">
 										<div class="site-logo">
 											<a href="index.html">
-												<img width="400" height="79" src="media/logo.png" alt="Ruper – Furniture HTML Theme" />
+												<img width="400" height="79" src="/public/usernew/media/logo.png" alt="Ruper – Furniture HTML Theme" />
 											</a>
 										</div>
 									</div>
@@ -152,7 +152,7 @@
 											<nav id="main-navigation">
 												<ul id="menu-main-menu" class="menu">
 													<li class="level-0 menu-item menu-item-has-children mega-menu">
-														<a href="index.html"><span class="menu-item-text">Home</span></a>
+														<a href="/"><span class="menu-item-text">Home</span></a>
 														<div class="sub-menu">
 															<div class="row">
 																<div class="col-md-6">
@@ -218,7 +218,7 @@
 														</div>
 													</li>
 													<li class="level-0 menu-item menu-item-has-children">
-														<a href="shop-grid-left.html"><span class="menu-item-text">Shop</span></a>
+														<a href="/shop"><span class="menu-item-text">Shop</span></a>
 														<ul class="sub-menu">
 															<li class="level-1 menu-item menu-item-has-children">
 																<a href="shop-grid-left.html"><span class="menu-item-text">Shop - Products</span></a>
@@ -393,7 +393,7 @@
 										<div class="header-page-link">
 											<!-- Login -->
 											<div class="login-header">
-												<a class="active-login" href="#">Login</a>
+												<a href="/logout"><span class="menu-item-text">Logout</span></a>
 												<div class="form-login-register">
 													<div class="box-form-login">
 														<div class="active-login"></div>
@@ -462,10 +462,10 @@
 											<div class="ruper-topcart dropdown light">
 												<div class="dropdown mini-cart top-cart">
 													<div class="remove-cart-shadow"></div>
-													<a class="dropdown-toggle cart-icon" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+													<a class="dropdown-toggle cart-icon" href="view-cart" role="button"  aria-haspopup="true" aria-expanded="false">
 														<div class="icons-cart"><i class="icon-large-paper-bag"></i><span class="cart-count">2</span></div>
 													</a>
-													<div class="dropdown-menu cart-popup">
+													<!-- <div class="dropdown-menu cart-popup">
 														<div class="cart-empty-wrap">
 															<ul class="cart-list">
 																<li class="empty">
@@ -504,7 +504,7 @@
 																<a href="shop-checkout.html" class="button btn checkout btn-default">Check out</a>
 															</div>
 														</div>
-													</div>
+													</div> -->
 												</div>
 											</div>
 										</div>
@@ -555,7 +555,7 @@
 														<a class="nav-link" data-toggle="tab" href="#account-details" role="tab">Account details</a>
 													</li>
 													<li class="nav-item">
-														<a class="nav-link" href="page-login.html">Logout</a>
+														<a class="nav-link" href="/logout">Logout</a>
 													</li>
 												</ul>
 											</nav>
@@ -609,7 +609,7 @@
 													
 
 												</div>
-												<div class="tab-pane fade" id="orders" role="tabpanel">
+												<!-- <div class="tab-pane fade" id="orders" role="tabpanel">
 													<div class="my-account-orders">
 														<div class="table-responsive">
 		                                                    <table class="table">
@@ -648,7 +648,76 @@
 		                                                    </table>
 		                                                </div>
 													</div>
-												</div>
+												</div> -->
+
+												<!-- <div class="tab-pane fade" id="orders" role="tabpanel">
+													<div class="my-account-orders">
+													  <div class="table-responsive">
+														<table class="table">
+														  <thead>
+															<tr>
+															  <th>Order</th>
+															  <th>Date</th>
+															  <th>Status</th>
+															  <th>Total</th>
+															  <th>Actions</th>
+															</tr>
+														  </thead>
+														  <tbody>
+															<% orders.forEach(order => { %>
+															  <tr>
+																<td>#<%= order._id %></td>
+																<td><%= order.orderDate.toDateString() %></td>
+																<td>Processing</td> 
+																<td>
+																  $<%= order.totalAmount.toFixed(2) %> for 
+																  <%= order.products ? order.products.length : 0 %> item
+																</td>
+																<td><a href="/order/<%= order._id %>" class="btn-small d-block">View</a></td>
+															  </tr>
+															<% }); %>
+														  </tbody>
+														</table>
+													  </div>
+													</div>
+												  </div> -->
+												  
+												  <div class="tab-pane fade" id="orders" role="tabpanel">
+													<div class="my-account-orders">
+													  <div class="table-responsive">
+														<table class="table">
+														  <thead>
+															<tr>
+															  <th>Order</th>
+															  <th>Date</th>
+															  <th>Status</th>
+															  <th>Total</th>
+															  <th>Actions</th>
+															</tr>
+														  </thead>
+														  <tbody>
+															<% orders.forEach(order => { %>
+															  <tr>
+																<td>#<%= order._id %></td>
+																<td><%= order.orderDate.toDateString() %></td>
+																<td>Processing</td> <!-- You can customize the status based on your order model -->
+																<td>
+																  $<%= order.totalAmount.toFixed(2) %> for 
+																  <%= order.products ? order.cart.products.length : 0 %> item
+																</td>
+																<td><a href="/orderdetails/<%= order._id %>" class="btn-small d-block">View</a></td>
+															  </tr>
+															<% }); %>
+												  
+														
+														  </tbody>
+														</table>
+													  </div>
+													</div>
+												  </div>
+												  
+												  
+
 												<div class="tab-pane fade" id="addresses" role="tabpanel">
 													<div class="my-account-addresses">
 														<p>
@@ -1353,7 +1422,7 @@
     });
 </script> -->
 
-<script>
+<!-- <script>
     // Example using jQuery for AJAX
     $('.delete-address').on('click', function () {
         const button = $(this); // Store reference to the button
@@ -1378,9 +1447,36 @@
             }
         });
     });
+</script> -->
+
+
+<script>
+$('.delete-address').on('click', function () {
+    const button = $(this);
+    const addressId = button.data('address-id');
+    $.ajax({
+        url: `/delete_address/${addressId}`,
+        method: 'GET',
+        success: function (response) {
+            alert(response.message);
+            if (response.message === 'Address deleted successfully') {
+                // Remove the deleted address from the UI without reloading
+                button.closest('.addresses-col').remove();
+                // Reload the page after a short delay
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000); // You can adjust the delay as needed
+            }
+        },
+        error: function (error) {
+            console.error('Error deleting address', error);
+            // Handle UI updates for error scenario
+        }
+    });
+});
+
+
 </script>
-
-
 
 
 

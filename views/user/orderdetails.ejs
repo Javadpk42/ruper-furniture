@@ -1,13 +1,17 @@
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 	
-<!-- Mirrored from caketheme.com/html/ruper/shop-checkout.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2023 09:38:23 GMT -->
+<!-- Mirrored from caketheme.com/html/ruper/shop-cart.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2023 09:38:23 GMT -->
 <head>
 		<!-- Meta Data -->
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Shop Checkout | Ruper</title>
+		<title>Shop Cart | Ruper</title>
 		
 		<!-- Favicon -->
 		<link rel="shortcut icon" type="image/x-icon" href="/public/usernew/media/favicon.png">
@@ -23,7 +27,6 @@
 		<link rel="stylesheet" href="/public/usernew/libs/slick/css/slick-theme.css" type="text/css">
 		<link rel="stylesheet" href="/public/usernew/libs/mmenu/css/mmenu.min.css" type="text/css">
 		<link rel="stylesheet" href="/public/usernew/libs/slider/css/jslider.css">
-		<link rel="stylesheet" href="/public/usernew/libs/select2/css/select2.min.css">
 
 		<!-- Site Stylesheet -->
 		<link rel="stylesheet" href="/public/usernew/assets/css/app.css" type="text/css">
@@ -49,7 +52,7 @@
 								<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-6 header-center">
 									<div class="site-logo">
 										<a href="index.html">
-											<img width="400" height="79" src="/public/usernew/media/logo.png" alt="Ruper – Furniture HTML Theme" />
+											<img width="400" height="79" src="media/logo.png" alt="Ruper – Furniture HTML Theme" />
 										</a>
 									</div>
 								</div>
@@ -392,14 +395,13 @@
 											<!-- Login -->
 											<div class="login-header">
 												<!-- <a class="active-login" href="#">Login</a> -->
-												
 												<a href="/logout"><span class="menu-item-text">Logout</span></a>
 												<div class="form-login-register">
 													<div class="box-form-login">
 														<div class="active-login"></div>
 														<div class="box-content">
 															<div class="form-login active">
-																<form id="login_ajax" method="post" class="login">
+																<form id="login_ajax" method="" class="login">
 																	<h2>Sign in</h2>
 																	<p class="status"></p>
 																	<div class="content">
@@ -426,7 +428,7 @@
 																</form>
 															</div>
 															<div class="form-register">
-																<form method="post" class="register">
+																<form method="" class="register">
 																	<h2>REGISTER</h2>
 																	<div class="content">
 																		<div class="email">
@@ -459,13 +461,13 @@
 											</div>
 											
 											<!-- Cart -->
-											<div class="ruper-topcart dropdown light">
+											<!-- <div class="ruper-topcart dropdown light">
 												<div class="dropdown mini-cart top-cart">
 													<div class="remove-cart-shadow"></div>
-													<a class="dropdown-toggle cart-icon" href="/view-cart" role="button"  aria-haspopup="true" aria-expanded="false">
+													<a class="dropdown-toggle cart-icon" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 														<div class="icons-cart"><i class="icon-large-paper-bag"></i><span class="cart-count">2</span></div>
 													</a>
-													<!-- <div class="dropdown-menu cart-popup">
+													<div class="dropdown-menu cart-popup">
 														<div class="cart-empty-wrap">
 															<ul class="cart-list">
 																<li class="empty">
@@ -504,16 +506,17 @@
 																<a href="shop-checkout.html" class="button btn checkout btn-default">Check out</a>
 															</div>
 														</div>
-													</div> -->
+													</div>
 													
 												</div>
-												
-											</div>
+											
+											</div> -->
 											<div class="my-profile-box">
 												<a href="/profile" class="btn btn-outline-dark btn-sm">My Profile</a>
 											  </div>
 										</div>
 									</div>
+									
 								</div>
 							</div>
 						</div>
@@ -528,11 +531,11 @@
 							<div class="section-container">
 								<div class="content-title-heading">
 									<h1 class="text-title-heading">
-										Checkout
+										Order Details
 									</h1>
 								</div>
 								<div class="breadcrumbs">
-									<a href="index.html">Home</a><span class="delimiter"></span><a href="shop-grid-left.html">Shop</a><span class="delimiter"></span>Shopping Cart
+									<a href="index.html">Home</a><span class="delimiter"></span><a href="shop-grid-left.html">Shop</a><span class="delimiter"></span>
 								</div>
 							</div>
 						</div>
@@ -540,532 +543,141 @@
 						<div id="content" class="site-content" role="main">
 							<div class="section-padding">
 								<div class="section-container p-l-r">
-									<div class="shop-checkout">
+									<div class="shop-cart">	
+										<div class="row">
+											<div class="col-xl-8 col-lg-12 col-md-12 col-12">
 
 
-										<!-- <div class="shipping-fields">
-											<p class="form-row form-row-wide ship-to-different-address">
-												<label class="checkbox">
-													<input class="input-checkbox" type="checkbox" name="ship_to_different_address" value="1"> 
-													<span>Ship to a different address?</span>
-												</label>
-											</p>
-											<div class="shipping-address">
-
-										
-										<form class="shipping-fields" action="/add_shipping_address" method="post">
-											<p class="form-row form-row-wide">
-												<label>Full name <span class="required">*</span></label>
-												<span class="input-wrapper">
-													<input type="text" class="input-text" name="fullname">
-												</span>
-											</p>
-											<p class="form-row form-row-wide">
-												<label>Mobile <span class="required">*</span></label>
-												<span class="input-wrapper">
-													<input type="text" class="input-text" name="mobile">
-												</span>
-											</p>
-											<div class="clear"></div>
-											<p class="form-row form-row-wide">
-												<label>House name <span class="required">*</span></label>
-												<span class="input-wrapper">
-													<input type="text" class="input-text" name="housename">
-												</span>
-											</p>
-											<p class="form-row form-row-wide">
-												<label>Pincode <span class="required">*</span></label>
-												<span class="input-wrapper">
-													<input type="text" class="input-text" name="pin">
-												</span>
-											</p>
-											<p class="form-row form-row-wide">
-												<label>City <span class="required">*</span></label>
-												<span class="input-wrapper">
-													<input type="text" class="input-text" name="city">
-												</span>
-											</p>
-											<p class="form-row form-row-wide">
-												<label>District <span class="required">*</span></label>
-												<span class="input-wrapper">
-													<input type="text" class="input-text" name="district">
-												</span>
-											</p>
-											<p class="form-row form-row-wide">
-												<label>State <span class="required">*</span></label>
-												<span class="input-wrapper">
-													<input type="text" class="input-text" name="state">
-												</span>
-											</p>
-											<div class="clear"></div>
-											<p class="form-row form-row-wide">
-												<button type="submit" class="button" name="save_address" value="Save address">Save address</button>
-											</p>
-										</form>
-										
-
-									</div>
-								</div> -->
 
 
-								<div class="shipping-fields">
-									<p class="form-row form-row-wide ship-to-different-address">
-										<label class="checkbox">
-											<input class="input-checkbox" type="checkbox" name="ship_to_different_address" value="1">
-											<span>Ship to a different address?</span>
-										</label>
-									</p>
-									<div class="shipping-address">
-										<form class="shipping-fields" action="/add_shipping_address" method="post">
-											<p class="form-row form-row-wide">
-												<!-- <label>Full name <span class="required">*</span></label> -->
-												<span class="input-wrapper">
-													<input type="text" class="input-text" name="fullname" value="fullname">
-												</span>
-											</p>
-											<p class="form-row form-row-wide">
-												<!-- <label>Mobile <span class="required">*</span></label> -->
-												<span class="input-wrapper">
-													<input type="text" class="input-text" name="mobile" value="mobile">
-												</span>
-											</p>
-											<div class="clear"></div>
-											<p class="form-row form-row-wide">
-												<!-- <label>House name <span class="required">*</span></label> -->
-												<span class="input-wrapper">
-													<input type="text" class="input-text" name="housename" value="housename">
-												</span>
-											</p>
-											<p class="form-row form-row-wide">
-												<!-- <label>Pincode <span class="required">*</span></label> -->
-												<span class="input-wrapper">
-													<input type="text" class="input-text" name="pin" value="pincode">
-												</span>
-											</p>
-											<p class="form-row form-row-wide">
-												<!-- <label>City <span class="required">*</span></label> -->
-												<span class="input-wrapper">
-													<input type="text" class="input-text" name="city" value="city">
-												</span>
-											</p>
-											<p class="form-row form-row-wide">
-												<!-- <label>District <span class="required">*</span></label> -->
-												<span class="input-wrapper">
-													<input type="text" class="input-text" name="district" value="district">
-												</span>
-											</p>
-											<p class="form-row form-row-wide">
-												<!-- <label>State <span class="required">*</span></label> -->
-												<span class="input-wrapper">
-													<input type="text" class="input-text" name="state" value="state">
-												</span>
-											</p>
-											<div class="clear"></div>
-											<p class="form-row form-row-wide">
-												<button type="submit" class="button" name="save_address" value="Save address">Save address</button>
-											</p>
-										</form>
-									</div>
-								</div>
-								
-
-								
-								
 
 
-										<form name="checkout" method="post" class="checkout" action="/place_order" autocomplete="off">
-											<div class="row">
-												<div class="col-xl-8 col-lg-7 col-md-12 col-12">
-													<div class="customer-details">
 
-														<!-- <div class="addresses">
-															<% if (addresses && addresses.length > 0) { %>
-															  <% addresses.forEach(addressItem => { %>
-																<div class="addresses-col">
-																  <header class="col-title">
-																	<h3>Billing address</h3>
-																	<a class="edit text-danger" href="/edit_address/<%= addressItem._id %>">Edit</a>
-																  </header>
-																  <address>
-																	<%= addressItem.fullname %><br>
-																	Mobile: <%= addressItem.mobile %><br>
-																	<%= addressItem.housename %><br>
-																	<%= addressItem.city %>, <%= addressItem.state %>, <%= addressItem.district %><br>
-																	Pin: <%= addressItem.pin %><br>
+
+												 <form class="cart-form" action="#" method="">
+													<div class="table-responsive">
+														<table class="cart-items table" cellspacing="0">
+															<thead>
+																<tr>
+																	<th class="product-thumbnail">Product</th>
+																	<th class="product-price">Price</th>
+																	<th class="product-quantity">Quantity</th>
+																	<th class="product-subtotal">Subtotal</th>
+																	<th class="product-remove">&nbsp;</th>
+																</tr>
+															</thead>
+															<tbody>
+																
+                                                        <% orderedProducts.forEach(product => { %>
+																<tr class="cart-item">		
+																	<td class="product-thumbnail">
+																		<a href="shop-details.html">
+																			<!-- <img width="600" height="600" src="media/product/3.jpg" class="product-image" alt=""> -->
+																			<img src="/public/products/images/<%= product.productId.images.image1 %>" alt="IMG">
+																		</a>				
+																		<div class="product-name">
+																			<!-- <a href="shop-details.html">Chair Oak Matt Lacquered</a>								 -->
+																			<%= product.productId.product_name %>
+																		</div>
+																	</td>
+																	<td class="product-price">
+																		<!-- <span class="price">$150.00</span> -->
+																		<%= product.productId.product_price.toFixed(2) %>
+																	</td>
+																	<td class="product-quantity">
+																		<%= product.quantity %>
+																	</td>
+											
+
+																	  <!-- Subtotal -->
+<td class="product-subtotal" >
+	<span>&#8377; <span ><%= (parseFloat(product.productId.product_price) * product.quantity).toFixed(2) %></span></span>
+  </td>
+  
+																	  
 																	
-																  </address>
-																</div>
-															  <% }); %>
-															<% } else { %>
-															  <p>No addresses found.</p>
-															<% } %>
-														  </div> -->
+																	<td class="product-remove">
+																										
+																		
+																	</td>
+																</tr>
+																
 
 
-														  <div class="addresses">
-															<% if (addresses && addresses.length > 0) { %>
-																<% addresses.reverse().forEach((addressItem, index) => { %>
-																	<div class="addresses-col" style="float: left; width: 50%;">
-																		<input type="radio" name="selected_address" value="<%= addressItem._id %>">
-																		<header class="col-title">
-																			
-																			<a class="edit text-danger" href="/edit_address_checkout/<%= addressItem._id %>">Edit</a>
-																		</header>
-																		<address>
-																			<%= addressItem.fullname %><br>
-																			Mobile: <%= addressItem.mobile %><br>
-																			<%= addressItem.housename %><br>
-																			<%= addressItem.city %>, <%= addressItem.state %>, <%= addressItem.district %><br>
-																			Pin: <%= addressItem.pin %><br>
-																		</address>
-																	</div>
-																	<% if ((index + 1) % 2 === 0) { %>
-																		<div style="clear: both;"></div>
-																	<% } %>
-																<% }); %>
-															<% } else { %>
-																<p>No addresses found.</p>
-															<% } %>
+
+																<% }) %>
+															
+
+
+															</tbody>
+															
+														</table>
+													</div>
+												</form>
+											</div>
+											<div class="col-xl-4 col-lg-12 col-md-12 col-12">
+												<div class="cart-totals">
+													<h2>Delivery Address</h2>
+													<div>
+														<div class="cart-subtotal">
+															<div class="title">
+
+
+                                                               
+                                                                    
+                                                                    <p><%= address.fullname %></p>
+                                                                    <p><%= address.housename %>, <%= address.city %></p>
+                                                                    <p>Phone number: <%= address.mobile %></p>
+                                                                   
+                                                                        
+                                                                        
+                                                                   
+
+                                                            </div>
+															
 														</div>
-														
-														
-														
-													
-														
+														<div class="shipping-totals">
+															<div class="title">Payment Method</div>
+															<!-- <div> -->
+
+                                                                <p><%= order.paymentOption %></p>
+																<!-- <ul class="shipping-methods custom-radio">
+																	<li>
+																		<input type="radio" name="shipping_method" data-index="0" value="free_shipping" class="shipping_method" checked="checked"><label>Free shipping</label>
+																	</li>
+																	<li>
+																		<input type="radio" name="shipping_method" data-index="0" value="flat_rate" class="shipping_method"><label>Flat rate</label>					
+																	</li>
+																</ul>
+																<p class="shipping-desc">
+																	Shipping options will be updated during checkout.				
+																</p> -->
+															<!-- </div> -->
+														</div>
+														<div class="order-total">
+															<div class="title">Total</div>
+															
+
+															<div  id="total">₹ <%= total.toFixed(2) %></div>
+														  </div>
 														  
-<!-- 
-														<div class="billing-fields">
-															<h3>Billing details</h3>
-															<div class="billing-fields-wrapper">
-																<p class="form-row form-row-first validate-required">
-																	<label>First name <span class="required" title="required">*</span></label>
-																	<span class="input-wrapper"><input type="text" class="input-text" name="billing_first_name" value=""></span>
-																</p>
-																<p class="form-row form-row-last validate-required">
-																	<label>Last name <span class="required" title="required">*</span></label>
-																	<span class="input-wrapper"><input type="text" class="input-text" name="billing_last_name" value=""></span>
-																</p>
-																<p class="form-row form-row-wide">
-																	<label>Company name <span class="optional">(optional)</span></label>
-																	<span class="input-wrapper"><input type="text" class="input-text" name="billing_company" value=""></span>
-																</p>
-																<p class="form-row form-row-wide validate-required">
-																	<label>Country / Region <span class="required" title="required">*</span></label>
-																	<span class="input-wrapper">
-																		<select name="billing_country" class="country-select custom-select">
-																			<option value="">Select a country / region…</option>
-																			<option value="AF">Afghanistan</option>
-																			<option value="AX">Åland Islands</option>
-																			<option value="AL">Albania</option>
-																			<option value="DZ">Algeria</option>
-																			<option value="AS">American Samoa</option>
-																			<option value="AD">Andorra</option>
-																		</select>
-																	</span>
-																</p>
-																<p class="form-row address-field validate-required form-row-wide">
-																	<label>Street address <span class="required" title="required">*</span></label>
-																	<span class="input-wrapper">
-																		<input type="text" class="input-text" name="billing_address_1" placeholder="House number and street name" value="">
-																	</span>
-																</p>
-																<p class="form-row address-field form-row-wide">
-																	<label>Apartment, suite, unit, etc.&nbsp;<span class="optional">(optional)</span></label>
-																	<span class="input-wrapper">
-																		<input type="text" class="input-text" name="billing_address_2" placeholder="Apartment, suite, unit, etc. (optional)" value="">
-																	</span>
-																</p>
-																<p class="form-row address-field validate-required form-row-wide">
-																	<label for="billing_city" class="">Town / City <span class="required" title="required">*</span></label>
-																	<span class="input-wrapper">
-																		<input type="text" class="input-text" name="billing_city" value="">
-																	</span>
-																</p>
-																<p class="form-row address-field validate-required validate-state form-row-wide">
-																	<label>State / County <span class="required" title="required">*</span></label>
-																	<span class="input-wrapper">
-																		<select name="billing_state" class="state-select custom-select">
-																			<option value="">Select a state / county…</option>
-																			<option value="VN">Vinnytsia Oblast</option>
-																			<option value="VL">Volyn Oblast</option>
-																			<option value="DP">Dnipropetrovsk Oblast</option>
-																			<option value="DT">Donetsk Oblast</option>
-																			<option value="ZT">Zhytomyr Oblast</option>
-																		</select>
-																	</span>
-																</p>
-																<p class="form-row address-field validate-required validate-postcode form-row-wide">
-																	<label>Postcode / ZIP <span class="required" title="required">*</span></label>
-																	<span class="input-wrapper">
-																		<input type="text" class="input-text" name="billing_postcode" value="">
-																	</span>
-																</p>
-																<p class="form-row form-row-wide validate-required validate-phone">
-																	<label>Phone <span class="required" title="required">*</span></label>
-																	<span class="input-wrapper">
-																		<input type="tel" class="input-text" name="billing_phone" value="">
-																	</span>
-																</p>
-																<p class="form-row form-row-wide validate-required validate-email">
-																	<label>Email address <span class="required" title="required">*</span></label>
-																	<span class="input-wrapper">
-																		<input type="email" class="input-text" name="billing_email" value="" autocomplete="off">
-																	</span>
-																</p>
-															</div>
-														</div> -->
-														<div class="account-fields">
-															<!-- <p class="form-row form-row-wide">
-																<label class="checkbox">
-																	<input class="input-checkbox" type="checkbox" name="createaccount" value="1"> 
-																	<span>Create an account?</span>
-																</label>
-															</p> -->
-															<div class="create-account">
-																<p class="form-row validate-required">
-																	<label>Create account password <span class="required" title="required">*</span></label>
-																	<span class="input-wrapper password-input">
-																		<input type="password" class="input-text" name="account_password" value="" autocomplete="off">
-																		<span class="show-password-input"></span>
-																	</span>
-																</p>								
-																<div class="clear"></div>
-															</div>
-														</div>
 													</div>
-													
-															<!-- <p class="form-row form-row-first validate-required">
-																<label>First name <span class="required" title="required">*</span></label>
-																<span class="input-wrapper">
-																	<input type="text" class="input-text" name="shipping_first_name" value="">
-																</span>
-															</p>
-															<p class="form-row form-row-last validate-required">
-																<label>Last name <span class="required" title="required">*</span></label>
-																<span class="input-wrapper">
-																	<input type="text" class="input-text" name="shipping_last_name" value="">
-																</span>
-															</p>
-															<p class="form-row form-row-wide">
-																<label>Company name <span class="optional">(optional)</span></label>
-																<span class="input-wrapper">
-																	<input type="text" class="input-text" name="shipping_company" value="">
-																</span>
-															</p>
-															<p class="form-row form-row-wide address-field validate-required">
-																<label for="shipping_country" class="">Country / Region <span class="required" title="required">*</span></label>
-																<span class="input-wrapper">
-																	<select name="billing_state" class="state-select custom-select">
-																		<option value="">Select a country / region…</option>
-																		<option value="VN">Vinnytsia Oblast</option>
-																		<option value="VL">Volyn Oblast</option>
-																		<option value="DP">Dnipropetrovsk Oblast</option>
-																		<option value="DT">Donetsk Oblast</option>
-																		<option value="ZT">Zhytomyr Oblast</option>
-																	</select>
-																</span>
-															</p>
-															<p class="form-row address-field validate-required form-row-wide">
-																<label>Street address <span class="required" title="required">*</span></label>
-																<span class="input-wrapper">
-																	<input type="text" class="input-text" name="shipping_address_1" placeholder="House number and street name" value="">
-																</span>
-															</p>
-															<p class="form-row address-field form-row-wide">
-																<label>Apartment, suite, unit, etc. <span class="optional">(optional)</span></label>
-																<span class="input-wrapper">
-																	<input type="text" class="input-text" name="shipping_address_2" placeholder="Apartment, suite, unit, etc. (optional)" value="">
-																</span>
-															</p>
-															<p class="form-row address-field validate-required form-row-wide">
-																<label>Town / City <span class="required" title="required">*</span></label>
-																<span class="input-wrapper"><input type="text" class="input-text" name="shipping_city" value=""></span>
-															</p>
-															<p class="form-row address-field validate-required validate-state form-row-wide">
-																<label for="shipping_state" class="">State / County <span class="required" title="required">*</span></label>
-																<span class="input-wrapper">
-																	<select name="billing_state" class="state-select custom-select">
-																		<option value="">Select a state / county…</option>
-																		<option value="VN">Vinnytsia Oblast</option>
-																		<option value="VL">Volyn Oblast</option>
-																		<option value="DP">Dnipropetrovsk Oblast</option>
-																		<option value="DT">Donetsk Oblast</option>
-																		<option value="ZT">Zhytomyr Oblast</option>
-																	</select>
-																</span>
-															</p>
-															<p class="form-row address-field validate-required validate-postcode form-row-wide">
-																<label>Postcode / ZIP <span class="required" title="required">*</span></label>
-																<span class="input-wrapper">
-																	<input type="text" class="input-text" name="shipping_postcode" value="">
-																</span>
-															</p> -->
-
-															
-															
-
-													
-													<!-- <div class="additional-fields">
-														<p class="form-row notes">
-															<label>Order notes <span class="optional">(optional)</span></label>
-															<span class="input-wrapper">
-																<textarea name="order_comments" class="input-text" placeholder="Notes about your order, e.g. special notes for delivery." rows="2" cols="5"></textarea>
-															</span>
-														</p>
+													<!-- <div class="proceed-to-checkout">		
+														<a href="/checkout" class="checkout-button button">
+															Proceed to checkout
+														</a>
 													</div> -->
-
-
-
-												</div>
-												<div class="col-xl-4 col-lg-5 col-md-12 col-12 ">
-													<div class="checkout-review-order">
-														<div class="checkout-review-order-table">
-															<div class="review-order-title">Product</div>
-															<!-- <div class="cart-items">
-																<div class="cart-item">
-																	<div class="info-product">
-																		<div class="product-thumbnail">
-																			<img width="600" height="600" src="media/product/3.jpg" alt="">					
-																		</div>
-																		<div class="product-name">
-																			Chair Oak Matt Lacquered
-																			<strong class="product-quantity">QTY : 2</strong>											
-																		</div>
-																	</div>
-																	<div class="product-total">
-																		<span>$300.00</span>
-																	</div>
-																</div>
-																<div class="cart-item">
-																	<div class="info-product">
-																		<div class="product-thumbnail">
-																			<img width="600" height="600" src="media/product/1.jpg" alt="">					
-																		</div>
-																		<div class="product-name">
-																			Zunkel Schwarz
-																			<strong class="product-quantity">QTY : 1</strong>											
-																		</div>
-																	</div>
-																	<div class="product-total">
-																		<span>$180.00</span>
-																	</div>
-																</div>
-															</div> -->
-
-															<div class="cart-items">
-																<% if (cart && cart.products && cart.products.length > 0) { %>
-																	<% cart.products.forEach(product => { %>
-																	
-																		<div class="cart-item">
-																			<div class="info-product">
-																				<div class="product-thumbnail">
-																					<img width="600" height="600" src="/public/products/images/<%= product.productId.images.image1 %>" alt="">
-																				</div>
-																				<div class="product-name">
-																					<%= product.productId.product_name %>
-																					<strong class="product-quantity">QTY : <%= product.quantity %></strong>
-																				</div>
-																			</div>
-																			<div class="product-total">
-																				<span>$<%= product.productId.product_price %></span>
-																			</div>
-																		</div>
-																	<% }); %>
-																<% } else { %>
-																	<p>No items in the cart.</p>
-																<% } %>
-															</div>
-															
-
-															<div class="cart-subtotal">
-																<h2>Subtotal</h2>
-																<div class="subtotal-price">
-																	<span>&#8377; <%= total.toFixed(2) %></span>
-																</div>
-															</div>
-															<div class="shipping-totals shipping">
-																<h2>Shipping</h2>
-																<div data-title="Shipping">
-																	<ul class="shipping-methods custom-radio">
-																		<li>
-																			<input type="radio" name="shipping_method" data-index="0" value="free_shipping" class="shipping_method" checked="checked"><label>Free shipping</label>
-																		</li>
-																		<li>
-																			<input type="radio" name="shipping_method" data-index="0" value="flat_rate" class="shipping_method"><label>Flat rate</label>					
-																		</li>
-																	</ul>
-																</div>
-															</div>
-															<div class="order-total">
-																<h2>Total</h2>
-																<div class="total-price">
-																	<strong>
-																		<span>&#8377; <%= total.toFixed(2) %></span>
-
-																		<input type="hidden" name="totalAmount" value="<%= total.toFixed(2) %>">
-
-																	</strong> 
-																</div>
-															</div>
-														</div>
-														<div id="payment" class="checkout-payment">
-															<ul class="payment-methods methods custom-radio">
-																<li class="payment-method">
-																	<input type="radio" class="input-radio" name="payment_method" value="bacs" checked="checked">
-																	<label for="payment_method_bacs">Direct bank transfer</label>
-																	<div class="payment-box">
-																		<p>Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order will not be shipped until the funds have cleared in our account.</p>
-																	</div>
-																</li>
-																<li class="payment-method">
-																	<input type="radio" class="input-radio" name="payment_method" value="cheque">
-																	<label>Check payments</label>
-																	<div class="payment-box">
-																		<p>Please send a check to Store Name, Store Street, Store Town, Store State / County, Store Postcode.</p>
-																	</div>
-																</li>
-																<li class="payment-method">
-																	<input type="radio" class="input-radio" name="payment_method" value="COD">
-																	<label>Cash on delivery</label>
-																	<div class="payment-box">
-																		<p>Pay with cash upon delivery.</p>
-																	</div>
-																</li>
-																<li class="payment-method">
-																	<input type="radio" class="input-radio" name="payment_method" value="paypal">
-																	<label>PayPal</label>
-																	<div class="payment-box">
-																		<p>Pay via PayPal; you can pay with your credit card if you don’t have a PayPal account.</p>
-																	</div>
-																</li>
-															</ul>
-															<div class="form-row place-order">
-																<div class="terms-and-conditions-wrapper">
-																	<div class="privacy-policy-text"></div>
-																</div>
-																<button type="submit" class="button alt" name="checkout_place_order" value="Place order">Place order</button>
-															</div>
-														</div>
-													</div>
 												</div>
 											</div>
-										</form>
-
-
-										
-
-
-
-
-
+										</div>
 									</div>
+							
 								</div>
 							</div>
 						</div><!-- #content -->
 					</div><!-- #primary -->
 				</div><!-- #main-content -->
 			</div>
-
 
 			<footer id="site-footer" class="site-footer background">
 				<div class="footer">
@@ -1418,7 +1030,9 @@
 
 
 
-		
+  
+
+
 
 		<!-- Dependency Scripts -->
 		<script src="/public/usernew/libs/popper/js/popper.min.js"></script>
@@ -1432,11 +1046,10 @@
 		<script src="/public/usernew/libs/slider/js/draggable-0.1.js"></script>
 		<script src="/public/usernew/libs/slider/js/jquery.slider.js"></script>
 		<script src="/public/usernew/libs/elevatezoom/js/jquery.elevatezoom.js"></script>
-		<script src="/public/usernew/libs/select2/js/select2.min.js"></script>
 		
 		<!-- Site Scripts -->
 		<script src="/public/usernew/assets/js/app.js"></script>
 	</body>
 
-<!-- Mirrored from caketheme.com/html/ruper/shop-checkout.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2023 09:38:24 GMT -->
+<!-- Mirrored from caketheme.com/html/ruper/shop-cart.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2023 09:38:23 GMT -->
 </html>

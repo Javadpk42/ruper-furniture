@@ -394,7 +394,14 @@
 										<div class="header-page-link">
 											<!-- Login -->
 											<div class="login-header">
-												<a href="/login"><span class="menu-item-text">Login</span></a>
+												<% if (user) { %>
+													<a href="/logout"><span class="menu-item-text">Logout</span></a>
+												<% } else { %>
+													<a href="/login"><span class="menu-item-text">Login</span></a>
+												<% } %>
+
+
+
 												<!-- <a class="active-login" href="#">Login</a> -->
 												<div class="form-login-register">
 													<div class="box-form-login">
@@ -507,8 +514,14 @@
 															</div>
 														</div>
 													</div> -->
+
+													
 												</div>
 											</div>
+											<div class="my-profile-box">
+												<a href="/profile" class="btn btn-outline-dark btn-sm">My Profile</a>
+											  </div>
+
 										</div>
 									</div>
 								</div>

@@ -7,6 +7,28 @@ const orderSchema = new mongoose.Schema({
     ref: 'User', // Reference to the User model
     required: true,
   },
+  cart: {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
+    products: [{
+      productId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'product',
+        required: true,
+      },
+      quantity: {
+        type: Number,
+        default: 1,
+      },
+      price: {
+        type: Number,
+        default: 0,
+      },
+    }],
+  },
+
   deliveryAddress: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Address', // Reference to the Address model
