@@ -17,6 +17,7 @@ const fileUpload= require('../middlewares/fileUpload')
 
 admin_route.get('/',adminAuth.isAdminLogout,adminController.loginLoad)
 admin_route.post('/',adminController.verifyLogin)
+admin_route.get('/logout',adminController.adminLogout)
 
 admin_route.get('/dashboard',adminAuth.isAdminLogin,adminController.loaddashboard)
 
@@ -43,5 +44,7 @@ admin_route.get('/editproduct',adminAuth.isAdminLogin,productController.editProd
 admin_route.post('/editproduct',fileUpload.productImagesUpload,productController.editProduct)
 
 admin_route.get('/orders',adminAuth.isAdminLogin,adminController.orderLoad)
+admin_route.post('/updateOrderStatus/:orderId', adminAuth.isAdminLogin, adminController.updateOrderStatus);
+
 
 module.exports=admin_route;

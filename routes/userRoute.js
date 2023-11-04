@@ -31,6 +31,9 @@ user_route.post('/resetpassword',userController.resetPassword)
  
 user_route.get('/profile',userController.profileLoad)
 user_route.get('/orderdetails/:orderId', userController.orderDetails);
+user_route.get('/cancelorder/:orderId', userController.cancelOrder);
+
+
 user_route.post('/update_profile',userController.updateProfile)
 user_route.post('/add_address',userController.addAddress)
 user_route.get('/edit_address/:addressId', userController.editAddressPage);
@@ -41,7 +44,7 @@ user_route.get('/shop',userController.shopLoad)
 user_route.get('/shopdetails/:productId', userController.shopdetailsLoad);
 
 user_route.post('/add-to-cart',userController.addToCart)
-user_route.get('/view-cart',userController.getCartProducts)
+user_route.get('/view-cart',userController.getCartProducts) 
 user_route.post('/cart-quantity',userController.cartQuantity)  
 user_route.post('/remove-product',userController.removeProduct) 
 
@@ -51,7 +54,7 @@ user_route.post('/edit_address_checkout/:addressId', userController.editAddressc
 user_route.post('/add_shipping_address', userController.addShippingAddress)
 user_route.post('/place_order', userController.placeOrder)
 
-user_route.get('/orderplaced',userAuth.isUserLogin, userController.orderPlaced) 
+user_route.get('/orderplaced', userController.orderPlaced) 
 
  
 module.exports=user_route;

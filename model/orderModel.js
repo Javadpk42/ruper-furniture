@@ -47,6 +47,11 @@ const orderSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  status: {
+    type: String,
+    enum: ['Placed', 'Shipped', 'Delivered', 'Cancelled'],
+    default: 'Placed',
+  },
   // You can add more fields as needed, such as order items, order status, etc.
 });
 

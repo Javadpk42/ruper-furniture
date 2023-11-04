@@ -8,6 +8,8 @@ const { ObjectId } = require('mongoose').Types;
 const Address = require("../model/addressModel")
 const Order = require("../model/orderModel")
 
+const validateAddress = require('../middlewares/validation');
+
 const bcrypt=require('bcrypt');
 const { name } = require('ejs');
 const otpGenerator=require("otp-generator")
@@ -517,6 +519,41 @@ const profileLoad = async (req, res) => {
   }
 };
 
+// const profileLoad = async (req, res) => {
+//   try {
+//     // Check if there is an active login session
+//     if (!req.session.user_id) {
+//       return res.redirect('/login?errors=Please log in to view');
+//     }
+
+//     const userId = req.session.user_id;
+
+//     // Fetch user data
+//     const userData = await takeUserData(userId);
+
+//     // Fetch user address data
+//     const addressData = await Address.findOne({ user_id: userId });
+
+//     // Fetch user orders
+//     const orders = await Order.find({ user: userId }).sort({ orderDate: -1 });
+
+//     // Fetch user cart
+//     const cart = await Cart.findOne({ user: userId }).populate('products.productId');
+
+//     // Check if userData is not null or undefined
+//     if (userData) {
+//       res.render('profile', { users: userData, user: userId, address: addressData ? addressData.address : null, orders, cart, error: null });
+//     } else {
+//       console.log('User Data is null or undefined');
+//       res.render('profile', { users: null, user: userId, orders: [], cart: null, error: null });
+//     }
+//   } catch (error) {
+//     console.log(error);
+//     res.render('profile', { users: null, user: req.session.user_id, address: null, orders: [], cart: null, error: 'Error fetching user data' });
+//   }
+// };
+
+
 // const orderDetails = async (req, res) => {
 //   try {
 //     const orderId = req.params.orderId;
@@ -652,6 +689,78 @@ const orderDetails = async (req, res) => {
 };
 
 
+// const cancelOrder = async (req, res) => {
+//   try {
+//     const orderId = req.params.orderId;
+
+//     // Find the order in the database
+//     const order = await Order.findById(orderId);
+
+//     // Check if the order exists
+//     if (!order) {
+//       return res.status(404).json({
+//         success: false,
+//         message: 'Order not found',
+//       });
+//     }
+
+//     // Check if the order is cancelable (e.g., status is 'Placed' or 'Shipped')
+//     if (order.status !== 'Placed' && order.status !== 'Shipped') {
+//       return res.status(400).json({
+//         success: false,
+//         message: 'Order cannot be canceled at this stage',
+//       });
+//     }
+
+//     // Update the order status to 'Cancelled'
+//     order.status = 'Cancelled';
+//     await order.save();
+
+//     res.status(200).json({
+//       success: true,
+//       message: 'Order canceled successfully',
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ success: false, message: 'Failed to cancel the order' });
+//   }
+// };
+
+
+const cancelOrder = async (req, res) => {
+  try {
+    const orderId = req.params.orderId;
+
+    // Find the order in the database
+    const order = await Order.findById(orderId);
+
+    // Check if the order exists
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        message: 'Order not found',
+      });
+    }
+
+    // Check if the order is cancelable (e.g., status is 'Placed' or 'Shipped')
+    if (order.status !== 'Placed' && order.status !== 'Shipped') {
+      return res.status(400).json({
+        success: false,
+        message: 'Order cannot be canceled at this stage',
+      });
+    }
+
+    // Update the order status to 'Cancelled'
+    order.status = 'Cancelled';
+    await order.save();
+
+    // Redirect to the same page with a confirmation message
+    res.redirect(`/orderdetails/${orderId}?canceled=true`);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Failed to cancel the order' });
+  }
+};
 
 
 
@@ -702,6 +811,7 @@ const updateProfile = async (req, res, next) => {
     next(err);
   }
 };
+
 
 
 const addAddress = async (req, res, next) => {
@@ -758,6 +868,65 @@ const addAddress = async (req, res, next) => {
       next(err);
   }
 }
+
+// const addAddress = async (req, res, next) => {
+//   try {
+//     const isValid = validAddress(); // Validate the form data client-side
+
+//     if (!isValid) {
+//       // If validation fails, send back to the form with an error message
+//       return res.render('yourFormPage', { error: 'Validation failed. Please check your input.' });
+//     }
+
+//     const userId = req.session.user_id;
+//     const address = await Address.find({ user_id: userId });
+
+//     if (address.length > 0) {
+//       const updateResult = await Address.updateOne(
+//         { user_id: userId },
+//         {
+//           $push: {
+//             address: {
+//               fullname: req.body.fullname,
+//               mobile: req.body.mobile,
+//               housename: req.body.housename,
+//               pin: req.body.pin,
+//               city: req.body.city,
+//               district: req.body.district,
+//               state: req.body.state,
+//             },
+//           },
+//         }
+//       );
+
+//       // Handle updateResult as needed
+//     } else {
+//       const newAddress = new Address({
+//         user_id: userId,
+//         address: [
+//           {
+//             fullname: req.body.fullname,
+//             mobile: req.body.mobile,
+//             housename: req.body.housename,
+//             pin: req.body.pin,
+//             city: req.body.city,
+//             district: req.body.district,
+//             state: req.body.state,
+//           },
+//         ],
+//       });
+
+//       const saveResult = await newAddress.save();
+//       // Handle saveResult as needed
+//     }
+
+//     return res.redirect('/profile');
+//   } catch (err) {
+//     return next(err);
+//   }
+// };
+
+
 
 
 
@@ -1573,6 +1742,86 @@ const editAddresscheckout = async (req, res) => {
 //   }
 // };
 
+// const placeOrder = async (req, res) => {
+//   try {
+//     const { selected_address, payment_method, totalAmount } = req.body;
+//     const userId = req.session.user_id;
+
+//     // Fetch cart items
+//     const cartItems = await Cart.findOne({ user: userId }).populate({
+//       path: 'products.productId',
+//       model: 'product',
+//     });
+
+//     // Check if the cart is empty or cartItems is null
+//     if (!cartItems || !cartItems.products || !Array.isArray(cartItems.products) || cartItems.products.length === 0) {
+//       console.log('Cart is empty. Unable to place an order.');
+//       return res.status(400).json({
+//         success: false,
+//         message: 'Cart is empty. Unable to place an order.',
+//       });
+//     }
+
+//     // Parse totalAmount as a number
+//     const numericTotal = parseFloat(totalAmount);
+
+//     // Create a new order
+//     const newOrder = new Order({
+//       user: userId,
+//       cart: {
+//         user: userId,
+//         products: cartItems.products, // Include product details directly in the cart
+//       },
+//       deliveryAddress: selected_address,
+//       paymentOption: payment_method,
+//       totalAmount: numericTotal,
+//       orderDate: new Date(),
+//       // Add more details to the order as needed
+//     });
+
+//     // Save the order to the database
+//     await newOrder.save();
+
+//     // Update product stock (for COD payments)
+//     if (payment_method === 'COD') {
+//       // Use bulkWrite to update stock atomically
+//       const stockUpdateOperations = cartItems.products.map((item) => {
+//         const productId = item.productId._id;
+//         const quantity = parseInt(item.quantity, 10);
+
+//         return {
+//           updateOne: {
+//             filter: { _id: productId, stock: { $gte: quantity } }, // Ensure enough stock
+//             update: { $inc: { stock: -quantity } },
+//           },
+//         };
+//       });
+
+//       // Execute the bulkWrite operation
+//       const stockUpdateResult = await Product.bulkWrite(stockUpdateOperations);
+
+//       // Check if any stock update failed
+//       if (stockUpdateResult.writeErrors && stockUpdateResult.writeErrors.length > 0) {
+//         console.log('Failed to update stock for some products');
+//         // Handle the case where the stock update failed, e.g., redirect to an error page
+//         return res.status(500).json({
+//           success: false,
+//           message: 'Failed to update stock for some products',
+//         });
+//       }
+//     }
+
+//     // Clear the user's cart
+//     await Cart.findOneAndUpdate({ user: userId }, { $set: { products: [] } });
+
+//     // Redirect to the orderplaced route
+//     res.redirect('/orderplaced');
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ success: false, message: 'Failed to place the order' });
+//   }
+// };
+
 const placeOrder = async (req, res) => {
   try {
     const { selected_address, payment_method, totalAmount } = req.body;
@@ -1596,7 +1845,7 @@ const placeOrder = async (req, res) => {
     // Parse totalAmount as a number
     const numericTotal = parseFloat(totalAmount);
 
-    // Create a new order
+    // Create a new order with status 'Placed'
     const newOrder = new Order({
       user: userId,
       cart: {
@@ -1607,7 +1856,7 @@ const placeOrder = async (req, res) => {
       paymentOption: payment_method,
       totalAmount: numericTotal,
       orderDate: new Date(),
-      // Add more details to the order as needed
+      status: 'Placed', // Set the initial status as 'Placed'
     });
 
     // Save the order to the database
@@ -1687,6 +1936,7 @@ module.exports={
 
     profileLoad,
     orderDetails,
+    cancelOrder,
     updateProfile,
     addAddress,
     editAddressPage,

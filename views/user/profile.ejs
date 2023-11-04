@@ -700,7 +700,7 @@
 															  <tr>
 																<td>#<%= order._id %></td>
 																<td><%= order.orderDate.toDateString() %></td>
-																<td>Processing</td> <!-- You can customize the status based on your order model -->
+																<td><%= order.status %></td> <!-- You can customize the status based on your order model -->
 																<td>
 																  $<%= order.totalAmount.toFixed(2) %> for 
 																  <%= order.products ? order.cart.products.length : 0 %> item
@@ -828,62 +828,52 @@
 														</p> -->
 														<h1>Add address</h1>
 														<div class="my-account-account-details">
-															<form class="edit-account" action="/add_address" method="post">
+															
+															<form class="edit-account" action="/add_address" method="post" onsubmit="return validAddress()">
 																<p class="form-row">
-																	<label for="account_first_name">fullname<span class="required">*</span></label>
-																	<input type="text" class="input-text" name="fullname">
+																  <label for="account_first_name">fullname<span class="required">*</span></label>
+																  <input type="text" class="input-text" name="fullname" id="fullName">
+																  <p class="error-message" id="name-error"></p>
 																</p>
 																<p class="form-row">
-																	<label>mobile<span class="required">*</span></label>
-																	<input type="text" class="input-text" name="mobile">
-																</p>
-																<div class="clear"></div>
-																<p class="form-row">
-																	<!-- <label>email<span class="required">*</span></label>
-																	<input type="text" class="input-text" name="email">  -->
-																	<!-- <span><em>This will be how your name will be displayed in the account section and in reviews</em></span> -->
+																  <label>mobile<span class="required">*</span></label>
+																  <input type="text" class="input-text" name="mobile" id="phone">
+																  <p class="error-message" id="mobile-error"></p>
 																</p>
 																<div class="clear"></div>
 																<p class="form-row">
-																	<label>housename <span class="required">*</span></label>
-																	<input type="text" class="input-text" name="housename">
+																  <label>housename <span class="required">*</span></label>
+																  <input type="text" class="input-text" name="housename" id="housename">
+																  <p class="error-message" id="housename-error"></p>
 																</p>
 																<p class="form-row">
-																	<label>pincode<span class="required">*</span></label>
-																	<input type="text" class="input-text" name="pin">
+																  <label>pincode<span class="required">*</span></label>
+																  <input type="text" class="input-text" name="pin" id="pinCode">
+																  <p class="error-message" id="pincode-error"></p>
 																</p>
 																<p class="form-row">
-																	<label>city <span class="required">*</span></label>
-																	<input type="text" class="input-text" name="city">
+																  <label>city <span class="required">*</span></label>
+																  <input type="text" class="input-text" name="city" id="city">
+																  <p class="error-message" id="city-error"></p>
 																</p>
 																<p class="form-row">
-																	<label>district <span class="required">*</span></label>
-																	<input type="text" class="input-text" name="district">
+																  <label>district <span class="required">*</span></label>
+																  <input type="text" class="input-text" name="district" id="district">
+																  <p class="error-message" id="district-error"></p>
 																</p>
 																<p class="form-row">
-																	<label>state <span class="required">*</span></label>
-																	<input type="text" class="input-text" name="state">
+																  <label>state <span class="required">*</span></label>
+																  <input type="text" class="input-text" name="state" id="state">
+																  <p class="error-message" id="state-error"></p>
 																</p>
-																<!-- <fieldset>
-																	<legend>Password change</legend>
-																	<p class="form-row">
-																		<label>Current password (leave blank to leave unchanged)</label>
-																		<input type="password" class="input-text" name="password_current" autocomplete="off">
-																	</p>
-																	<p class="form-row">
-																		<label>New password (leave blank to leave unchanged)</label>
-																		<input type="password" class="input-text" name="password_1" autocomplete="off">
-																	</p>
-																	<p class="form-row">
-																		<label>Confirm new password</label>
-																		<input type="password" class="input-text" name="password_2" autocomplete="off">
-																	</p>
-																</fieldset> -->
 																<div class="clear"></div>
+															  
 																<p class="form-row">
-																	<button type="submit" class="button" name="save_account_details" value="Save changes">Save address</button>
+																  <button type="submit" class="button" name="save_account_details" value="Save changes">Save address</button>
 																</p>
-															</form>
+															  
+						
+															  </form>
 													</div>
 												</div>
 												</div>
@@ -930,18 +920,17 @@
 														<form class="edit-account" action="/update_profile" method="post">
 															<p class="form-row">
 																<label for="account_username">User Name <span class="required">*</span></label>
-																<input type="text" class="input-text" id="account_username" name="username" value="<%= users.username %>" required>
+																<input type="text" class="input-text" id="fullname" name="username" value="<%= users.username %>" required>
+																<p class="error-message" id="name-error"></p>
 															</p>
 															<div class="clear"></div>
 															<p class="form-row">
 																<label for="account_mobile">Mobile <span class="required">*</span></label>
-																<input type="text" class="input-text" id="account_mobile" name="mobile" value="<%= users.mobile %>" required>
+																<input type="text" class="input-text" id="phone" name="mobile" value="<%= users.mobile %>" required>
+																<p class="error-message" id="mobile-error"></p>
 															</p>
 															<div class="clear"></div>
-															<!-- <p class="form-row">
-																<label for="account_email">Email address <span class="required">*</span></label>
-																<input type="email" class="input-text" id="account_email" name="email" value="<%= user.email %>" required>
-															</p> -->
+															
 															<fieldset>
 																<legend>Password change</legend>
 																<p class="form-row">
@@ -962,6 +951,45 @@
 																<button type="submit" class="button" name="save_account_details" value="Save changes">Save changes</button>
 															</p>
 														</form>
+<!-- 
+														<form class="edit-account" action="/update_profile" method="post" onsubmit="return validateEditAccount()">
+															<p class="form-row">
+																<label for="account_username">User Name <span class="required">*</span></label>
+																<input type="text" class="input-text" id="account_username" name="username" value="<%= users.username %>" required>
+																<p class="error-message" id="username-error"></p>
+															</p>
+															<div class="clear"></div>
+															<p class="form-row">
+																<label for="account_mobile">Mobile <span class="required">*</span></label>
+																<input type="text" class="input-text" id="account_mobile" name="mobile" value="<%= users.mobile %>" required>
+																<p class="error-message" id="mobile-error"></p>
+															</p>
+															<div class="clear"></div>
+														
+															<fieldset>
+																<legend>Password change</legend>
+																<p class="form-row">
+																	<label for="password_current">Current password (leave blank to leave unchanged)</label>
+																	<input type="password" class="input-text" id="password_current" name="currentPassword" autocomplete="off">
+																	<p class="error-message" id="currentPassword-error"></p>
+																</p>
+																<p class="form-row">
+																	<label for="password_1">New password (leave blank to leave unchanged)</label>
+																	<input type="password" class="input-text" id="password_1" name="newPassword" autocomplete="off">
+																	<p class="error-message" id="newPassword-error"></p>
+																</p>
+																<p class="form-row">
+																	<label for="password_2">Confirm new password</label>
+																	<input type="password" class="input-text" id="password_2" name="confirmPassword" autocomplete="off">
+																	<p class="error-message" id="confirmPassword-error"></p>
+																</p>
+															</fieldset>
+															<div class="clear"></div>
+															<p class="form-row">
+																<button type="submit" class="button" name="save_account_details" value="Save changes">Save changes</button>
+															</p>
+														</form> -->
+														
 														
 
 													</div>
@@ -1497,6 +1525,124 @@ $('.delete-address').on('click', function () {
 		
 		<!-- Site Scripts -->
 		<script src="/public/usernew/assets/js/app.js"></script>
+
+		<script>
+			function validAddress() {
+  const name = document.getElementById('fullName').value;
+  const mobile = document.getElementById('phone').value;
+  const state = document.getElementById('state').value;
+  const district = document.getElementById('district').value;
+  const city = document.getElementById('city').value;
+  const pincode = document.getElementById('pinCode').value;
+
+  document.getElementById('name-error').textContent = '';
+  document.getElementById('state-error').textContent = '';
+  document.getElementById('mobile-error').textContent = '';
+  document.getElementById('district-error').textContent = '';
+  document.getElementById('city-error').textContent = '';
+  document.getElementById('pincode-error').textContent = '';
+
+  if (!name) {
+      document.getElementById('name-error').textContent = 'Name field should not be empty!';
+      return false;
+  }
+  const mobileRegex = /^[6-9]\d{9}$/;
+
+if (!mobile || !mobileRegex.test(mobile)) {
+  document.getElementById('mobile-error').textContent = 'Mobile number should be a 10-digit valid number';
+  return false;
+}
+
+if (new Set(mobile).size === 1) {
+  document.getElementById('mobile-error').textContent = 'Mobile number should not consist of the same digit.';
+  return false;
+}
+
+  if (!state) {
+      document.getElementById('state-error').textContent = 'State field should not be empty!';
+      return false;
+  }
+
+
+  if (!district) {
+      document.getElementById('district-error').textContent = 'District field should not be empty!';
+      return false;
+  }
+
+  if (!city) {
+      document.getElementById('city-error').textContent = 'City field should not be empty!';
+      return false;
+  }
+
+  const pincodeRegex = /^\d{6}$/;
+
+  if (!pincode || !pincode.match(pincodeRegex)) {
+      document.getElementById('pincode-error').textContent = 'Pincode should be a 6-digit numeric value.';
+      return false;
+  }
+
+  return true;
+}
+
+		</script>
+
+
+<script>
+    function validateEditAccount() {
+        const username = document.getElementById('account_username').value;
+        const mobile = document.getElementById('account_mobile').value;
+        const currentPassword = document.getElementById('password_current').value;
+        const newPassword = document.getElementById('password_1').value;
+        const confirmPassword = document.getElementById('password_2').value;
+
+        document.getElementById('username-error').textContent = '';
+        document.getElementById('mobile-error').textContent = '';
+        document.getElementById('currentPassword-error').textContent = '';
+        document.getElementById('newPassword-error').textContent = '';
+        document.getElementById('confirmPassword-error').textContent = '';
+
+        if (!username) {
+            document.getElementById('username-error').textContent = 'Username field should not be empty!';
+            return false;
+        }
+
+        const mobileRegex = /^[6-9]\d{9}$/;
+
+        if (!mobile || !mobileRegex.test(mobile)) {
+            document.getElementById('mobile-error').textContent = 'Mobile number should be a 10-digit valid number';
+            return false;
+        }
+
+        if (new Set(mobile).size === 1) {
+            document.getElementById('mobile-error').textContent = 'Mobile number should not consist of the same digit.';
+            return false;
+        }
+
+        // Add any additional validations for username and mobile as needed
+
+        // Password validations (you can customize these as needed)
+        if (newPassword || confirmPassword) {
+            if (!currentPassword) {
+                document.getElementById('currentPassword-error').textContent = 'Please enter your current password.';
+                return false;
+            }
+
+            if (newPassword !== confirmPassword) {
+                document.getElementById('confirmPassword-error').textContent = 'New password and confirm password do not match.';
+                return false;
+            }
+        }
+
+        return true;
+    }
+</script>
+
+
+		<style>
+			.error-message{
+				color: red;
+			}
+		</style>
 	</body>
 
 <!-- Mirrored from caketheme.com/html/ruper/page-my-account.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2023 09:38:24 GMT -->

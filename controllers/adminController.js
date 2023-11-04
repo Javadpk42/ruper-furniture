@@ -26,6 +26,14 @@ const loginLoad=async(req,res)=>{
         console.log(error.message )
     }
 }
+const adminLogout=async(req,res)=>{
+  try {
+      req.session.destroy()
+      res.redirect('/admin')
+  } catch (error) {
+      console.log(error.message)
+  }
+}
 const verifyLogin=async(req,res)=>{
   try{
       const email=req.body.email
@@ -38,7 +46,7 @@ const verifyLogin=async(req,res)=>{
               if (userData.is_admin===0) {
                   res.render('login',{message:"Email and password is incorrect"})
               } else {
-                  req.session.user_id=userData._id
+                  req.session.admin_id=userData._id
                   res.redirect('/admin/dashboard')
               }
           } else {
@@ -561,13 +569,31 @@ const updateproducts=async(req,res)=>{
 //       console.log(error.message )
 //   }
 // }
+// const orderLoad = async (req, res) => {
+//   try {
+//     // Check if there is an active admin session
+//     // if (!req.session.admin_id) {
+//     //   return res.redirect('/admin/login?errors=Please log in to view');
+//     // }
+
+//     // Fetch all orders
+//     const orders = await Order.find({}).sort({ orderDate: -1 });
+
+//     // Check if orders data is not null or undefined
+//     if (orders) {
+//       res.render('orders', { orders });
+//     } else {
+//       console.log('Orders Data is null or undefined');
+//       res.render('orders', { orders: [] });
+//     }
+//   } catch (error) {
+//     console.log(error);
+//     res.render('orders', { orders: [], error: 'Error fetching orders data' });
+//   }
+// };
+
 const orderLoad = async (req, res) => {
   try {
-    // Check if there is an active admin session
-    // if (!req.session.admin_id) {
-    //   return res.redirect('/admin/login?errors=Please log in to view');
-    // }
-
     // Fetch all orders
     const orders = await Order.find({}).sort({ orderDate: -1 });
 
@@ -585,8 +611,39 @@ const orderLoad = async (req, res) => {
 };
 
 
+const updateOrderStatus = async (req, res) => {
+  try {
+    const orderId = req.params.orderId;
+    const newStatus = req.body.status;
+
+    // Find the order in the database
+    const order = await Order.findById(orderId);
+
+    // Check if the order exists
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        message: 'Order not found',
+      });
+    }
+
+    // Update the order status
+    order.status = newStatus;
+    await order.save();
+
+    // Redirect back to the order details page or orders page
+    res.redirect('/admin/orders');
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Failed to update order status' });
+  }
+};
+
+
+
 module.exports={
     loginLoad,
+    adminLogout,
     loaddashboard,
     usersLoad,
     categoryLoad,
@@ -599,6 +656,7 @@ module.exports={
     editproductLoad,
     updateproducts,
     verifyLogin,
-    orderLoad
+    orderLoad,
+    updateOrderStatus
    
 }

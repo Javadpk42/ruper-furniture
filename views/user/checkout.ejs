@@ -616,55 +616,93 @@
 										</label>
 									</p>
 									<div class="shipping-address">
-										<form class="shipping-fields" action="/add_shipping_address" method="post">
+										<form class="edit-account" action="/add_shipping_address" method="post" onsubmit="return validAddress()">
+											<p class="form-row">
+											  <input type="text" class="input-text" name="fullname" id="fullName" placeholder="Full Name">
+											  <p class="error-message" id="name-error"></p>
+											</p>
+											<p class="form-row">
+											  <input type="text" class="input-text" name="mobile" id="phone" placeholder="Mobile">
+											  <p class="error-message" id="mobile-error"></p>
+											</p>
+											<div class="clear"></div>
+											<p class="form-row">
+											  <input type="text" class="input-text" name="housename" id="housename" placeholder="House Name">
+											  <p class="error-message" id="housename-error"></p>
+											</p>
+											<p class="form-row">
+											  <input type="text" class="input-text" name="pin" id="pinCode" placeholder="Pincode">
+											  <p class="error-message" id="pincode-error"></p>
+											</p>
+											<p class="form-row">
+											  <input type="text" class="input-text" name="city" id="city" placeholder="City">
+											  <p class="error-message" id="city-error"></p>
+											</p>
+											<p class="form-row">
+											  <input type="text" class="input-text" name="district" id="district" placeholder="District">
+											  <p class="error-message" id="district-error"></p>
+											</p>
+											<p class="form-row">
+											  <input type="text" class="input-text" name="state" id="state" placeholder="State">
+											  <p class="error-message" id="state-error"></p>
+											</p>
+											<div class="clear"></div>
+										  
+											<p class="form-row">
+											  <button type="submit" class="button" name="save_account_details" value="Save changes">Save address</button>
+											</p>
+										  
+										  </form>
+										<!-- <form class="shipping-fields" action="/add_shipping_address" method="post" onsubmit="return validAddress()">
 											<p class="form-row form-row-wide">
-												<!-- <label>Full name <span class="required">*</span></label> -->
+												
 												<span class="input-wrapper">
-													<input type="text" class="input-text" name="fullname" value="fullname">
+													<input type="text" class="input-text" name="fullname" placeholder="fullname" id="fullname">
 												</span>
+												<p class="error-message" id="name-error"></p>
 											</p>
 											<p class="form-row form-row-wide">
-												<!-- <label>Mobile <span class="required">*</span></label> -->
+												
 												<span class="input-wrapper">
-													<input type="text" class="input-text" name="mobile" value="mobile">
+													<input type="text" class="input-text" name="mobile" placeholder="mobile" id="phone">
 												</span>
 											</p>
 											<div class="clear"></div>
 											<p class="form-row form-row-wide">
-												<!-- <label>House name <span class="required">*</span></label> -->
+												
 												<span class="input-wrapper">
-													<input type="text" class="input-text" name="housename" value="housename">
+													<input type="text" class="input-text" name="housename" placeholder="housename" id="housename">
 												</span>
 											</p>
 											<p class="form-row form-row-wide">
-												<!-- <label>Pincode <span class="required">*</span></label> -->
+												
 												<span class="input-wrapper">
-													<input type="text" class="input-text" name="pin" value="pincode">
+													<input type="text" class="input-text" name="pin" placeholder="pincode" id="pinCode">
 												</span>
 											</p>
 											<p class="form-row form-row-wide">
-												<!-- <label>City <span class="required">*</span></label> -->
+											
 												<span class="input-wrapper">
-													<input type="text" class="input-text" name="city" value="city">
+													<input type="text" class="input-text" name="city" placeholder="city" id="city">
 												</span>
 											</p>
 											<p class="form-row form-row-wide">
-												<!-- <label>District <span class="required">*</span></label> -->
+												
 												<span class="input-wrapper">
-													<input type="text" class="input-text" name="district" value="district">
+													<input type="text" class="input-text" name="district" placeholder="district" id="district">
 												</span>
 											</p>
 											<p class="form-row form-row-wide">
-												<!-- <label>State <span class="required">*</span></label> -->
+												
 												<span class="input-wrapper">
-													<input type="text" class="input-text" name="state" value="state">
+													<input type="text" class="input-text" name="state" placeholder="state" id="state">
 												</span>
 											</p>
 											<div class="clear"></div>
 											<p class="form-row form-row-wide">
 												<button type="submit" class="button" name="save_address" value="Save address">Save address</button>
 											</p>
-										</form>
+										</form> -->
 									</div>
 								</div>
 								
@@ -1436,6 +1474,73 @@
 		
 		<!-- Site Scripts -->
 		<script src="/public/usernew/assets/js/app.js"></script>
+
+		<script>
+			function validAddress() {
+  const name = document.getElementById('fullName').value;
+  const mobile = document.getElementById('phone').value;
+  const state = document.getElementById('state').value;
+  const district = document.getElementById('district').value;
+  const city = document.getElementById('city').value;
+  const pincode = document.getElementById('pinCode').value;
+
+  document.getElementById('name-error').textContent = '';
+  document.getElementById('state-error').textContent = '';
+  document.getElementById('mobile-error').textContent = '';
+  document.getElementById('district-error').textContent = '';
+  document.getElementById('city-error').textContent = '';
+  document.getElementById('pincode-error').textContent = '';
+
+  if (!name) {
+      document.getElementById('name-error').textContent = 'Name field should not be empty!';
+      return false;
+  }
+  const mobileRegex = /^[6-9]\d{9}$/;
+
+if (!mobile || !mobileRegex.test(mobile)) {
+  document.getElementById('mobile-error').textContent = 'Mobile number should be a 10-digit valid number';
+  return false;
+}
+
+if (new Set(mobile).size === 1) {
+  document.getElementById('mobile-error').textContent = 'Mobile number should not consist of the same digit.';
+  return false;
+}
+
+  if (!state) {
+      document.getElementById('state-error').textContent = 'State field should not be empty!';
+      return false;
+  }
+
+
+  if (!district) {
+      document.getElementById('district-error').textContent = 'District field should not be empty!';
+      return false;
+  }
+
+  if (!city) {
+      document.getElementById('city-error').textContent = 'City field should not be empty!';
+      return false;
+  }
+
+  const pincodeRegex = /^\d{6}$/;
+
+  if (!pincode || !pincode.match(pincodeRegex)) {
+      document.getElementById('pincode-error').textContent = 'Pincode should be a 6-digit numeric value.';
+      return false;
+  }
+
+  return true;
+}
+
+		</script>
+
+		<style>
+			.error-message{
+				color: red;
+			}
+		</style>
+
 	</body>
 
 <!-- Mirrored from caketheme.com/html/ruper/shop-checkout.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2023 09:38:24 GMT -->

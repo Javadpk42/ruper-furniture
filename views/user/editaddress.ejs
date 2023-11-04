@@ -623,48 +623,56 @@
 																</div>
 															</form> -->
 
-															<form class="edit-account" action="/edit_address/<%= addressId %>" method="post">
+
+															  <form class="edit-account" action="/edit_address/<%= addressId %>" method="post" onsubmit="return validAddress()">
 																<input type="hidden" name="addressId" value="<%= addressId %>">
-															  
+																
 																<% const selectedAddress = address.address.find(addr => addr._id.toString() === addressId); %>
-															  
+																
 																<div class="form-row">
 																  <label for="fullname">Full Name<span class="required">*</span></label>
-																  <input type="text" class="input-text" name="fullname" value="<%= selectedAddress.fullname %>" required>
+																  <input type="text" class="input-text" name="fullname" id="fullName" value="<%= selectedAddress.fullname %>" required>
+																  <p class="error-message" id="name-error"></p>
 																</div>
-															  
+																
 																<div class="form-row">
 																  <label for="mobile">Mobile<span class="required">*</span></label>
-																  <input type="text" class="input-text" name="mobile" value="<%= selectedAddress.mobile %>" required>
+																  <input type="text" class="input-text" name="mobile" id="phone" value="<%= selectedAddress.mobile %>" required>
+																  <p class="error-message" id="mobile-error"></p>
 																</div>
-															  
+																
 																<div class="form-row">
 																  <label for="housename">House Name<span class="required">*</span></label>
-																  <input type="text" class="input-text" name="housename" value="<%= selectedAddress.housename %>" required>
+																  <input type="text" class="input-text" name="housename" id="housename" value="<%= selectedAddress.housename %>" required>
+																  <p class="error-message" id="housename-error"></p>
 																</div>
-															  
+																
 																<div class="form-row">
 																  <label for="pin">Pincode<span class="required">*</span></label>
-																  <input type="text" class="input-text" name="pin" value="<%= selectedAddress.pin %>" required>
+																  <input type="text" class="input-text" name="pin" id="pinCode" value="<%= selectedAddress.pin %>" required>
+																  <p class="error-message" id="pincode-error"></p>
 																</div>
-															  
+																
 																<div class="form-row">
 																  <label for="city">City<span class="required">*</span></label>
-																  <input type="text" class="input-text" name="city" value="<%= selectedAddress.city %>" required>
+																  <input type="text" class="input-text" name="city" id="city" value="<%= selectedAddress.city %>" required>
+																  <p class="error-message" id="city-error"></p>
 																</div>
-															  
+																
 																<div class="form-row">
 																  <label for="district">District<span class="required">*</span></label>
-																  <input type="text" class="input-text" name="district" value="<%= selectedAddress.district %>" required>
+																  <input type="text" class="input-text" name="district" id="district" value="<%= selectedAddress.district %>" required>
+																  <p class="error-message" id="district-error"></p>
 																</div>
-															  
+																
 																<div class="form-row">
 																  <label for="state">State<span class="required">*</span></label>
-																  <input type="text" class="input-text" name="state" value="<%= selectedAddress.state %>" required>
+																  <input type="text" class="input-text" name="state" id="state" value="<%= selectedAddress.state %>" required>
+																  <p class="error-message" id="state-error"></p>
 																</div>
-															  
+																
 																<div class="clear"></div>
-															  
+																
 																<div class="form-row">
 																  <button type="submit" class="button" name="save_account_details" value="Save Address">Save Address</button>
 																</div>
@@ -1124,6 +1132,75 @@
 		
 		<!-- Site Scripts -->
 		<script src="/public/usernew/assets/js/app.js"></script>
+
+
+		<script>
+			function validAddress() {
+  const name = document.getElementById('fullName').value;
+  const mobile = document.getElementById('phone').value;
+  const state = document.getElementById('state').value;
+  const district = document.getElementById('district').value;
+  const city = document.getElementById('city').value;
+  const pincode = document.getElementById('pinCode').value;
+
+  document.getElementById('name-error').textContent = '';
+  document.getElementById('state-error').textContent = '';
+  document.getElementById('mobile-error').textContent = '';
+  document.getElementById('district-error').textContent = '';
+  document.getElementById('city-error').textContent = '';
+  document.getElementById('pincode-error').textContent = '';
+
+  if (!name) {
+      document.getElementById('name-error').textContent = 'Name field should not be empty!';
+      return false;
+  }
+  const mobileRegex = /^[6-9]\d{9}$/;
+
+if (!mobile || !mobileRegex.test(mobile)) {
+  document.getElementById('mobile-error').textContent = 'Mobile number should be a 10-digit valid number';
+  return false;
+}
+
+if (new Set(mobile).size === 1) {
+  document.getElementById('mobile-error').textContent = 'Mobile number should not consist of the same digit.';
+  return false;
+}
+
+  if (!state) {
+      document.getElementById('state-error').textContent = 'State field should not be empty!';
+      return false;
+  }
+
+
+  if (!district) {
+      document.getElementById('district-error').textContent = 'District field should not be empty!';
+      return false;
+  }
+
+  if (!city) {
+      document.getElementById('city-error').textContent = 'City field should not be empty!';
+      return false;
+  }
+
+  const pincodeRegex = /^\d{6}$/;
+
+  if (!pincode || !pincode.match(pincodeRegex)) {
+      document.getElementById('pincode-error').textContent = 'Pincode should be a 6-digit numeric value.';
+      return false;
+  }
+
+  return true;
+}
+
+		</script>
+
+		<style>
+			.error-message{
+				color: red;
+			}
+		</style>
+	
+
 	</body>
 
 <!-- Mirrored from caketheme.com/html/ruper/page-my-account.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2023 09:38:24 GMT -->
