@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 	
-<!-- Mirrored from caketheme.com/html/ruper/page-my-account.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2023 09:38:24 GMT -->
+<!-- Mirrored from caketheme.com/html/ruper/page-404.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2023 09:39:10 GMT -->
 <head>
 		<!-- Meta Data -->
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>My Account | Ruper</title>
+		<title>Page 404 | Ruper</title>
 		
 		<!-- Favicon -->
 		<link rel="shortcut icon" type="image/x-icon" href="/public/usernew/media/favicon.png">
@@ -33,9 +33,9 @@
 		<link href="https://fonts.googleapis.com/css?family=EB+Garamond:100,100italic,200,200italic,300,300italic,400,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic&amp;display=swap" rel="stylesheet">
 	</head>
 	
-	<body class="blog">
+	<body class="page">
 		<div id="page" class="hfeed page-wrapper">
-			<header id="site-header" class="site-header header-v1 absolute">
+			<header id="site-header" class="site-header header-v1 bottom-border">
 				<div class="header-mobile">
 					<div class="section-padding">
 						<div class="section-container">
@@ -390,7 +390,7 @@
 										<div class="header-page-link">
 											<!-- Login -->
 											<div class="login-header">
-												<a href="/logout"><span class="menu-item-text">Logout</span></a>
+												<a class="active-login" href="#">Login</a>
 												<div class="form-login-register">
 													<div class="box-form-login">
 														<div class="active-login"></div>
@@ -513,193 +513,75 @@
 				</div>
 			</header>
 
-			<div id="site-main" class="site-main">
+
+            <div id="site-main" class="site-main">
+                <div id="main-content" class="main-content">
+                    <div id="primary" class="content-area">
+                        <div id="content" class="site-content" role="main">
+                            <div class="section-padding">
+                                <div class="section-container p-l-r">
+                                    <div class="page-404">
+                                        <div class="content-page-404">
+                                            <div class="title-error">
+                                           
+                                            </div>
+                                            <div class="sub-title">
+                                                <% if (message === 'Current password is incorrect') { %>
+                                                    400: Incorrect Current Password
+                                                <% } else if (message === 'New password and confirm password do not match') { %>
+                                                    400: Password Mismatch
+                                                <% } else { %>
+                                                    400
+                                                <% } %>
+                                            </div>
+                                            <div class="sub-error">
+                                                
+                                            </div>
+                                            <a class="button" href="javascript:history.go(-1)">
+                                                Back
+                                            </a>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- #content -->
+                    </div><!-- #primary -->
+                </div><!-- #main-content -->
+            </div>
+            
+
+
+			<!-- <div id="site-main" class="site-main">
 				<div id="main-content" class="main-content">
 					<div id="primary" class="content-area">
-						<div id="title" class="page-title">
-							<div class="section-container">
-								<div class="content-title-heading">
-									<h1 class="text-title-heading">
-										My Account
-									</h1>
-								</div>
-								<div class="breadcrumbs">
-									<a href="index.html">Home</a><span class="delimiter"></span>My Account
-								</div>
-							</div>
-						</div>
-
-
-						<div class="container">
 						<div id="content" class="site-content" role="main">
 							<div class="section-padding">
 								<div class="section-container p-l-r">
-									<div class="page-my-account">
-										<div class="my-account-wrap clearfix">
-											<!-- <div class="my-account-content tab-content">
-												<div class="tab-pane fade show active"  role="tabpanel">
-													<div class="my-account-addresses"> -->
-														<h1>Edit Address</h1>
-														<div class="my-account-account-details">
-															<!-- <form class="edit-account" action="/edit_address/<%= addressId %>" method="post">
-																<input type="hidden" name="addressId" value="<%= addressId %>">
-																<p class="form-row">
-																	<label for="fullname">Full Name<span class="required">*</span></label>
-																	<input type="text" class="input-text" name="fullname" value="<%= address.fullname %>">
-																</p>
-																<p class="form-row">
-																	<label for="mobile">Mobile<span class="required">*</span></label>
-																	<input type="text" class="input-text" name="mobile" value="<%= address.mobile %>">
-																</p>
-														
-																<p class="form-row">
-																	<label for="housename">House Name<span class="required">*</span></label>
-																	<input type="text" class="input-text" name="housename" value="<%= address.housename %>">
-																</p>
-																<p class="form-row">
-																	<label for="pin">Pincode<span class="required">*</span></label>
-																	<input type="text" class="input-text" name="pin" value="<%= address.pin %>">
-																</p>
-																<p class="form-row">
-																	<label for="city">City<span class="required">*</span></label>
-																	<input type="text" class="input-text" name="city" value="<%= address.city %>">
-																</p>
-																<p class="form-row">
-																	<label for="district">District<span class="required">*</span></label>
-																	<input type="text" class="input-text" name="district" value="<%= address.district %>">
-																</p>
-																<p class="form-row">
-																	<label for="state">State<span class="required">*</span></label>
-																	<input type="text" class="input-text" name="state" value="<%= address.state %>">
-																</p>
-																<div class="clear"></div>
-																<p class="form-row">
-																	<button type="submit" class="button" name="save_account_details" value="Save changes">Save Address</button>
-																</p>
-															</form> -->
-
-															<!-- <form class="edit-account" action="/edit_address/<%= addressId %>" method="post">
-																<input type="hidden" name="addressId" value="<%= addressId %>">
-															
-																<div class="form-row">
-																	<label for="fullname">Full Name<span class="required">*</span></label>
-																	<input type="text" class="input-text" name="fullname" value="<%= address.fullname %>" required>
-																</div>
-															
-																<div class="form-row">
-																	<label for="mobile">Mobile<span class="required">*</span></label>
-																	<input type="text" class="input-text" name="mobile" value="<%= address.mobile %>" required>
-																</div>
-															
-																<div class="form-row">
-																	<label for="housename">House Name<span class="required">*</span></label>
-																	<input type="text" class="input-text" name="housename" value="<%= address.housename %>" required>
-																</div>
-															
-																<div class="form-row">
-																	<label for="pin">Pincode<span class="required">*</span></label>
-																	<input type="text" class="input-text" name="pin" value="<%= address.pin %>" required>
-																</div>
-															
-																<div class="form-row">
-																	<label for="city">City<span class="required">*</span></label>
-																	<input type="text" class="input-text" name="city" value="<%= address.city %>" required>
-																</div>
-															
-																<div class="form-row">
-																	<label for="district">District<span class="required">*</span></label>
-																	<input type="text" class="input-text" name="district" value="<%= address.district %>" required>
-																</div>
-															
-																<div class="form-row">
-																	<label for="state">State<span class="required">*</span></label>
-																	<input type="text" class="input-text" name="state" value="<%= address.state %>" required>
-																</div>
-															
-																<div class="clear"></div>
-															
-																<div class="form-row">
-																	<button type="submit" class="button" name="save_account_details" value="Save Address">Save Address</button>
-																</div>
-															</form> -->
-
-
-															  <form class="edit-account" action="/edit_address/<%= addressId %>" method="post" onsubmit="return validAddress()">
-																<input type="hidden" name="addressId" value="<%= addressId %>">
-																
-																<% const selectedAddress = address.address.find(addr => addr._id.toString() === addressId); %>
-																
-																<div class="form-row">
-																  <label for="fullname">Full Name<span class="required">*</span></label>
-																  <input type="text" class="input-text" name="fullname" id="fullName" value="<%= selectedAddress.fullname %>" >
-																  <p class="error-message" id="name-error"></p>
-																</div>
-																
-																<div class="form-row">
-																  <label for="mobile">Mobile<span class="required">*</span></label>
-																  <input type="text" class="input-text" name="mobile" id="phone" value="<%= selectedAddress.mobile %>" >
-																  <p class="error-message" id="mobile-error"></p>
-																</div>
-																
-																<div class="form-row">
-																  <label for="housename">House Name<span class="required">*</span></label>
-																  <input type="text" class="input-text" name="housename" id="housename" value="<%= selectedAddress.housename %>" >
-																  <p class="error-message" id="housename-error"></p>
-																</div>
-																
-																<div class="form-row">
-																  <label for="pin">Pincode<span class="required">*</span></label>
-																  <input type="text" class="input-text" name="pin" id="pinCode" value="<%= selectedAddress.pin %>" >
-																  <p class="error-message" id="pincode-error"></p>
-																</div>
-																
-																<div class="form-row">
-																  <label for="city">City<span class="required">*</span></label>
-																  <input type="text" class="input-text" name="city" id="city" value="<%= selectedAddress.city %>" >
-																  <p class="error-message" id="city-error"></p>
-																</div>
-																
-																<div class="form-row">
-																  <label for="district">District<span class="required">*</span></label>
-																  <input type="text" class="input-text" name="district" id="district" value="<%= selectedAddress.district %>" >
-																  <p class="error-message" id="district-error"></p>
-																</div>
-																
-																<div class="form-row">
-																  <label for="state">State<span class="required">*</span></label>
-																  <input type="text" class="input-text" name="state" id="state" value="<%= selectedAddress.state %>" >
-																  <p class="error-message" id="state-error"></p>
-																</div>
-																
-																<div class="clear"></div>
-																
-																<div class="form-row">
-																  <button type="submit" class="button" name="save_account_details" value="Save Address">Save Address</button>
-																</div>
-															  </form>
-															  
-															
-
-														</div>
-													<!-- </div>
-												</div>
-											</div> -->
+									<div class="page-404">
+										<div class="content-page-404">
+											<div class="title-error">
+												400		
+											</div>
+											<div class="sub-title">
+												Oops! That page can't be found.		
+											</div>
+											<div class="sub-error">
+												We're really sorry but we can't seem to find the page you were looking for.		
+											</div>
+											<a class="button" href="index.html">
+												Back The Homepage		
+											</a>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-						
-</div>
-
-
-					
-
 					</div>
 				</div>
-			</div>
+			</div> -->
 
-			<footer id="site-footer" class="site-footer background">
+			<footer id="site-footer" class="site-footer">
 				<div class="footer">
 					<div class="section-padding">
 						<div class="section-container">
@@ -778,7 +660,7 @@
 											<div class="block-content">
 												<div class="newsletter-text">Enter your email below to be the first to know about new collections and product launches.</div>
 												<form action="#" method="post" class="newsletter-form">
-													<input type="email" class="bg-white" name="your-email" value="" size="40" placeholder="Email address">
+													<input type="email" name="your-email" value="" size="40" placeholder="Email address">
 													<span class="btn-submit">
 														<input type="submit" value="Subscribe">
 													</span>
@@ -1132,81 +1014,7 @@
 		
 		<!-- Site Scripts -->
 		<script src="/public/usernew/assets/js/app.js"></script>
-
-
-		<script>
-			function validAddress() {
-  const name = document.getElementById('fullName').value;
-  const mobile = document.getElementById('phone').value;
-  const housename = document.getElementById('housename').value;
-  const pincode = document.getElementById('pinCode').value;
-  const city = document.getElementById('city').value;
-  const district = document.getElementById('district').value;
-  const state = document.getElementById('state').value;
-
-  document.getElementById('name-error').textContent = '';
-  document.getElementById('mobile-error').textContent = '';
-  document.getElementById('housename-error').textContent = '';
-  document.getElementById('pincode-error').textContent = '';
-  document.getElementById('city-error').textContent = '';
-  document.getElementById('district-error').textContent = '';
-  document.getElementById('state-error').textContent = '';
-
-  if (!name) {
-      document.getElementById('name-error').textContent = 'Name field should not be empty!';
-      return false;
-  }
-  const mobileRegex = /^[6-9]\d{9}$/;
-
-if (!mobile || !mobileRegex.test(mobile)) {
-  document.getElementById('mobile-error').textContent = 'Mobile number should be a 10-digit valid number';
-  return false;
-}
-
-if (new Set(mobile).size === 1) {
-  document.getElementById('mobile-error').textContent = 'Mobile number should not consist of the same digit.';
-  return false;
-}
-if (!housename) {
-      document.getElementById('housename-error').textContent = 'Housename field should not be empty!';
-      return false;
-  }
-const pincodeRegex = /^\d{6}$/;
-
-if (!pincode || !pincode.match(pincodeRegex)) {
-	document.getElementById('pincode-error').textContent = 'Pincode should be a 6-digit numeric value.';
-	return false;
-}
-if (!city) {
-      document.getElementById('city-error').textContent = 'City field should not be empty!';
-      return false;
-  }
-  if (!district) {
-      document.getElementById('district-error').textContent = 'District field should not be empty!';
-      return false;
-  }
-
-
-  if (!state) {
-      document.getElementById('state-error').textContent = 'State field should not be empty!';
-      return false;
-  }
-
-
-  return true;
-}
-
-</script>
-
-
-		<style>
-			.error-message{
-				color: red;
-			}
-		</style>
-	
-
 	</body>
 
-<!-- Mirrored from caketheme.com/html/ruper/page-my-account.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2023 09:38:24 GMT -->
+<!-- Mirrored from caketheme.com/html/ruper/page-404.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2023 09:39:10 GMT -->
 </html>

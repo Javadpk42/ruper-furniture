@@ -11,11 +11,11 @@ const userAuth = require('../middlewares/userAuth')
 const userController=require('../controllers/userController')
 
 
-user_route.get('/',userController.homeLoad)
+user_route.get('/',userController.homeLoad) 
 
 user_route.get('/signup',userController.loadSignup);
-user_route.get('/otpverification',userController.loadOtp);
 user_route.post('/signup',userController.sendOtp);
+user_route.get('/otpverification',userController.loadOtp);
 user_route.post('/resendotp',userController.resendOtp);
 user_route.post('/otpverification',userController.verifyOtp);
 
@@ -35,10 +35,13 @@ user_route.get('/cancelorder/:orderId', userController.cancelOrder);
 
 
 user_route.post('/update_profile',userController.updateProfile)
+user_route.post('/password_change',userController.passwordChange)
 user_route.post('/add_address',userController.addAddress)
 user_route.get('/edit_address/:addressId', userController.editAddressPage);
 user_route.post('/edit_address/:addressId', userController.editAddress);
-user_route.get('/delete_address/:addressId', userController.deleteAddress);
+
+user_route.post('/delete_address/:addressId', userController.deleteAddress);
+
   
 user_route.get('/shop',userController.shopLoad)
 user_route.get('/shopdetails/:productId', userController.shopdetailsLoad);
@@ -46,7 +49,7 @@ user_route.get('/shopdetails/:productId', userController.shopdetailsLoad);
 user_route.post('/add-to-cart',userController.addToCart)
 user_route.get('/view-cart',userController.getCartProducts) 
 user_route.post('/cart-quantity',userController.cartQuantity)  
-user_route.post('/remove-product',userController.removeProduct) 
+user_route.post('/remove-product',userController.removeProductRouteHandler) 
 
 user_route.get('/checkout',userController.loadCheckout)
 user_route.get('/edit_address_checkout/:addressId', userController.editAddressPagecheckout);

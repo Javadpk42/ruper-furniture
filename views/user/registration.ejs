@@ -401,10 +401,10 @@
 																	<p class="status"></p>
 																	<div class="content">
 																		<div class="username">
-																			<input type="text" required="required" class="input-text" name="username" id="username" placeholder="Your name"/>
+																			<input type="text" required="required" class="input-text" name="username" id="" placeholder="Your name"/>
 																		</div>
 																		<div class="password">
-																			<input class="input-text" required="required" type="password" name="password" id="password" placeholder="Password"/>
+																			<input class="input-text" required="required" type="password" name="password" id="" placeholder="Password"/>
 																		</div>
 																		<div class="rememberme-lost">
 																			<div class="rememberme">
@@ -540,103 +540,61 @@
 										
 											
 											
-											<!-- <div class="col-lg-6 col-md-6 col-sm-12">
-												<div class="box-form-login">
-													<h2 class="register">Register</h2>
-													<div class="box-content">
-														<div class="form-register">
-															
-															
-															
-															
-															
-
-															<form method="post" class="register" action="/signup">
-                                                                <div class="username">
-																	<label>Username <span class="required">*</span></label>
-																	<input type="text" class="input-text" name="username" id="username">
-																</div>
-                                                        
-																<div class="email">
-																	<label>Email address <span class="required">*</span></label>
-																	<input type="email" class="input-text" name="email" value="">
-																</div>
-                                                                <div class="username">
-																	<label>Mobile <span class="required">*</span></label>
-																	<input type="text" class="input-text" name="mobile" id="username">
-																</div>
-																<div class="password">
-																	<label>Password <span class="required">*</span></label>
-																	<input type="password" class="input-text" name="password">
-																</div>
-                                                                <div class="password">
-																	<label>Confirm Password <span class="required">*</span></label>
-																	<input type="password" class="input-text" name="cpassword">
-																</div>
-																<div class="button-register">
-																	<input type="submit" class="button" name="register" value="Register">
-																</div>
-															</form> 
-
-
-
-														</div>
-													</div>
-												</div>
-											</div> -->
+										
 											<div class="col-lg-6 col-md-6 col-sm-12">
 												<div class="box-form-login">
 													<h2 class="register">Register</h2>
 													<div class="box-content">
 														<div class="form-register">
+
+
+															
+
+
+															
+															  
 											
-															<!-- Display error message if any -->
-															<% if (typeof message !== 'undefined') { %>
-																<p class="error-message alert-danger mt-4 text-center"><%= message %></p>
-															<% } %>
-											
-															<form method="post" class="register" action="/signup">
+ 																<form method="post" class="register" action="/signup" onsubmit="return validRegister()">
 																<div class="username">
 																	<label>Username <span class="required">*</span></label>
-																	<input type="text" class="input-text" name="username" id="username" required>
+																	<input type="text" class="input-text" name="username" id="username" >
+																	<p id="username-error" class="error-message"></p>
 																</div>
-											
+																<% if (message) { %>
+																	<p class="error-message"><%= message %></p>
+																<% } %>
 																<div class="email">
 																	<label>Email address <span class="required">*</span></label>
-																	<input type="email" class="input-text" name="email" value="" required>
-																	<!-- Display email validation error message if any -->
-																	<% if (typeof emailError !== 'undefined') { %>
-																		<p class="error-message alert-danger mt-4 text-center"><%= emailError %></p>
-																	<% } %>
+																	<input type="email" class="input-text" name="email" id="email" >
+																	<p id="email-error" class="error-message"></p>
 																</div>
-											
+															
 																<div class="username">
 																	<label>Mobile <span class="required">*</span></label>
-																	<input type="tel" class="input-text" name="mobile" id="username" required>
+																	<input type="tel" class="input-text" name="mobile" id="mobile" >
+																	<p id="mobile-error" class="error-message"></p>
 																</div>
-											
+															
 																<div class="password">
 																	<label>Password <span class="required">*</span></label>
-																	<input type="password" class="input-text" name="password" required>
-																	<!-- Display password length validation error message if any -->
-																	<% if (typeof passwordLengthError !== 'undefined') { %>
-																		<p class="error-message alert-danger mt-4 text-center"><%= passwordLengthError %></p>
-																	<% } %>
+																	<input type="password" class="input-text" name="password" id="password" >
+																	<p id="password-error" class="error-message"></p>
 																</div>
-											
+															
 																<div class="password">
 																	<label>Confirm Password <span class="required">*</span></label>
-																	<input type="password" class="input-text" name="cpassword" required>
-																	<!-- Display password matching validation error message if any -->
-																	<% if (typeof passwordMatchError !== 'undefined') { %>
-																		<p class="error-message alert-danger mt-4 text-center"><%= passwordMatchError %></p>
-																	<% } %>
+																	<input type="password" class="input-text" name="cpassword" id="cpassword"  >
+																	<p id="password-mismatch" class="error-message"></p>
+																	
 																</div>
-											
+															
 																<div class="button-register">
 																	<input type="submit" class="button" name="register" value="Register">
 																</div>
-															</form>
+															</form> 
+															
+															
+															
 											
 														</div>
 													</div>
@@ -1090,6 +1048,67 @@
 		
 		<!-- Site Scripts -->
 		<script src="/public/usernew/assets/js/app.js"></script>
+
+		<script>
+			function validRegister() {
+			  const username = document.getElementById('username').value;
+			  const email = document.getElementById('email').value;
+			  const mobile = document.getElementById('mobile').value;
+			  const password = document.getElementById('password').value;
+			  const cpassword = document.getElementById('cpassword').value;
+		  
+			  document.getElementById('username-error').textContent = '';
+			  document.getElementById('email-error').textContent = '';
+			  document.getElementById('mobile-error').textContent = '';
+			  document.getElementById('password-error').textContent = '';
+			  document.getElementById('password-mismatch').textContent = '';
+		  
+			  // Validate username
+			  if (!username) {
+				document.getElementById('username-error').textContent = 'Username should not be empty!';
+				return false;
+			  }
+			  const numericRegex = /^\d+$/;
+              if (numericRegex.test(username)) {
+              document.getElementById('username-error').textContent = 'Username should not consist only of numbers.';
+              return false;
+              }
+			  // Validate email
+			  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+			  if (!email || !emailRegex.test(email)) {
+				document.getElementById('email-error').textContent = 'Enter a valid email address.';
+				return false;
+			  }
+		  
+			  // Validate mobile
+			  const mobileRegex = /^[6-9]\d{9}$/;
+			  if (!mobile || !mobileRegex.test(mobile)) {
+				document.getElementById('mobile-error').textContent = 'Mobile number should be a 10-digit valid number';
+				return false;
+			  }
+		  
+			  // Validate password
+			  if (!password || password.length < 6) {
+				document.getElementById('password-error').textContent = 'Password should be at least 6 characters long.';
+				return false;
+			  }
+		  
+			  // Validate password match
+			  if (password !== cpassword) {
+				document.getElementById('password-mismatch').textContent = 'Passwords do not match.';
+				return false;
+			  }
+		  
+			  return true; // Return true if validation passes, false otherwise
+			}
+		  </script>
+		
+<style>
+	.error-message{
+		color: red;
+	}
+</style>
+
 	</body>
 
 <!-- Mirrored from caketheme.com/html/ruper/page-login.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2023 09:39:08 GMT -->

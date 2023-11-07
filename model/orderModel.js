@@ -26,13 +26,44 @@ const orderSchema = new mongoose.Schema({
         type: Number,
         default: 0,
       },
+      status: {
+        type: String,
+        enum: ['Placed', 'Shipped', 'Delivered', 'Cancelled'],
+        default: 'Placed',
+      },
     }],
   },
 
   deliveryAddress: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Address', // Reference to the Address model
-    required: true,
+    fullname: {
+      type: String,
+      required: true,
+    },
+    mobile: {
+      type: Number,
+      required: true,
+    },
+    housename: {
+      type: String,
+      required: true,
+    },
+    city: {
+      type: String,
+      required: true,
+    },
+    state: {
+      type: String,
+      required: true,
+    },
+    district: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    pin: {
+      type: String,
+      required: true,
+    },
   },
   paymentOption: {
     type: String,
@@ -47,11 +78,7 @@ const orderSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  status: {
-    type: String,
-    enum: ['Placed', 'Shipped', 'Delivered', 'Cancelled'],
-    default: 'Placed',
-  },
+
   // You can add more fields as needed, such as order items, order status, etc.
 });
 

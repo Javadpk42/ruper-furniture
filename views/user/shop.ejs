@@ -582,7 +582,7 @@
 													</div>
 												</div> -->
 												<div class="block-content">
-													<div class="product-cats-list">
+													<!-- <div class="product-cats-list">
 													  <ul>
 														<% categories.forEach(category => { %>
 														  <li>
@@ -590,7 +590,20 @@
 														  </li>
 														<% }); %>
 													  </ul>
-													</div>
+													</div> -->
+
+													<div class="product-cats-list">
+														<ul>
+														  <% categories.forEach(category => { %>
+															<li>
+															  <a href="/shop?category=<%= encodeURIComponent(category.category_name) %>">
+																<%= category.category_name %> <span class="count">0</span>
+															  </a>
+															</li>
+														  <% }); %>
+														</ul>
+													  </div>
+													  
 
 
 												

@@ -349,21 +349,25 @@
                           <td>
                             <a href="/admin/editproduct?id=<%= products[i]._id %>" class="btn btn-inverse-info">Edit</a>
                           </td>
+
+
+                          
+                          
                           <td>
                             <% if (products[i].is_listed === false) { %>
-                              <a href="/admin/unlistProduct?id=<%= products[i]._id %>">
-                                <button type="button" class="btn btn-inverse-success btn-fw">
-                                  List
-                                </button>
+                              <a href="javascript:void(0);" onclick="showConfirmationModal('<%= products[i]._id %>')">
+                                <button type="button" class="btn btn-inverse-success btn-fw">List</button>
                               </a>
                             <% } else { %>
-                              <a href="/admin/unlistProduct?id=<%= products[i]._id %>">
-                                <button type="button" class="btn btn-inverse-danger btn-fw">
-                                  Unlist
-                                </button>
+                              <a href="javascript:void(0);" onclick="showConfirmationModal('<%= products[i]._id %>')">
+                                <button type="button" class="btn btn-inverse-danger btn-fw">Unlist</button>
                               </a>
                             <% } %>
                           </td>
+                          
+
+
+                        
                         </tr>
                       <% } %>
                     <% } else { %>
@@ -374,9 +378,32 @@
                     <% } %>
                   </tbody>
                 </table>
+                <form id="unlistProductForm" action="/admin/unlistProduct" method="post">
+                  <input type="hidden" name="id" id="productIdInput" value="">
+                </form>
+                
               </div>
               
-
+              <div class="modal" id="confirmationModal" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Confirmation</h5>
+                      <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button> -->
+                    </div>
+                    <div class="modal-body">
+                      Are you sure you want to perform this action?
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancelAction">Cancel</button>
+                      <button type="button" class="btn btn-primary" id="confirmAction">Confirm</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
 
             </div>
           </div>
@@ -494,4 +521,29 @@
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="/public/admin/js/material-dashboard.min.js?v=3.0.0"></script>
+
+  <script>
+    function showConfirmationModal(productId) {
+      document.getElementById('productIdInput').value = productId;
+      document.getElementById('confirmationModal').style.display = 'block';
+    }
+  
+    document.getElementById('confirmAction').addEventListener('click', function () {
+      document.getElementById('unlistProductForm').submit();
+      document.getElementById('confirmationModal').style.display = 'none';
+    });
+  
+    document.getElementById('cancelAction').addEventListener('click', function () {
+      document.getElementById('confirmationModal').style.display = 'none';
+    });
+  
+    window.addEventListener('click', function (event) {
+      const modal = document.getElementById('confirmationModal');
+      if (event.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
+  </script>
+  
+
   <%-include("../adminlayouts/footer.ejs")-%>

@@ -13,40 +13,7 @@ const getProductDetails = async(id)=>{
 
 
 
-//===================load the Product Page==============================//
 
-// const productsLoad = async (req, res) => {
-//   try {
-//     let products = await Product.find({});
-//     res.render("products", { products: products });
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
-
-// const productsLoad = async (req, res) => {
-//   try {
-//     const search = req.query.search || ''; // Get search query from request parameters
-//     let products;
-
-//     if (search) {
-//       products = await Product.find({
-//         $or: [
-//           { product_name: { $regex: '.*' + search + '.*', $options: 'i' } },
-//           { category: { $regex: '.*' + search + '.*', $options: 'i' } },
-//         ],
-//       });
-//     } else {
-//       products = await Product.find({});
-//     }
-
-//     res.render("products", { products: products, search: search }); // Pass search query to the template
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).send("Internal Server Error");
-//   }
-// };
 
 const productsLoad = async (req, res) => {
   try {
@@ -98,7 +65,7 @@ const productsLoad = async (req, res) => {
 
 
 
-//==========================to load the add to product Page=======================//
+
 
 const addProductLoad = async (req, res) => {
   try {
@@ -110,7 +77,7 @@ const addProductLoad = async (req, res) => {
 };
 
 
-//===================to add the Product================================//
+
 
 const addProduct = async (req, res) => {
   try {
@@ -144,8 +111,22 @@ const addProduct = async (req, res) => {
 
 //===================to unlist the Product===========================//
 
+// const unlistProduct = async (req, res) => {
+//   let id = req.query.id;
+//   console.log(id);
+//   let product = await Product.findById(id);
+//   if (product) {
+//     product.is_listed = !product.is_listed;
+//     await product.save();
+//   }
+
+//   const products = await Product.find({});
+//   // res.render("products", { products: products });
+//   res.redirect("/admin/products");
+// };
+
 const unlistProduct = async (req, res) => {
-  let id = req.query.id;
+  let id = req.body.id; // Use req.body to get the product ID from the form submission
   console.log(id);
   let product = await Product.findById(id);
   if (product) {
@@ -154,23 +135,39 @@ const unlistProduct = async (req, res) => {
   }
 
   const products = await Product.find({});
-  // res.render("products", { products: products });
   res.redirect("/admin/products");
 };
 
+
+
 //==================to load the edit product page=================//
 
-const editProductLoad = async(req,res)=>{
+// const editProductLoad = async(req,res)=>{
+//   try {
+//     const categories = await Category.find({});
+//     const product = await getProductDetails(req.query.id)
+//     res.render('editproducts',{
+//       product:product,
+//       categories:categories})
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
+
+const editProductLoad = async (req, res) => {
   try {
     const categories = await Category.find({});
-    const product = await getProductDetails(req.query.id)
-    res.render('editproducts',{
-      product:product,
-      categories:categories})
+    const product = await getProductDetails(req.query.id);
+    res.render('editproducts', {
+      product: product,
+      categories: categories,
+    });
   } catch (error) {
     console.log(error);
   }
-}
+};
+
+
 
 const editProduct= async(req,res)=>{
   try {

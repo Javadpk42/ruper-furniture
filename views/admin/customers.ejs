@@ -305,6 +305,12 @@
                 </table>
               </div> -->
 
+
+
+
+
+
+
               <div class="table-responsive p-0">
                 <table class="table align-items-center mb-0">
                   <thead>
@@ -336,19 +342,23 @@
                               <%= new Date(userss[i].createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })%>
                             </span>
                           </td>
+
                           <td class="align-middle text-center text-sm">
-                            <% if( userss[i].is_verified === 1){ %>
-                              <a href="/admin/is_verified?id=<%= userss[i]._id %>">
-                                <h6 class="mb-0 text-sm"></h6>
-                                <button type="button" class="btn btn-success btn-md">Unblock</button>
-                              </a>
+                            <% if (userss[i].is_verified === false) { %>
+                                <a href="javascript:void(0);" onclick="showConfirmationModal('<%= userss[i]._id %>')">
+                                    <h6 class="mb-0 text-sm"></h6>
+                                    <button type="button" class="btn btn-success btn-md">Unblock</button>
+                                </a>
                             <% } else { %>
-                              <a href="/admin/is_verified?id=<%= userss[i]._id %>">
-                                <h6 class="mb-0 text-sm"></h6>
-                                <button type="button" class="btn btn-outline-secondary btn-md">Block</button>
-                              </a>
+                                <a href="javascript:void(0);" onclick="showConfirmationModal('<%= userss[i]._id %>')">
+                                    <h6 class="mb-0 text-sm"></h6>
+                                    <button type="button" class="btn btn-outline-secondary btn-md">Block</button>
+                                </a>
                             <% } %>
-                          </td>
+                        </td>
+                        
+
+                        
                         </tr>
                       <% } %>
                     <% } else { %>
@@ -359,7 +369,35 @@
                     <% } %>
                   </tbody>
                 </table>
+
+                <form id="blockUserForm" action="/admin/is_verified" method="POST">
+                  <!-- Hidden input to store user ID -->
+                  <input type="hidden" name="id" id="userIdInput" value="">
+                </form>
+                
+
               </div>
+
+              <!-- Add this in your HTML body section -->
+<div class="modal" id="confirmationModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title">Confirmation</h5>
+              <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button> -->
+          </div>
+          <div class="modal-body">
+              Are you sure you want to block/unblock this user?
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancelAction">Cancel</button>
+              <button type="button" class="btn btn-primary" id="confirmAction">Confirm</button>
+          </div>
+      </div>
+  </div>
+</div>
               
 
 
@@ -520,5 +558,64 @@
   <!-- Github buttons -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="/public/admin/js/material-dashboard.min.js?v=3.0.0"></script> -->
+  <script src="/public/admin/js/material-dashboard.min.js?v=3.0.0"></script> 
+
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha384-tsQFqpEReu7ZLhBV2VZlTQMH5dosP+XBiCAJWmzA9szlJf8aWlxK+pzweWE00g5P" crossorigin="anonymous"></script>
+
+
+
+  <!-- <script>
+    // Function to set the user ID and show the modal
+    function showConfirmationModal(userId) {
+        // Set the user ID to the hidden input field
+        document.getElementById('userIdInput').value = userId;
+        document.getElementById('confirmationModal').style.display = 'block';
+    }
+
+    // Handle the confirmation action without AJAX
+    document.getElementById('confirmAction').addEventListener('click', function () {
+        // Submit the form
+        document.getElementById('blockUserForm').submit();
+
+        // Close the modal
+        document.getElementById('confirmationModal').style.display = 'none';
+    });
+</script> -->
+
+<script>
+  // Function to set the user ID and show the modal
+  function showConfirmationModal(userId) {
+      // Set the user ID to the hidden input field
+      document.getElementById('userIdInput').value = userId;
+      document.getElementById('confirmationModal').style.display = 'block';
+  }
+
+  // Handle the confirmation action without AJAX
+  document.getElementById('confirmAction').addEventListener('click', function () {
+      // Submit the form
+      document.getElementById('blockUserForm').submit();
+
+      // Close the modal
+      document.getElementById('confirmationModal').style.display = 'none';
+  });
+
+  // Handle the cancel action
+  document.getElementById('cancelAction').addEventListener('click', function () {
+      // Close the modal
+      document.getElementById('confirmationModal').style.display = 'none';
+  });
+
+  // Close the modal if clicked outside the modal content
+  window.addEventListener('click', function (event) {
+      const modal = document.getElementById('confirmationModal');
+      if (event.target === modal) {
+          modal.style.display = 'none';
+      }
+  });
+</script>
+
+
+
+
   <%-include("../adminlayouts/footer.ejs")-%>

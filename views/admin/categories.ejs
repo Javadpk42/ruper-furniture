@@ -339,7 +339,20 @@
                             <p class="text-xs font-weight-bold mb-0"><%= categories[i].category_description %></p>
                             <p class="text-xs text-secondary mb-0"></p>
                           </td>
+
                           <td class="align-middle text-center text-sm">
+                            <% if (categories[i].is_listed === false) { %>
+                                <a href="javascript:void(0);" onclick="showConfirmationModal('<%= categories[i]._id %>')">
+                                    <button type="button" class="btn btn-inverse-success btn-fw">List</button>
+                                </a>
+                            <% } else { %>
+                                <a href="javascript:void(0);" onclick="showConfirmationModal('<%= categories[i]._id %>')">
+                                    <button type="button" class="btn btn-inverse-danger btn-fw">Unlist</button>
+                                </a>
+                            <% } %>
+                        </td>
+
+                          <!-- <td class="align-middle text-center text-sm">
                             <% if (categories[i].is_listed === false) { %>
                               <a href="/admin/unlistCategory?id=<%= categories[i]._id %>">
                                 <button type="button" class="btn btn-inverse-success btn-fw">
@@ -353,7 +366,7 @@
                                 </button>
                               </a>
                             <% } %>
-                          </td>
+                          </td> -->
                           <td class="align-middle">
                             <a href="/admin/editcategory?id=<%=categories[i]._id %>" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
                               Edit
@@ -369,6 +382,12 @@
                     <% } %>
                   </tbody>
                 </table>
+
+                <form id="listUnlistForm" action="/admin/unlistCategory" method="post">
+                  <!-- Hidden input to store category ID -->
+                  <input type="hidden" name="id" id="categoryIdInput" value="">
+                </form>
+                
               </div>
               
 
@@ -377,7 +396,25 @@
         </div>
       </div>
     
-    
+      <div class="modal" id="confirmationModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmation</h5>
+                    <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button> -->
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to perform this action?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancelAction">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="confirmAction">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
     
     
       <div class="d-flex justify-content-center">
@@ -501,4 +538,40 @@
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="/public/admin/js/material-dashboard.min.js?v=3.0.0"></script>
+
+
+
+  <script>
+    // Function to set the category ID and show the confirmation modal
+    function showConfirmationModal(categoryId) {
+        // Set the category ID to the hidden input field
+        document.getElementById('categoryIdInput').value = categoryId;
+        document.getElementById('confirmationModal').style.display = 'block';
+    }
+
+    // Handle the confirmation action without AJAX
+    document.getElementById('confirmAction').addEventListener('click', function () {
+        // Submit the form
+        document.getElementById('listUnlistForm').submit();
+
+        // Close the confirmation modal
+        document.getElementById('confirmationModal').style.display = 'none';
+    });
+
+    // Handle the cancel action
+    document.getElementById('cancelAction').addEventListener('click', function () {
+        // Close the modal
+        document.getElementById('confirmationModal').style.display = 'none';
+    });
+
+    // Close the modal if clicked outside the modal content
+    window.addEventListener('click', function (event) {
+        const modal = document.getElementById('confirmationModal');
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+</script>
+
+
   <%-include("../adminlayouts/footer.ejs")-%>

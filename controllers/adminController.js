@@ -1,5 +1,5 @@
+const adminModel = require("../model/adminModel")
 const userModel = require("../model/userModel")
-const adminModel = require("../model/userModel")
 
 const Category = require("../model/productModel").category;
 const { category } = require("../model/productModel");
@@ -39,16 +39,16 @@ const verifyLogin=async(req,res)=>{
       const email=req.body.email
       const password=req.body.password
 
-      const userData=await adminModel.findOne({email:email})
-      if(userData){
-          const passwordMatch=await bcrypt.compare(password,userData.password)
+      const adminData=await adminModel.findOne({email:email})
+      if(adminData){
+          const passwordMatch=await bcrypt.compare(password,adminData.password)
           if (passwordMatch) {
-              if (userData.is_admin===0) {
+              if (adminData.is_admin===0) {
                   res.render('login',{message:"Email and password is incorrect"})
               } else {
-                  req.session.admin_id=userData._id
+                  req.session.admin_id=adminData._id
                   res.redirect('/admin/dashboard')
-              }
+              } 
           } else {
               res.render('login',{message:"Email and password is incorrect"})
           }
@@ -69,66 +69,6 @@ const loaddashboard=async(req,res)=>{
     }
 }
 
-// const usersLoad = async (req,res)=>{
-//     try {
-//       let users= await getAllUserData() 
-//       res.render('customers',{userss:users})
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   }
-// const usersLoad = async (req, res) => {
-//   try {
-//     const { search } = req.query;
-//     let users;
-
-//     if (search) {
-//       users = await userModel.find({
-//         username: { $regex: '.*' + search + '.*', $options: 'i' },
-//       });
-//     } else {
-//       users = await getAllUserData();
-//     }
-
-//     res.render('customers', { userss: users });
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
-
-// const usersLoad = async (req, res) => {
-//   try {
-//     const { search } = req.query;
-//     let users;
-
-//     // Pagination settings
-//     const page = req.query.page || 1;
-//     const limit = 5;
-
-//     // Calculate skip value based on page and limit
-//     const skip = (page - 1) * limit;
-
-//     if (search) {
-//       // Fetch users with search and pagination
-//       users = await userModel
-//         .find({ username: { $regex: '.*' + search + '.*', $options: 'i' } })
-//         .skip(skip)
-//         .limit(limit);
-//     } else {
-//       // Fetch all users with pagination
-//       users = await userModel.find().skip(skip).limit(limit);
-//     }
-
-//     res.render('customers', {
-//       userss: users,
-//       currentPage: parseInt(page),
-//       totalPages: Math.ceil(users.length / limit),
-//     });
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
 
 const usersLoad = async (req, res) => {
   try {
@@ -168,47 +108,62 @@ const usersLoad = async (req, res) => {
   }
 };
 
+// const blockOrNot = async (req, res) => {
+//   try {
+//     const id = req.body.id; // Use req.body to get the user ID from the form submission
+//     const userData = await userModel.findOne({ _id: id });
 
+//     if (userData.is_verified === true) {
+//       await userModel.updateOne(
+//         { _id: id },
+//         { $set: { is_verified: false } }
+//       );
+//     } else {
+//       await userModel.updateOne({ _id: id }, { $set: { is_verified: true } });
+//     }
 
-  
-  const getAllUserData = async (req,res)=>{
-    return new Promise(async(resolve,reject)=>{
-      let userData = await userModel.find({})
-      resolve(userData)
-    })
+//     res.redirect("/admin/customers");
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).send("Internal Server Error"); // Handle the error appropriately
+//   }
+// }
+
+const blockOrNot = async (req, res) => {
+  try {
+    const id = req.body.id;
+    const userData = await userModel.findOne({ _id: id });
+
+    // Check if the user is currently logged in (session exists)
+    if (req.session && req.session.user_id && req.session.user_id.toString() === id.toString()) {
+      // Clear the session to log out the user
+      req.session.destroy((err) => {
+        if (err) {
+          console.error("Error destroying session:", err);
+        }
+      });
+    } 
+
+    // Update the is_verified status
+    if (userData.is_verified === true) {
+      await userModel.updateOne(
+        { _id: id },
+        { $set: { is_verified: false } }
+      );
+    } else {
+      await userModel.updateOne({ _id: id }, { $set: { is_verified: true } });
+    }
+
+    res.redirect("/admin/customers");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
   }
+};
+  
 
-  // const categoryLoad = async (req, res) => {
-  //   try {
-  //     let categories = await getAllCategoriesData();
-  //     res.render("categories", { categories: categories });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
   
-  // const categoryLoad = async (req, res) => {
-  //   try {
-  //     const search = req.query.search || ''; // Get search query from request parameters
-  //     let categories;
-  
-  //     if (search) {
-  //       categories = await Category.find({
-  //         $or: [
-  //           { category_name: { $regex: '.*' + search + '.*', $options: 'i' } },
-  //           { category_description: { $regex: '.*' + search + '.*', $options: 'i' } },
-  //         ],
-  //       });
-  //     } else {
-  //       categories = await Category.find({});
-  //     }
-  
-  //     res.render("categories", { categories: categories, search: search }); // Pass search query to the template
-  //   } catch (error) {
-  //     console.log(error);
-  //     res.status(500).send("Internal Server Error");
-  //   }
-  // };
+
   
   const categoryLoad = async (req, res) => {
     try {
@@ -257,47 +212,27 @@ const usersLoad = async (req, res) => {
     }
   };
   
-  
-  
 
-  const adminDashboard=async(req,res)=>{
-    try{
-        
-        var search=''
-        if(req.query.search){
-            search=req.query.search
-        }
-        const usersData=await User.find({is_admin:0,
-            $or:[
-                {name:{$regex:'.*'+search+'.*',$options:'i'}},
-                {email:{$regex:'.*'+search+'.*',$options:'i'}},
-                {mobile:{$regex:'.*'+search+'.*',$options:'i'}},
-            ]
-        })
-        console.log("DAsh board")
-        res.render('dashboard',{users:usersData})
+  const unlistCategory = async (req, res) => {
+    try {
+      const id = req.body.id; // Use req.body to get the category ID from the form submission
+      const category = await Category.findById(id);
+  
+      if (category) {
+        category.is_listed = !category.is_listed;
+        await category.save();
+      }
+  
+      const categories = await Category.find({});
+      res.redirect("/admin/categories");
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Internal Server Error"); // Handle the error appropriately
     }
-    catch(error){
-       console.log(error.message)
-    }
-}
-  
-  
-  
-  
-  //===========================get All the Categories===============================//
-  
-  const getAllCategoriesData = async (req, res) => {
-    return new Promise(async (resolve, reject) => {
-      let categoryData = await Category.find({});
-      resolve(categoryData);
-    });
   };
   
-  
-  //==============================load the add category Page===========================//
-  
-  
+
+
   const addcategoryLoad = async (req, res) => {
     try {
       res.render("addcategories");
@@ -306,14 +241,7 @@ const usersLoad = async (req, res) => {
     }
   };
 
-  
 
- 
-  
-  
-  
-  //=============================to add the category ===================//
-  
  
 
 const addCategory = async (req, res) => {
@@ -348,10 +276,10 @@ const addCategory = async (req, res) => {
 };
 
 
-
 const editCategoryLoad = async (req, res) => {
   try {
-    let categoryDetails = await takeOneUserData(req.query.id);
+    const categoryId = req.query.id;
+    const categoryDetails = await Category.find({ _id: categoryId });
     console.log(categoryDetails);
     res.render("editCategories", { categories: categoryDetails });
   } catch (error) {
@@ -359,18 +287,6 @@ const editCategoryLoad = async (req, res) => {
   }
 };
 
-//==================to take One User data=================================//
-
-const takeOneUserData = async (categoryId) => {
-  try {
-    let categoryDetails = await Category.find({ _id: categoryId });
-    return categoryDetails;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-//===================to Update the category===================================//
 
 const   updateCategoryData = async (req, res) => {
   try {
@@ -389,147 +305,63 @@ const   updateCategoryData = async (req, res) => {
   } catch (error) {
     console.log(error);
   }
-};
-
-
-const unlistCategory = async (req, res) => {
-  try {
-    const id = req.query.id;
-    const category = await Category.findById(id);
-
-    if (category) {
-      category.is_listed = !category.is_listed;
-      await category.save();
-    }
-
-    const categories = await Category.find({});
-    // res.render("categories", { categories: categories });
-    res.redirect("/admin/categories");
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-
-
-const blockOrNot = async (req, res) => {
-  try {
-    const id = req.query.id;
-    const userData = await userModel.findOne({ _id: id });
-    if (userData.is_verified == true) {
-      const List = await userModel.updateOne(
-        { _id: id },
-        { $set: { is_verified: false } }
-      );
-
-      // if (List) {
-      //   req.session.user_id = false;
-      // }
-      res.redirect("/admin/customers");
-    }
-    if (userData.is_verified == false) {
-      await userModel.updateOne({ _id: id }, { $set: { is_verified: true } });
-
-      res.redirect("/admin/customers");
-    }
-  } catch (error) { 
-    console.log(error);
-  }
 }; 
 
-// const blockOrNot = async (req, res) => {
+
+
+
+
+// const productLoadd = async (req, res) => {
 //   try {
-//     const id = req.query.id;
-//     const userData = await userModel.findOne({ _id: id });
+//       let products = await productModel.find().populate("category");
+//       const categories = await categoryModel.find();
+//       res.render('products', {
+//           productss: products,
+//           Category: categories,
+//       });
+//   } catch (error) {
+//       console.log(error);
+//   }
+// }
 
-//     // Display a confirmation dialog
-//     const confirmed = window.confirm(
-//       userData.is_verified
-//         ? "Are you sure you want to block this user?"
-//         : "Are you sure you want to unblock this user?"
-//     );
 
-//     if (!confirmed) {
-//       // If the user cancels the confirmation, do nothing
-//       res.redirect("/admin/customers");
-//       return;
-//     }
 
-//     if (userData.is_verified == true) {
-//       const List = await userModel.updateOne(
-//         { _id: id },
-//         { $set: { is_verified: false } }
-//       );
 
-//       if (List) {
-//         req.session.user_id = false;
+// const loadaddProduct=async(req,res)=>{
+//   try {
+//       res.render('addproduct')
+//   } catch (error) {
+//       console.log(error.message )
+//   }
+// }
+// const addProductd = async (req, res) => {
+//   try {
+//     const name = req.body.name;
+//     if (name.trim().length == 0) {
+//       res.redirect("/admin/products");
+//     } else {
+//       const already = await productModel.findOne({
+//         name: { $regex: name, $options: "i" },
+//       });
+//       if (already) {
+//         res.render("addproducts", { message: "The Product already exits" });
+//       } else {
+//         const productData = new productModel({ name: name });
+//         const addData = await productData.save();
+//         console.log(productData);
+//         console.log(addData);
+
+//         if (addData) {
+//           res.redirect("/admin/products");
+//         } else {
+//           res.render("addcategories", { message: "Something went Wrong" });
+//         }
 //       }
-//       res.redirect("/admin/customers");
-//     }
-
-//     if (userData.is_verified == false) {
-//       await userModel.updateOne({ _id: id }, { $set: { is_verified: true } });
-
-//       res.redirect("/admin/customers");
 //     }
 //   } catch (error) {
 //     console.log(error);
 //   }
 // };
-
-
-
-const productLoadd = async (req, res) => {
-  try {
-      let products = await productModel.find().populate("category");
-      const categories = await categoryModel.find();
-      res.render('products', {
-          productss: products,
-          Category: categories,
-      });
-  } catch (error) {
-      console.log(error);
-  }
-}
-
-
-
-
-const loadaddProduct=async(req,res)=>{
-  try {
-      res.render('addproduct')
-  } catch (error) {
-      console.log(error.message )
-  }
-}
-const addProductd = async (req, res) => {
-  try {
-    const name = req.body.name;
-    if (name.trim().length == 0) {
-      res.redirect("/admin/products");
-    } else {
-      const already = await productModel.findOne({
-        name: { $regex: name, $options: "i" },
-      });
-      if (already) {
-        res.render("addproducts", { message: "The Product already exits" });
-      } else {
-        const productData = new productModel({ name: name });
-        const addData = await productData.save();
-        console.log(productData);
-        console.log(addData);
-
-        if (addData) {
-          res.redirect("/admin/products");
-        } else {
-          res.render("addcategories", { message: "Something went Wrong" });
-        }
-      }
-    }
-  } catch (error) {
-    console.log(error);
-  }
-};
 
 
 
@@ -562,35 +394,7 @@ const updateproducts=async(req,res)=>{
   }
 }
 
-// const orderLoad=async(req,res)=>{
-//   try {
-//       res.render('orders')
-//   } catch (error) {
-//       console.log(error.message )
-//   }
-// }
-// const orderLoad = async (req, res) => {
-//   try {
-//     // Check if there is an active admin session
-//     // if (!req.session.admin_id) {
-//     //   return res.redirect('/admin/login?errors=Please log in to view');
-//     // }
 
-//     // Fetch all orders
-//     const orders = await Order.find({}).sort({ orderDate: -1 });
-
-//     // Check if orders data is not null or undefined
-//     if (orders) {
-//       res.render('orders', { orders });
-//     } else {
-//       console.log('Orders Data is null or undefined');
-//       res.render('orders', { orders: [] });
-//     }
-//   } catch (error) {
-//     console.log(error);
-//     res.render('orders', { orders: [], error: 'Error fetching orders data' });
-//   }
-// };
 
 const orderLoad = async (req, res) => {
   try {

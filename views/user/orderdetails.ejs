@@ -568,7 +568,9 @@
 															</thead>
 															<tbody>
 																
-                                                        <% orderedProducts.forEach(product => { %>
+                                                      
+															<% order.cart.products.forEach(product => { %>
+
 																<tr class="cart-item">		
 																	<td class="product-thumbnail">
 																		<a href="shop-details.html">
@@ -584,7 +586,7 @@
 																		<!-- <span class="price">$150.00</span> -->
 																		<%= product.productId.product_price.toFixed(2) %>
 																	</td>
-																	<td class="product-quantity">
+																	<td class="product-quantity ">
 																		<%= product.quantity %>
 																	</td>
 											
@@ -620,27 +622,22 @@
 													<h2>Delivery Address</h2>
 													<div>
 														<div class="cart-subtotal">
+
 															<div class="title">
+																<p><%= order.deliveryAddress.fullname %></p>
+																<p><%= order.deliveryAddress.housename %>, <%= order.deliveryAddress.city %></p>
+																<p>Phone number: <%= order.deliveryAddress.mobile %></p>
+															  </div>
+															  
 
-
-                                                               
-                                                                    
-                                                                    <p><%= address.fullname %></p>
-                                                                    <p><%= address.housename %>, <%= address.city %></p>
-                                                                    <p>Phone number: <%= address.mobile %></p>
-                                                                   
-                                                                        
-                                                                        
-                                                                   
-
-                                                            </div>
+														
 															
 														</div>
 														<div class="shipping-totals">
-															<div class="title">Payment Method</div>
+															<div class="title">Payment Method     :<%= order.paymentOption %></div>
 															<!-- <div> -->
 
-                                                                <p><%= order.paymentOption %></p>
+                                                                <p></p>
 																<!-- <ul class="shipping-methods custom-radio">
 																	<li>
 																		<input type="radio" name="shipping_method" data-index="0" value="free_shipping" class="shipping_method" checked="checked"><label>Free shipping</label>
@@ -655,10 +652,10 @@
 															<!-- </div> -->
 														</div>
 														<div class="order-total">
-															<div class="title">Total</div>
+															<div class="title">Total  :  <%= order.totalAmount %></div>
 															
-
-															<div  id="total">₹ <%= total.toFixed(2) %></div>
+															
+															
 														  </div>
 														  
 													</div>

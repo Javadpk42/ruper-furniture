@@ -456,57 +456,7 @@
 												<span class="count-wishlist">1</span>
 											</div>
 											
-											<!-- Cart -->
-											<!-- <div class="ruper-topcart dropdown light">
-												<div class="dropdown mini-cart top-cart">
-													<div class="remove-cart-shadow"></div>
-													<a class="dropdown-toggle cart-icon" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-														<div class="icons-cart"><i class="icon-large-paper-bag"></i><span class="cart-count">2</span></div>
-													</a>
-													<div class="dropdown-menu cart-popup">
-														<div class="cart-empty-wrap">
-															<ul class="cart-list">
-																<li class="empty">
-																	<span>No products in the cart.</span>
-																	<a class="go-shop" href="shop-grid-left.html">GO TO SHOP<i aria-hidden="true" class="arrow_right"></i></a>
-																</li>
-															</ul>
-														</div>
-														<div class="cart-list-wrap">
-															<ul class="cart-list ">
-																<li class="mini-cart-item">
-																	<a href="#" class="remove" title="Remove this item"><i class="icon_close"></i></a>
-																	<a href="shop-details.html" class="product-image"><img width="600" height="600" src="media/product/3.jpg" alt=""></a>
-																	<a href="shop-details.html" class="product-name">Chair Oak Matt Lacquered</a>		
-																	<div class="quantity">Qty: 1</div>
-																	<div class="price">$150.00</div>
-																</li>
-																<li class="mini-cart-item">
-																	<a href="#" class="remove" title="Remove this item"><i class="icon_close"></i></a>													
-																	<a href="shop-details.html" class="product-image"><img width="600" height="600" src="media/product/1.jpg" alt=""></a>
-																	<a href="shop-details.html" class="product-name">Zunkel Schwarz</a>
-																	<div class="quantity">Qty: 1</div>
-																	<div class="price">$100.00</div>						
-																</li>
-															</ul>
-															<div class="total-cart">
-																<div class="title-total">Total: </div>
-																<div class="total-price"><span>$100.00</span></div>
-															</div>
-															<div class="free-ship">
-																<div class="title-ship">Buy <strong>$400</strong> more to enjoy <strong>FREE Shipping</strong></div>
-																<div class="total-percent"><div class="percent" style="width:20%"></div></div>
-															</div>
-															<div class="buttons">
-																<a href="shop-cart.html" class="button btn view-cart btn-primary">View cart</a>
-																<a href="shop-checkout.html" class="button btn checkout btn-default">Check out</a>
-															</div>
-														</div>
-													</div>
-													
-												</div>
-											
-											</div> -->
+										
 											<div class="my-profile-box">
 												<a href="/profile" class="btn btn-outline-dark btn-sm">My Profile</a>
 											  </div>
@@ -545,54 +495,17 @@
 
 
 
+  
 
-
-
-												<!-- <table class="table-shopping-cart">
-													<tr class="table_head">
-													   
-														<th class="column-1">Product</th>
-														<th class="column-2">Name</th>
-														<th class="column-3">Price</th>
-														<th class="column-4">Quantity</th>
-													
-													</tr>
-													<% if (cart && cart.length > 0) { %>
-													<%cart.forEach((data,index)=>{%>
-													<tr class="table_row">
-														<td class="column-1">
-															<div class="how-itemcart1">
-																<img src="/public/products/images/<%=data.productId.images.image1%>" alt="IMG">
-															</div>
-														</td>
-														<td class="column-2"><%=data.productId.product_name%></td>
-														<td class="column-3">&#8377; <%=data.productId.product_price%></td>
-														<td class="column-4">
-															<div id="numbersdiv" class="wrap-num-product flex-w m-l-auto m-r-0">
-														
-																<a class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m " onclick="cartCount('<%=data.productId._id%>','<%=userId%>',-1)" >-</a>
-																<span class="mtext-104 cl3 txt-center num-product p-2" id="<%=data.productId._id%>"><%=data.quantity%></span>
-																<a class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m " onclick="cartCount('<%=data.productId._id%>','<%=userId%>', 1)" >+</a>
-																
-															</div>
-														</td>
-														<td class="column-5">
-															<a class=" btn btn-danger text-white " onclick="removeProduct('<%=data.productId._id%>')">Remove</a>
-														</td>
-													</tr>
-													  <%})%>
-													<%}else{%>
-														<tr>cart is empty</tr>
-													<%}%>
-						
-												</table> -->
-
-												<!-- cart.ejs -->
 
 
 
 												 <form class="cart-form" action="#" method="">
 													<div class="table-responsive">
+
+
+													
+
 														<table class="cart-items table" cellspacing="0">
 															<thead>
 																<tr>
@@ -603,123 +516,106 @@
 																	<th class="product-remove">&nbsp;</th>
 																</tr>
 															</thead>
+
 															<tbody>
+
+																
+
+
 																<% if (cart && cart.length > 0) { %>
-													<%cart.forEach((data,index)=>{%>
-																<tr class="cart-item">		
-																	<td class="product-thumbnail">
-																		<a href="shop-details.html">
-																			<!-- <img width="600" height="600" src="media/product/3.jpg" class="product-image" alt=""> -->
+																  <% cart.forEach((data, index) => { %>
+
+																	<tr class="cart-item <%= data.quantity > data.productId.stock ? 'out-of-stock' : '' %>" data-product-id="<%=data.productId._id%>">
+																		<td class="product-thumbnail">
+																		  <a href="shop-details.html">
 																			<img src="/public/products/images/<%=data.productId.images.image1%>" alt="IMG">
-																		</a>				
-																		<div class="product-name">
-																			<!-- <a href="shop-details.html">Chair Oak Matt Lacquered</a>								 -->
+																		  </a>              
+																		  <div class="product-name">
 																			<%=data.productId.product_name%>
-																		</div>
-																	</td>
-																	<td class="product-price">
-																		<!-- <span class="price">$150.00</span> -->
-																		<%=data.productId.product_price%>
-																	</td>
-																	<td class="product-quantity">
-																		<div class="quantity">
-																			<!-- <button type="button" class="minus">-</button>	
-																			<input type="number" class="qty" step="1" min="0" max="" name="quantity" value="2" title="Qty" size="4" placeholder="" inputmode="numeric" autocomplete="off">
-																			<button type="button" class="plus">+</button> -->
-																			<!-- <a class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m " onclick="cartCount('<%=data.productId._id%>','<%=userId%>',-1)" >-</a>
-																			<span class="mtext-104 cl3 txt-center num-product p-2" id="<%=data.productId._id%>"><%=data.quantity%></span>
-																			<a class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m " onclick="cartCount('<%=data.productId._id%>','<%=userId%>', 1)" >+</a> -->
-
-																			<!-- Assuming data.productId._id is the product ID and data.productId.stock is the available stock -->
+																		  </div>
+																		</td>
+																		<td class="product-price">
+																		  <%=data.productId.product_price%>
+																		</td>
+																		<td class="product-quantity">
+																		  <div class="quantity">
 																			<div class="column-4">
-																				<!-- <div id="numbersdiv" class="wrap-num-product flex-w m-l-auto m-r-0"> --> 
-
-																					<!-- <a class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m btn" onclick="cartCount('<%=data.productId._id%>','<%=userId%>',-1)" >-</a>
-																					<span class="mtext-104 cl3 txt-center num-product p-2" id="<%=data.productId._id%>" data-price="<%=data.productId.product_price%>"><%=data.quantity%></span>
-																					<a class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m btn " onclick="cartCount('<%=data.productId._id%>','<%=userId%>', 1)" >+</a> -->
-																					<a class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m btn" onclick="cartCount('<%=data.productId._id%>','<%=userId%>',-1)" >-</a>
-																					<span class="mtext-104 cl3 txt-center num-product p-2" id="<%=data.productId._id%>" data-price="<%=data.productId.product_price%>"><%=data.quantity%></span>
-																					<a class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m btn " onclick="cartCount('<%=data.productId._id%>','<%=userId%>', 1)" >+</a>
-																					
-
-																				<!-- </div> -->
+																			  <a class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m btn" onclick="cartCount('<%=data.productId._id%>','<%=userId%>',-1)" >-</a>
+																			  <span class="mtext-104 cl3 txt-center num-product p-2" id="<%=data.productId._id%>" data-price="<%=data.productId.product_price%>"><%=data.quantity%></span>
+																			  <a class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m btn " onclick="cartCount('<%=data.productId._id%>','<%=userId%>', 1)" >+</a>
 																			</div>
-  
-																		</div>
-																	</td>
-																	<!-- <td class="product-subtotal">
-																		<span>$300.00</span>
-																	</td> -->
-																	<!-- <td class="product-subtotal">
-																		<span>&#8377; <%= (parseFloat(data.productId.product_price) * data.quantity).toFixed(2) %></span>
-																	</td> -->
-
-																	<!-- <td class="product-subtotal" id="subtotal-<%=data.productId._id%>" data-price="<%=data.productId.product_price%>">
-																		<span>&#8377; <%= (parseFloat(data.productId.product_price) * data.quantity).toFixed(2) %></span>
-																	  </td> -->
-
-																	  <!-- Subtotal -->
-<td class="product-subtotal" id="subtotal-<%=data.productId._id%>" data-price="<%=data.productId.product_price%>">
-	<span>&#8377; <span id="subtotal-<%=data.productId._id%>"><%= (parseFloat(data.productId.product_price) * data.quantity).toFixed(2) %></span></span>
-  </td>
-  
+																		  </div>
+																		</td>
+																		<td class="product-subtotal" id="subtotal-<%=data.productId._id%>" data-price="<%=data.productId.product_price%>">
+																		  <span>&#8377; <span id="subtotal-<%=data.productId._id%>"><%= (parseFloat(data.productId.product_price) * data.quantity).toFixed(2) %></span></span>
+																		</td>
+																		<td><a href="" onclick="removeProduct('<%=data.productId._id%>'); return false;" style="color: red;">remove</a></td>
+																	  </tr>
 																	  
-																	
-																	<td class="product-remove">
-																		<!-- <a href="#" class="remove">×</a>								 -->
-																		<a class=" btn  text-white " onclick="removeProduct('<%=data.productId._id%>')">Remove</a>
-																	</td>
-																</tr>
-																<!-- <tr class="cart-item">		
-																	<td class="product-thumbnail">
+
+																	<!-- <tr class="cart-item <%= data.quantity > data.productId.stock ? 'out-of-stock' : '' %>">
+																	  <td class="product-thumbnail">
 																		<a href="shop-details.html">
-																			<img width="600" height="600" src="media/product/1.jpg" class="product-image" alt="">
+																		  <img src="/public/products/images/<%=data.productId.images.image1%>" alt="IMG">
 																		</a>				
 																		<div class="product-name">
-																			<a href="shop-details.html">Zunkel Schwarz</a>								
+																		  <%=data.productId.product_name%>
 																		</div>
-																	</td>
-																	<td class="product-price">
-																		<span>$180.00</span>
-																	</td>
-																	<td class="product-quantity">
+																	  </td>
+																	  <td class="product-price">
+																		<%=data.productId.product_price%>
+																	  </td>
+																	  <td class="product-quantity">
 																		<div class="quantity">
-																			<button type="button" class="minus">-</button>	
-																			<input type="number" class="qty" step="1" min="0" max="" name="quantity" value="1" title="Qty" size="4" placeholder="" inputmode="numeric" autocomplete="off">
-																			<button type="button" class="plus">+</button>
+																		  <div class="column-4">
+																			<a class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m btn" onclick="cartCount('<%=data.productId._id%>','<%=userId%>',-1)" >-</a>
+																			<span class="mtext-104 cl3 txt-center num-product p-2" id="<%=data.productId._id%>" data-price="<%=data.productId.product_price%>"><%=data.quantity%></span>
+																			<a class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m btn " onclick="cartCount('<%=data.productId._id%>','<%=userId%>', 1)" >+</a>
+																		  </div>
 																		</div>
-																	</td>
-																	<td class="product-subtotal">
-																		<span class="price">$180.00</span>
-																	</td>
-																	<td class="product-remove">
-																		<a href="#" class="remove">×</a>								
-																	</td>
-																</tr>
-																<tr>
-																	<td colspan="6" class="actions">
-																		<div class="bottom-cart">
-																			<div class="coupon">
-																				<input type="text" name="coupon_code" class="input-text" id="coupon-code" value="" placeholder="Coupon code"> 
-																				<button type="submit" name="apply_coupon" class="button" value="Apply coupon">Apply coupon</button>
-																			</div>
-																			<h2><a href="shop-grid-left.html">Continue Shopping</a></h2>
-																			<button type="submit" name="update_cart" class="button" value="Update cart">Update cart</button>
-																		</div>	
-																	</td>
-																</tr> -->
+																	  </td>
+																	  <td class="product-subtotal" id="subtotal-<%=data.productId._id%>" data-price="<%=data.productId.product_price%>">
+																		<span>&#8377; <span id="subtotal-<%=data.productId._id%>"><%= (parseFloat(data.productId.product_price) * data.quantity).toFixed(2) %></span></span>
+																	  </td>
+																
+<td><a href="" onclick="removeProduct('<%=data.productId._id%>'); return false;">remove</a></td>
 
-
-
-																<% }) %>
+																	  
+																	  
+																	</tr> -->
+																	<% if (data.quantity > data.productId.stock) { %>
+																	  <tr class="out-of-stock-message">
+																		<td colspan="5">
+																		  <p class="text-danger">Out of stock: <%= data.productId.product_name %></p>
+																		</td>
+																	  </tr>
+																	<% } %>
+																  <% }) %>
 																<% } else { %>
 																  <tr>
-																	<td colspan="4">Cart is empty</td>
+																	<td></td>
+																	<td></td>
+																	<td colspan="5" style="color: red;">Cart is empty</td>
+																	
+
+
+																	
 																  </tr>
 																<% } %>
+															  </tbody>
 
+															  <div class="empty-cart-message" style="display: none; text-align: center;">
+																<p style="color: red;">Your cart is empty. Start shopping now!</p>
 
-															</tbody>
+																<a href='/shop' style="background-color: rgb(17, 15, 15); color: rgb(227, 226, 226); padding: 10px 20px; border: none; cursor: pointer;">Continue Shopping</a>
+															
+															  </div>
+
+															
+															  
+															  
+
+												
 															
 														</table>
 													</div>
@@ -731,8 +627,7 @@
 													<div>
 														<div class="cart-subtotal">
 															<div class="title">Subtotal</div>
-															<!-- <div><span>&#8377; <%= total.toFixed(2) %></span></div> -->
-															<!-- <div  id="total">₹ <%= total.toFixed(2) %></div> -->
+														
 														</div>
 														<div class="shipping-totals">
 															<div class="title">Shipping</div>
@@ -752,7 +647,7 @@
 														</div>
 														<div class="order-total">
 															<div class="title">Total</div>
-															<!-- <div><span>&#8377; <%= total.toFixed(2) %></span></div> -->
+														
 
 															<div  id="total">₹ <%= total.toFixed(2) %></div>
 														  </div>
@@ -767,16 +662,7 @@
 											</div>
 										</div>
 									</div>
-									<!-- <div class="shop-cart-empty">
-										<div class="notices-wrapper">
-											<p class="cart-empty">Your cart is currently empty.</p>
-										</div>	
-										<div class="return-to-shop">
-											<a class="button" href="shop-grid-left.html">
-												Return to shop		
-											</a>
-										</div>
-									</div> -->
+								
 								</div>
 							</div>
 						</div><!-- #content -->
@@ -1134,50 +1020,209 @@
 
 <!-- //ajax -->
 <!-- Your existing HTML code for the cart page -->
+
+
+
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+
 <script>
-    // function removeProduct(proId){
-    //        $.ajax({
-    //         url:'/remove-product',
-    //         method:'post',
-    //         encoded:true,
-    //         data:{
-    //             product:proId
-    //         }
-    //        }).done((data)=>{
-    //         if(data){
-            
-    //         swal('Item removed')
-    //         location.reload()
-    //         }else{
-    //             res.json({action:failed})
-    //         }
-    //        })
-    // }
 
-	function removeProduct(proId) {
-  $.ajax({
-    url: '/remove-product',
-    method: 'post',
-    encoded: true,
-    data: {
-      product: proId,
-    },
-  }).done((data) => {
-    if (data.success) {
-      // Update the total on the page
-      updateTotal();
 
-      // Optionally, update other UI elements or take additional actions
-      swal('Item removed');
-      location.reload();
-    } else {
-      // Handle unsuccessful removal
-      swal('Error removing item');
+
+// function removeProduct(proId) {
+//   // Display a confirmation dialog
+//   Swal.fire({
+//     title: 'Are you sure?',
+//     text: 'You won\'t be able to revert this!',
+//     icon: 'warning',
+//     showCancelButton: true,
+//     confirmButtonColor: '#3085d6',
+//     cancelButtonColor: '#d33',
+//     confirmButtonText: 'Yes, remove it!'
+//   }).then((result) => {
+//     // Check if the user confirmed the action
+//     if (result.isConfirmed) {
+//       // User confirmed, proceed with removal
+//       $.ajax({
+//         url: '/remove-product',
+//         method: 'post',
+//         encoded: true,
+//         data: {
+//           product: proId,
+//         },
+//       }).done((data) => {
+//         if (data.success) {
+//           // Remove the corresponding row from the table
+//           const rowToRemove = document.querySelector(`.cart-item[data-product-id="${proId}"]`);
+//           if (rowToRemove) {
+//             rowToRemove.remove();
+//           }
+
+//           // Update the total on the page
+//           updateTotal();
+
+//           // Optionally, update other UI elements or take additional actions
+//           Swal.fire(
+//             'Removed!',
+//             'Your product has been removed.',
+//             'success'
+//           );
+//         } else {
+//           // Handle unsuccessful removal
+//           Swal.fire(
+//             'Error!',
+//             'Failed to remove the product.',
+//             'error'
+//           );
+//         }
+//       });
+//     }
+//     // If the user clicked "Cancel", do nothing
+//   });
+// }
+
+
+
+
+// function removeProduct(proId) {
+//   // Display a confirmation dialog
+//   Swal.fire({
+//     title: 'Are you sure?',
+//     text: 'You won\'t be able to revert this!',
+//     icon: 'warning',
+//     showCancelButton: true,
+//     confirmButtonColor: '#3085d6',
+//     cancelButtonColor: '#d33',
+//     confirmButtonText: 'Yes, remove it!'
+//   }).then((result) => {
+//     // Check if the user confirmed the action
+//     if (result.isConfirmed) {
+//       // User confirmed, proceed with removal
+//       $.ajax({
+//         url: '/remove-product',
+//         method: 'post',
+//         encoded: true,
+//         data: {
+//           product: proId,
+//         },
+//       }).done((data) => {
+//         if (data.success) {
+//           // Remove the corresponding row from the table
+//           const rowToRemove = document.querySelector(`.cart-item[data-product-id="${proId}"]`);
+//           if (rowToRemove) {
+//             rowToRemove.remove();
+//           }
+
+//           // Update the total on the page
+//           updateTotal();
+
+//           // Check if the cart is empty and display the empty cart message
+//           const cartIsEmpty = document.querySelectorAll('.cart-item').length === 0;
+//           const emptyCartMessage = document.querySelector('.empty-cart-message');
+//           if (cartIsEmpty && emptyCartMessage) {
+//             emptyCartMessage.style.display = 'block';
+//           }
+
+//           // Optionally, update other UI elements or take additional actions
+//           Swal.fire(
+//             'Removed!',
+//             'Your product has been removed.',
+//             'success'
+//           );
+//         } else {
+//           // Handle unsuccessful removal
+//           Swal.fire(
+//             'Error!',
+//             'Failed to remove the product.',
+//             'error'
+//           );
+//         }
+//       });
+//     }
+//     // If the user clicked "Cancel", do nothing
+//   });
+// }
+
+
+function removeProduct(proId) {
+  // Display a confirmation dialog
+  Swal.fire({
+    title: 'Are you sure?',
+    text: 'You won\'t be able to revert this!',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, remove it!'
+  }).then((result) => {
+    // Check if the user confirmed the action
+    if (result.isConfirmed) {
+      // User confirmed, proceed with removal
+      $.ajax({
+        url: '/remove-product',
+        method: 'post',
+        encoded: true,
+        data: {
+          product: proId,
+        },
+      }).done((data) => {
+        if (data.success) {
+          // Remove the corresponding row from the table
+          const rowToRemove = document.querySelector(`.cart-item[data-product-id="${proId}"]`);
+          if (rowToRemove) {
+            rowToRemove.remove();
+          }
+
+          // Update the total on the page
+          updateTotal();
+
+          // Check if the cart is empty and display the empty cart message
+          const cartItems = document.querySelectorAll('.cart-item');
+          const emptyCartMessage = document.querySelector('.empty-cart-message');
+
+          if (cartItems.length === 0) {
+            // If there are no cart items, hide both the tbody and thead
+            const tbody = document.querySelector('tbody');
+            const thead = document.querySelector('thead');
+            if (tbody) {
+              tbody.style.display = 'none';
+            }
+            if (thead) {
+              thead.style.display = 'none';
+            }
+
+            // Display the empty cart message
+            if (emptyCartMessage) {
+              emptyCartMessage.style.display = 'block';
+            }
+          }
+
+          // Optionally, update other UI elements or take additional actions
+          Swal.fire(
+            'Removed!',
+            'Your product has been removed.',
+            'success'
+          );
+        } else {
+          // Handle unsuccessful removal
+          Swal.fire(
+            'Error!',
+            'Failed to remove the product.',
+            'error'
+          );
+        }
+      });
     }
+    // If the user clicked "Cancel", do nothing
   });
 }
+
+
 
 
 

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<!-- Design by foolishdeveloper.com -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pure javascript image zoom </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <style media="screen">
+    figure.zoom {
+  background-position: 50% 50%;
+  position: relative;
+  margin: 150px auto;
+  border: 5px solid white;
+  box-shadow: -1px 5px 15px black;
+  height: 300px;
+  width: 500px;
+  overflow: hidden;
+  cursor: zoom-in;
+}
+figure.zoom img:hover {
+  opacity: 0;
+}
+figure.zoom img {
+  transition: opacity 0.5s;
+  display: block;
+  width: 100%;
+}
+  </style>
+  <title>Document</title>
+</head>
+<body>
+  <figure class="zoom" onmousemove="zoom(event)" style="background-image: url(https://i.pinimg.com/originals/2b/de/de/2bdede0647e3cdf75b44ea33723201d9.jpg)">
+  <img src="https://i.pinimg.com/originals/2b/de/de/2bdede0647e3cdf75b44ea33723201d9.jpg" />
+</figure>
+<script type="text/javascript">
+function zoom(e){
+  var zoomer = e.currentTarget;
+  e.offsetX ? offsetX = e.offsetX : offsetX = e.touches[0].pageX
+  e.offsetY ? offsetY = e.offsetY : offsetX = e.touches[0].pageX
+  x = offsetX/zoomer.offsetWidth*100
+  y = offsetY/zoomer.offsetHeight*100
+  zoomer.style.backgroundPosition = x + '% ' + y + '%';
+}
+</script>
+</body>
+</html>

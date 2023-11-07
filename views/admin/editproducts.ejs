@@ -250,32 +250,34 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group row">
+
                       <div class="col-sm-12">
                         <label class="col-sm-3 col-form-label">Categories</label>
-                        <select name="frame_shape" class="form-control text-dark" required>
-                          <!-- <option value="<%= product.frame_shape %>" selected><%= product.frame_shape %></option> -->
-                          <!-- <option <% if(product.frame_shape=="Round"){%>selected<%}%> >Round</option> -->
-                          <% for(i in categories){%>
-                            <option <% if(product.categories=categories[i].category_name ){%>selected<%}%>
-                                <% if(categories[i].block==1) {%>
-                                  disabled
-                                  <%}%>
-                                    ><%= categories[i].category_name %>
+                        <select name="categories" class="form-control text-dark" required>
+                          <% categories.forEach(category => { %>
+                            <option <%= product.category === category.category_name ? 'selected' : '' %> <%= category.is_listed ? '' : 'disabled' %>>
+                              <%= category.category_name %>
                             </option>
-                            <%}%>
+                          <% }); %>
                         </select>
-                      </div>
+                        
+                        <!-- <select name="categories" class="form-control text-dark" required>
+                  
+                            <% for (var i in categories) { %>
+                                <option <% if (product.categories === categories[i].category_name) { %>selected<% } %>
+                                        <% if (categories[i].block == 1) { %>disabled<% } %>>
+                                    <%= categories[i].category_name %>
+                                </option>
+                            <% } %>
+                        </select> -->
+                    </div>
+                    
+
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group row">
-                      <!-- <div class="col-sm-12">
-                        <label class="col-sm-3 col-form-label">Gender</label>
-                        <select name="gender" class="form-control text-light" required>
-                          <option <% if(product.gender=="male" ){%>selected<%}%> >Male</option>
-                          <option <% if(product.gender=="Women" ){%>selected<%}%> >Women</option>
-                        </select>
-                      </div> -->
+                 
                     </div>
                   </div>
                 </div>
@@ -300,18 +302,78 @@
               </div>
               
                 <div class="">
-                  <!-- <label class="col-sm-3 col-form-label">Images</label> -->
+               
                   <div class="row d-flex justify-content-center ">
     
                    
-    
-    
+
                     <!-- Image Upload 1 -->
-                    <div class="col-lg-3 col-md-6">
+<div class="col-lg-3">
+  <div class="rounded-image-preview">
+    <label for="imageInput1" class="image-label">Image 1
+      <div class="rounded-image-preview">
+        <img id="imagePreview1" src="/public/products/images/<%= product.images.image1 %>" alt="Preview" style="max-width: 50%; max-height: 50%;" />
+      </div>
+      <input name="image1" type="file" accept="image/*" id="imageInput1" class="imageInput"
+        onchange="updateImagePreviewInstant(this, 'imagePreview1', 'removeButton1')">
+    </label>
+  </div>
+  <button type="button" style="display: none;" class="remove-button" id="removeButton1"
+    onclick="removeImagePreview('imagePreview1', '/products/images/<%= product.images.image1 %>', 'removeButton1')">Remove</button>
+</div>
+
+<!-- Image Upload 2 -->
+<div class="col-lg-3">
+  <div class="rounded-image-preview">
+    <label for="imageInput2" class="image-label">Image 2
+      <div class="rounded-image-preview">
+        <img id="imagePreview2" src="/public/products/images/<%= product.images.image2 %>" alt="Preview" style="max-width: 50%; max-height: 50%;" />
+      </div>
+      <input name="image2" type="file" accept="image/*" id="imageInput2" class="imageInput"
+        onchange="updateImagePreviewInstant(this, 'imagePreview2', 'removeButton2')">
+    </label>
+  </div>
+  <button type="button" style="display: none;" class="remove-button" id="removeButton2"
+    onclick="removeImagePreview('imagePreview2', '/products/images/<%= product.images.image2 %>', 'removeButton2')">Remove</button>
+</div>
+
+<!-- Repeat similar code for Image Upload 3 and 4 with unique IDs -->
+<div class="col-lg-3">
+  <div class="rounded-image-preview">
+    <label for="imageInput3" class="image-label">Image 3
+      <div class="rounded-image-preview">
+        <img id="imagePreview3" src="/public/products/images/<%= product.images.image3 %>" alt="Preview" style="max-width: 50%; max-height: 50%;" />
+      </div>
+      <input name="image3" type="file" accept="image/*" id="imageInput3" class="imageInput"
+        onchange="updateImagePreviewInstant(this, 'imagePreview3', 'removeButton3')">
+    </label>
+  </div>
+  <button type="button" style="display: none;" class="remove-button" id="removeButton3"
+    onclick="removeImagePreview('imagePreview3', '/products/images/<%= product.images.image3 %>', 'removeButton3')">Remove</button>
+</div>
+
+<div class="col-lg-3">
+  <div class="rounded-image-preview">
+    <label for="imageInput4" class="image-label">Image 4
+      <div class="rounded-image-preview">
+        <img id="imagePreview4" src="/public/products/images/<%= product.images.image4 %>" alt="Preview" style="max-width: 50%; max-height: 50%;" />
+      </div>
+      <input name="image4" type="file" accept="image/*" id="imageInput4" class="imageInput"
+        onchange="updateImagePreviewInstant(this, 'imagePreview4', 'removeButton4')">
+    </label>
+  </div>
+  <button type="button" style="display: none;" class="remove-button" id="removeButton4"
+    onclick="removeImagePreview('imagePreview4', '/products/images/<%= product.images.image4 %>', 'removeButton4')">Remove</button>
+</div>
+
+    
+    
+                    
+                    <!-- <div class="col-lg-3">
                       <div class="rounded-image-preview">
                         <label for="imageInput1" class="image-label">Image 1
                           <div class="rounded-image-preview">
-                            <img id="imagePreview1" src="/public/products/images/<%= product.images.image1 %>" alt="Preview" />
+                            <img id="imagePreview1" src="/public/products/images/<%= product.images.image1 %>" alt="Preview" style="max-width: 50%; max-height: 50%;" />
                           </div>
                           <input name="image1" type="file" accept="image/*" id="imageInput1" class="imageInput"
                             onchange="updateImagePreview(this, 'imagePreview1', '/products/images/<%= product.images.image1 %>', 'removeButton1')">
@@ -321,12 +383,12 @@
                         onclick="removeImagePreview('imagePreview1', '/products/images/<%= product.images.image1 %>', 'removeButton1')">Remove</button>
                     </div>
     
-                    <!-- Image Upload 2 -->
-                    <div class="col-lg-3 col-md-6">
+                    
+                    <div class="col-lg-3">
                       <div class="rounded-image-preview">
                         <label for="imageInput2" class="image-label">Image 2
                           <div class="rounded-image-preview">
-                            <img id="imagePreview2" src="/public/products/images/<%= product.images.image2 %>" alt="Preview" />
+                            <img id="imagePreview2" src="/public/products/images/<%= product.images.image2 %>" alt="Preview" style="max-width: 50%; max-height: 50%;" />
                           </div>
                           <input name="image2" type="file" accept="image/*" id="imageInput2" class="imageInput"
                             onchange="updateImagePreview(this, 'imagePreview2', '/products/images/<%= product.images.image2 %>', 'removeButton2')">
@@ -335,12 +397,12 @@
                       <button type="button" style="display: none;" class="remove-button" id="removeButton2"
                         onclick="removeImagePreview('imagePreview2', '/products/images/<%= product.images.image2 %>', 'removeButton2')">Remove</button>
                     </div>
-                    <!-- Repeat similar code for Image Upload 3 and 4 with unique IDs -->
-                    <div class="col-lg-3 col-md-6">
+                  
+                    <div class="col-lg-3">
                       <div class="rounded-image-preview">
                         <label for="imageInput3" class="image-label">Image 3
                           <div class="rounded-image-preview">
-                            <img id="imagePreview3" src="/public/products/images/<%= product.images.image3 %>" alt="Preview" />
+                            <img id="imagePreview3" src="/public/products/images/<%= product.images.image3 %>" alt="Preview" style="max-width: 50%; max-height: 50%;" />
                           </div>
                           <input name="image3" type="file" accept="image/*" id="imageInput3" class="imageInput"
                             onchange="updateImagePreview(this, 'imagePreview3', '/products/images/<%= product.images.image3 %>', 'removeButton3')">
@@ -350,11 +412,11 @@
                         onclick="removeImagePreview('imagePreview3', '/products/images/<%= product.images.image3 %>', 'removeButton3')">Remove</button>
                     </div>
     
-                    <div class="col-lg-3 col-md-6">
+                    <div class="col-lg-3">
                       <div class="rounded-image-preview">
                         <label for="imageInput4" class="image-label">Image 4
                           <div class="rounded-image-preview">
-                            <img id="imagePreview4" src="/public/products/images/<%= product.images.image4 %>" alt="Preview" />
+                            <img id="imagePreview4" src="/public/products/images/<%= product.images.image4 %>" alt="Preview"style="max-width: 50%; max-height: 50%;"  />
                           </div>
                           <input name="image4" type="file" accept="image/*" id="imageInput4" class="imageInput"
                             onchange="updateImagePreview(this, 'imagePreview4', '/products/images/<%= product.images.image4 %>', 'removeButton4')">
@@ -362,47 +424,11 @@
                       </div>
                       <button type="button" style="display: none;" class="remove-button" id="removeButton4"
                         onclick="removeImagePreview('imagePreview4', '/products/images/<%= product.images.image4 %>', 'removeButton4')">Remove</button>
-                    </div>
-    
-    
-    
-                    <!-- <div class="col-lg-3 col-md-6 rounded-image-preview">
-                        <label for="imageInput1" class="image-label">Image 1
-                          <div class="rounded-image-preview">
-                            <img id="imagePreview1"
-                              src="/products/images/<%= product.images.image1 %>"
-                              alt="Preview" />
-                          </div>
-                          <input name="image1" type="file" accept="image/*" id="imageInput1" class="imageInput" >
-                        </label>
-                      </div> -->
-    
-                    <!-- <div class="col-lg-3 col-md-6 rounded-image-preview ">
-                      <label for="imageInput2" class="image-label ">Image 2
-                        <div class="rounded-image-preview">
-                          <img id="imagePreview2" src="/products/images/<%= product.images.image2 %>" alt="Preview" />
-                        </div>
-                        <input name="image2" type="file" accept="image/*" id="imageInput2" class="imageInput">
-                      </label>
-                    </div>
-    
-                    <div class="col-lg-3 col-md-6 rounded-image-preview">
-                      <label for="imageInput3" class="image-label">Image 3
-                        <div class="rounded-image-preview">
-                          <img id="imagePreview3" src="/products/images/<%= product.images.image3 %>" alt="Preview" />
-                        </div>
-                        <input name="image3" type="file" accept="image/*" id="imageInput3" class="imageInput">
-                      </label>
-                    </div>
-    
-                    <div class="col-lg-3 col-md-6 rounded-image-preview">
-                      <label for="imageInput4" class="image-label">Image 4
-                        <div class="rounded-image-preview">
-                          <img id="imagePreview4" src="/products/images/<%= product.images.image4 %>" alt="Preview" />
-                        </div>
-                        <input name="image4" type="file" accept="image/*" id="imageInput4" class="imageInput">
-                      </label>
                     </div> -->
+    
+    
+    
+                  
     
                   </div>
     
@@ -561,4 +587,29 @@
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="/public/admin/js/material-dashboard.min.js?v=3.0.0"></script>
+
+
+
+  <script>
+    function updateImagePreviewInstant(input, previewId, removeButtonId) {
+      const preview = document.getElementById(previewId);
+      // const removeButton = document.getElementById(removeButtonId);
+
+      const file = input.files[0];
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          preview.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+        removeButton.style.display = 'inline-block';
+      } else {
+        preview.src = '';
+        removeButton.style.display = 'none';
+      }
+    }
+  </script>
+
+
   <%-include("../adminlayouts/footer.ejs")-%>
