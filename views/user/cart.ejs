@@ -533,6 +533,12 @@
 																		  <div class="product-name">
 																			<%=data.productId.product_name%>
 																		  </div>
+
+
+
+																		
+
+																		  
 																		</td>
 																		<td class="product-price">
 																		  <%=data.productId.product_price%>
@@ -550,6 +556,16 @@
 																		  <span>&#8377; <span id="subtotal-<%=data.productId._id%>"><%= (parseFloat(data.productId.product_price) * data.quantity).toFixed(2) %></span></span>
 																		</td>
 																		<td><a href="" onclick="removeProduct('<%=data.productId._id%>'); return false;" style="color: red;">remove</a></td>
+
+																		<% if (data.quantity > data.productId.stock) { %>
+																			<!-- <tr class="out-of-stock-message"> -->
+																			  <td >
+																				<span class="text-danger">Out of stock: <%= data.productId.product_name %></span>
+																			  </td>
+																			<!-- </tr> -->
+																		  <% } %>
+
+
 																	  </tr>
 																	  
 
@@ -583,13 +599,13 @@
 																	  
 																	  
 																	</tr> -->
-																	<% if (data.quantity > data.productId.stock) { %>
+																	<!-- <% if (data.quantity > data.productId.stock) { %>
 																	  <tr class="out-of-stock-message">
 																		<td colspan="5">
 																		  <p class="text-danger">Out of stock: <%= data.productId.product_name %></p>
 																		</td>
 																	  </tr>
-																	<% } %>
+																	<% } %> -->
 																  <% }) %>
 																<% } else { %>
 																  <tr>

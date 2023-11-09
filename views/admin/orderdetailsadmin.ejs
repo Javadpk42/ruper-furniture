@@ -236,81 +236,53 @@
             <div class="card-body px-0 pb-2">
              
 
-               <div class="table-responsive p-0">
+              <div class="table-responsive p-0">
                 <table class="table">
                   <thead>
                     <tr>
-                      <th>Order ID</th>
-                      <th>Username</th>
-                      <th>Address</th>
-                      <th>Order Date</th>
-                      <th>Payment Method</th>
-                      <th>Total Amount</th>
+                      <th>Index No</th>
+                      <th>Product Name</th>
+                      <th>Image</th>
+                      <th>Price</th>
+                      <th>Quantity</th>
+                      <th>Expected Delivery</th>
+                      <th>Status</th>
                       <th></th>
-                      <!-- <th>Address</th>
-                      <th>Ordered Products</th> -->
-                      <!-- <th></th> -->
                     </tr>
                   </thead>
                   <tbody>
-                    <% if (orders.length > 0) { %>
-                      <!-- Loop through and display orders -->
-                      <% for (let i = 0; i < orders.length; i++) { %>
-                        <tr>
-                          <td><%= orders[i]._id %></td>
-                          <td><%= orders[i].user.username%></td>
-                          <td>
-                            <%= orders[i].deliveryAddress.fullname %><br>
-                            <%= orders[i].deliveryAddress.housename %>, <%= orders[i].deliveryAddress.city %><br>
-                            Phone: <%= orders[i].deliveryAddress.mobile %>
-                          </td>
-                          <td><%= orders[i].orderDate.toDateString() %></td>
-                          <td><%= orders[i].paymentOption %></td>
-                          <td>$<%= orders[i].totalAmount.toFixed(2) %></td>
-                          <td><td><a href="/admin/orderdetails/<%= orders[i]._id %>" class="btn-small d-block">View Details</a></td></td>
-                          <!-- <td><%= orders[i].status %></td>
-                          <td>
-                            <form action="/admin/updateOrderStatus/<%= orders[i]._id %>" method="post">
-                         
-                              <select name="status" id="status">
-                                <option value="Placed" <%= orders[i].status === 'Placed' ? 'selected' : '' %>>Placed</option>
-                                <option value="Shipped" <%= orders[i].status === 'Shipped' ? 'selected' : '' %>>Shipped</option>
-                                <option value="Delivered" <%= orders[i].status === 'Delivered' ? 'selected' : '' %>>Delivered</option>
-                                <option value="Cancelled" <%= orders[i].status === 'Cancelled' ? 'selected' : '' %>>Cancelled</option>
-                              </select>
-                              <button type="submit">Update Status</button>
-                            </form>
-                          </td> -->
-                          <!-- <td>
-                            <% if (orders[i].address) { %>
-                              <%= orders[i].address.fullname %><br>
-                              <%= orders[i].address.housename %>, <%= orders[i].address.city %><br>
-                              Phone: <%= orders[i].address.mobile %>
-                            <% } else { %>
-                              Address not available
-                            <% } %>
-                          </td>
-                          <td>
-                            
-                            <% for (let j = 0; j < orders[i].cart.products.length; j++) { %>
-                              <p><%= orders[i].cart.products[j].productId.product_name %> x <%= orders[i].cart.products[j].quantity %></p>
-                            <% } %>
-                          </td> -->
-                          <!-- <td>
-                          
-                            <a href="/admin/viewOrder?id=<%= orders[i]._id %>">View Details</a>
-                          </td> -->
-                        </tr>
-                      <% } %>
-                    <% } else { %>
-                      <!-- Display no data placeholder when there are no results -->
+                    <% order.cart.products.forEach((product, index) => { %>
                       <tr>
-                        <td colspan="7" class="text-center">No orders found.</td>
+                        <td><%= index + 1 %></td>
+                        <td><%= product.productId.product_name %></td>
+                        <td><img src="/public/products/images/<%= product.productId.images.image1 %>" alt="<%= product.productId.product_name %>" width="50" height="50"></td>
+                        <td>$<%= product.productId.product_price %></td>
+                        <td><%= product.quantity %></td>
+                        <!-- <td><%= product.expectedDelivery %></td> -->
+                        <td><%= product.orderStatus %></td>
+                        <td>
+                          <form action="/admin/updateOrderStatus/<%= product._id %>" method="post">
+                            <select name="status" id="status">
+                              <option value="Placed" <%= product.orderStatus === 'Placed' ? 'selected' : '' %>>Placed</option>
+                              <option value="Shipped" <%= product.orderStatus === 'Shipped' ? 'selected' : '' %>>Shipped</option>
+                              <option value="Out for delivery" <%= product.orderStatus === 'Out for delivery' ? 'selected' : '' %>>Out for delivery</option>
+                              <option value="Delivered" <%= product.orderStatus === 'Delivered' ? 'selected' : '' %>>Delivered</option>
+                              <option value="Cancelled" <%= product.orderStatus === 'Cancelled' ? 'selected' : '' %>>Cancelled</option>
+                            </select>
+                            <button type="submit">Update Status</button>
+                          </form>
+                        </td>
                       </tr>
-                    <% } %>
+                    <% }); %>
                   </tbody>
+                  
                 </table>
               </div>
+              
+              
+              
+              
+              
               
 
 

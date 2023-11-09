@@ -47,7 +47,8 @@ admin_route.get('/editproduct',adminAuth.isAdminLogin,productController.editProd
 admin_route.post('/editproduct',fileUpload.productImagesUpload,productController.editProduct)
 
 admin_route.get('/orders',adminAuth.isAdminLogin,adminController.orderLoad)
-admin_route.post('/updateOrderStatus/:orderId', adminAuth.isAdminLogin, adminController.updateOrderStatus);
+admin_route.get('/orderdetails/:orderId', adminController.orderDetails); 
+admin_route.post('/updateOrderStatus/:orderId', adminController.updateOrderStatus);
  
 
 module.exports=admin_route;

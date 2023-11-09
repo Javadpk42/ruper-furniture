@@ -31,11 +31,139 @@
 		<!-- Site Stylesheet -->
 		<link rel="stylesheet" href="/public/usernew/assets/css/app.css" type="text/css">
 		<link rel="stylesheet" href="/public/usernew/assets/css/responsive.css" type="text/css">
+
+
+
+		
 		
 		<!-- Google Web Fonts -->
 		<link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@100;200;300;400;500;600;700&amp;display=swap" rel="stylesheet">
 		<link href="https://fonts.googleapis.com/css?family=EB+Garamond:100,100italic,200,200italic,300,300italic,400,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic&amp;display=swap" rel="stylesheet">
+	
+<style>
+	/* progress bar */
+
+
+   /* delivery progress bar  */
+  
+   :-moz-any-link:focus {
+  outline: 0
+  }
+  
+  #progressbar {
+  margin-bottom: 3vh;
+  overflow: hidden;
+  color: #000;
+  padding-left: 0;
+  margin-top: 3vh
+  }
+  
+  #progressbar li {
+  list-style-type: none;
+  font-size: .8rem;
+  width: 25%;
+  float: left;
+  position: relative;
+  font-weight: 400;
+  color: #000
+  }
+  
+  #progressbar #step1:before {
+  content: "";
+  color: #000;
+  width: 20px;
+  height: 20px;
+  margin-left: 0 !important
+  }
+  
+  #progressbar #step2:before {
+  content: "";
+  color: #000;
+  width: 20px;
+  height: 20px;
+  margin-left: 32%
+  }
+  
+  #progressbar #step3:before {
+  content: "";
+  color: #000;
+  width: 20px;
+  height: 20px;
+  margin-right: 32%
+  }
+  
+  #progressbar #step4:before {
+  content: "";
+  color: rgb(151, 149, 149, .651);
+  width: 20px;
+  height: 20px;
+  margin-right: 0 !important
+  }
+  
+  #progressbar li:before {
+  line-height: 29px;
+  display: block;
+  font-size: 12px;
+  background: #d1d1d1;
+  border-radius: 50%;
+  margin: auto;
+  z-index: -1;
+  margin-bottom: 1vh
+  }
+  
+  #progressbar li:after {
+  content: '';
+  height: 3px;
+  background: #d1d1d1;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-bottom: 2vh;
+  top: 8px;
+  z-index: 1
+  }
+  
+  .progress-track {
+  padding: 0 8%
+  }
+  
+  #progressbar li:nth-child(2):after {
+  margin-right: auto
+  }
+  
+  #progressbar li:nth-child(1):after {
+  margin: auto
+  }
+  
+  #progressbar li:nth-child(3):after {
+  float: left;
+  width: 68%
+  }
+  
+  #progressbar li:nth-child(4):after {
+  margin-left: auto;
+  width: 132%
+  }
+  
+  #progressbar li.active:after,
+  #progressbar li.active:before {
+  background: #00ff0d
+  }
+  
+  #three {
+  font-size: 1.2rem
+  }
+  
+  
+  @media (max-width:767px) {
+  #three {
+    font-size: 1rem
+  }
+  }
+</style>
+
 	</head>
+
 	
 	<body class="shop">
 		<div id="page" class="hfeed page-wrapper">
@@ -548,7 +676,7 @@
 											<div class="col-xl-8 col-lg-12 col-md-12 col-12">
 
 
-
+												
 
 
 
@@ -556,6 +684,9 @@
 
 												 <form class="cart-form" action="#" method="">
 													<div class="table-responsive">
+
+
+														
 														<table class="cart-items table" cellspacing="0">
 															<thead>
 																<tr>
@@ -563,7 +694,10 @@
 																	<th class="product-price">Price</th>
 																	<th class="product-quantity">Quantity</th>
 																	<th class="product-subtotal">Subtotal</th>
-																	<th class="product-remove">&nbsp;</th>
+																	<th class="product-subtotal">Payment Method</th>
+																	<th class="product-subtotal">Status</th>
+																	<!-- <th class="product-remove">&n</th> -->
+																	<th class="product-subtotal"></th>
 																</tr>
 															</thead>
 															<tbody>
@@ -586,8 +720,8 @@
 																		<!-- <span class="price">$150.00</span> -->
 																		<%= product.productId.product_price.toFixed(2) %>
 																	</td>
-																	<td class="product-quantity ">
-																		<%= product.quantity %>
+																	<td class="product-quantity  ">
+																		&nbsp;<%= product.quantity %>
 																	</td>
 											
 
@@ -598,11 +732,69 @@
   
 																	  
 																	
-																	<td class="product-remove">
+																	<td class="product-subtotal">
 																										
-																		
+																		<%= order.paymentOption %>
 																	</td>
+																	<td class="product-remove" id="orderStatus-<%= product._id %>">
+																		<%= product.orderStatus %>
+																	  </td>
+																	  
+																	<!-- <td class="product-quantity">
+																		<a href="#" onclick="confirmAndCancel('<%= order._id %>')" style="color: red;">Cancel Order</a>
+																		
+																	</td> -->
+																	<td class="product-quantity">
+																		<% if (product.orderStatus !== "Cancelled") { %>
+																			<% if (product.orderStatus == "Delivered") { %>
+																				<a href="#" onclick="confirmAndCancel('<%= order._id %>')" style="color: red;">Return Product</a>
+																				<% }  else{%>
+																		<a href="#" onclick="confirmAndCancel('<%= order._id %>')" style="color: red;">Cancel Order</a>
+																		<%} %> 
+																		<% }  %>  
+																	</td>
+																	  
 																</tr>
+																
+														
+																<tr class="status-bar-row" id="status-row-<%= order._id %>">
+																	<td colspan="7">
+																	  <% if (product.orderStatus !== "Cancelled") { %>
+																		<div class="progress-track">
+																		  <ul id="progressbar">
+																			<li style="font-size: 12px;" class="step0 active" id="step1">Order placed</li>
+																			<li style="font-size: 12px;" class="step0 text-center <%= product.statusLevel >= 2 ? 'active' : '' %>" id="step2">Shipped</li>
+																			<li style="font-size: 12px;" class="step0 text-right <%= product.statusLevel >= 3 ? 'active' : '' %>" id="step3">Out for Delivery</li>
+																			<li style="font-size: 12px;" class="step0 text-right text-success <%= product.statusLevel >= 4 ? 'active' : '' %>" id="step4">Delivered</li>
+																		  </ul>
+																		</div>
+																	  <% }  %>
+																	</td>
+																  </tr>
+																  
+<!-- 
+																<tr class="status-bar-row">
+																	<td colspan="7">
+																	  <% if (product.orderStatus !== "Cancelled") { %>
+																		<div class="progress-track">
+																		  <ul id="progressbar">
+																			<li style="font-size: 12px;" class="step0 active" id="step1">Order placed</li>
+																			<li style="font-size: 12px;" class="step0 text-center <%= product.statusLevel >= 2 ? 'active' : '' %>" id="step2">Shipped</li>
+																			<li style="font-size: 12px;" class="step0 text-right <%= product.statusLevel >= 3 ? 'active' : '' %>" id="step3">Out for Delivery</li>
+																			<li style="font-size: 12px;" class="step0 text-right text-success <%= product.statusLevel >= 4 ? 'active' : '' %>" id="step4">Delivered</li>
+																		  </ul>
+																		</div>
+																	  <% } else { %>
+																		<div class="progress-track col-12">
+																		  <ul id="progressbar">
+																			<li class="step0 active" style="width: 50%; font-size: 1rem" id="step1">Order placed</li>
+																			<li class="step0 active text-right text-danger" style="width: 50%; font-size: 1rem" id="step4">Cancelled</li>
+																		  </ul>
+																		</div>
+																	  <% } %>
+																	</td>
+																  </tr> -->
+																  
 																
 
 
@@ -624,46 +816,27 @@
 														<div class="cart-subtotal">
 
 															<div class="title">
-																<p><%= order.deliveryAddress.fullname %></p>
-																<p><%= order.deliveryAddress.housename %>, <%= order.deliveryAddress.city %></p>
-																<p>Phone number: <%= order.deliveryAddress.mobile %></p>
+																<p><%= order.deliveryAddress.fullname %>, <%= order.deliveryAddress.housename %>, <%= order.deliveryAddress.city %>,<%= order.deliveryAddress.district %>,<%= order.deliveryAddress.state %></p>
+																<p><%= order.deliveryAddress.mobile %></p>
+																
 															  </div>
 															  
 
 														
 															
 														</div>
-														<div class="shipping-totals">
-															<div class="title">Payment Method     :<%= order.paymentOption %></div>
-															<!-- <div> -->
-
-                                                                <p></p>
-																<!-- <ul class="shipping-methods custom-radio">
-																	<li>
-																		<input type="radio" name="shipping_method" data-index="0" value="free_shipping" class="shipping_method" checked="checked"><label>Free shipping</label>
-																	</li>
-																	<li>
-																		<input type="radio" name="shipping_method" data-index="0" value="flat_rate" class="shipping_method"><label>Flat rate</label>					
-																	</li>
-																</ul>
-																<p class="shipping-desc">
-																	Shipping options will be updated during checkout.				
-																</p> -->
-															<!-- </div> -->
-														</div>
-														<div class="order-total">
+														<!-- <div class="shipping-totals">
+															
+														</div> -->
+														<!-- <div class="order-total">
 															<div class="title">Total  :  <%= order.totalAmount %></div>
 															
 															
 															
-														  </div>
+														  </div> -->
 														  
 													</div>
-													<div class="proceed-to-checkout">		
-														<a href="/cancelorder/<%= order._id %>" class="checkout-button button">
-															Cancel Order
-														</a>
-													</div>
+												
 												</div>
 											</div>
 										</div>
@@ -1046,6 +1219,117 @@
 		
 		<!-- Site Scripts -->
 		<script src="/public/usernew/assets/js/app.js"></script>
+
+<!-- Add this line to include Axios in your HTML file -->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+		<script>
+
+function confirmAndCancel(orderId) {
+  console.log('Confirm and Cancel function called');
+
+  Swal.fire({
+    title: 'Are you sure?',
+    text: 'You are about to cancel this order.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Yes, cancel it!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      console.log('Confirmed to cancel order');
+
+      // Send AJAX request to cancel the order
+      axios.post(`/cancelorder/${orderId}`)
+        .then(response => {
+          console.log('Cancel order AJAX response:', response);
+
+          if (response.data.success) {
+            // Update the DOM to remove the status bar row and cancel td
+            const statusRow = document.querySelector(`#status-row-${orderId}`);
+			console.log(statusRow);
+            if (statusRow) {
+              statusRow.remove();
+            }
+
+            // Update the order status dynamically
+            const orderStatusElement = document.querySelector(`#orderStatus-${orderId}`);
+			console.log(orderStatusElement);
+            if (orderStatusElement) {
+              orderStatusElement.textContent = 'Cancelled';
+            }
+
+            Swal.fire('Success!', 'Order canceled successfully!', 'success');
+			location.reload();
+          } else {
+            Swal.fire('Error!', 'cannot cancel the order at this stage', 'error');
+          }
+        })
+        .catch(error => {
+          console.error('Error in cancel order AJAX request:', error);
+          Swal.fire('Error!', 'cannot cancel the order at this stage', 'error');
+        });
+    }
+  });
+}
+
+
+
+// function confirmAndCancel(orderId) {
+//   Swal.fire({
+//     title: 'Are you sure?',
+//     text: 'You are about to cancel this order.',
+//     icon: 'warning',
+//     showCancelButton: true,
+//     confirmButtonColor: '#d33',
+//     cancelButtonColor: '#3085d6',
+//     confirmButtonText: 'Yes, cancel it!'
+//   }).then((result) => {
+//     if (result.isConfirmed) {
+//       // Send AJAX request to cancel the order
+//       axios.post(`/cancelorder/${orderId}`)
+//         .then(response => {
+//           if (response.data.success) {
+//             // Update the DOM to remove the status bar row and cancel td
+//             const statusRow = document.querySelector(`#status-row-${orderId}`);
+//             if (statusRow) {
+//               statusRow.remove();
+//             }
+
+//             Swal.fire('Success!', 'Order canceled successfully!', 'success');
+//           } else {
+//             Swal.fire('Error!', response.data.message, 'error');
+//           }
+//         })
+//         .catch(error => {
+//           console.error(error);
+//           Swal.fire('Error!', 'Failed to cancel the order', 'error');
+//         });
+//     }
+//   });
+// }
+
+
+		//   function confirmAndCancel(orderId) {
+		// 	Swal.fire({
+		// 	  title: 'Are you sure?',
+		// 	  text: 'You are about to cancel this order.',
+		// 	  icon: 'warning',
+		// 	  showCancelButton: true,
+		// 	  confirmButtonColor: '#d33',
+		// 	  cancelButtonColor: '#3085d6',
+		// 	  confirmButtonText: 'Yes, cancel it!'
+		// 	}).then((result) => {
+		// 	  if (result.isConfirmed) {
+		// 		// Redirect to the cancel order route
+		// 		window.location.href = `/cancelorder/${orderId}`;
+		// 	  }
+		// 	});
+		//   }
+		</script>
+
 	</body>
 
 <!-- Mirrored from caketheme.com/html/ruper/shop-cart.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2023 09:38:23 GMT -->

@@ -22,15 +22,29 @@ const orderSchema = new mongoose.Schema({
         type: Number,
         default: 1,
       },
+      statusLevel: {
+        type: Number,
+        default: 1
+      },
       price: {
         type: Number,
         default: 0,
       },
-      status: {
+      orderStatus: {
         type: String,
-        enum: ['Placed', 'Shipped', 'Delivered', 'Cancelled'],
+        enum: ['Placed', 'Shipped','Out for delivery', 'Delivered', 'Cancelled'],
         default: 'Placed',
       },
+      returnOrder:{
+        status:{
+          type:String
+        },
+        reason:{
+          type:String
+        }
+        
+      },
+
     }],
   },
 
@@ -67,7 +81,7 @@ const orderSchema = new mongoose.Schema({
   },
   paymentOption: {
     type: String,
-    enum: ['COD', 'PayPal', 'Other'], 
+    enum: ['COD', 'PayPal', 'Razorpay'], 
     required: true,
   },
   totalAmount: {
@@ -78,6 +92,11 @@ const orderSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  expectedDelivery:{
+    type:Date,
+    required:true
+  }
+
 
   // You can add more fields as needed, such as order items, order status, etc.
 });

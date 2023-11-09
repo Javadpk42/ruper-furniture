@@ -20,18 +20,19 @@ user_route.post('/resendotp',userController.resendOtp);
 user_route.post('/otpverification',userController.verifyOtp);
 
 user_route.get('/login',userController.loginLoad)
-user_route.post('/login',userController.verifyLogin)
+user_route.post('/login',userController.verifyLogin) 
 user_route.get('/logout',userController.userLogout)
 
 
 user_route.get('/forgotpassword',userController.forgotLoad)
-user_route.post('/forgotpassword',userController.forgotVerify)
+user_route.post('/forgotpassword',userController.forgotVerify) 
 user_route.get('/resetpassword',userController.resetpasswordLoad)
 user_route.post('/resetpassword',userController.resetPassword)
  
 user_route.get('/profile',userController.profileLoad)
-user_route.get('/orderdetails/:orderId', userController.orderDetails);
-user_route.get('/cancelorder/:orderId', userController.cancelOrder);
+user_route.get('/orderdetails/:orderId', userController.orderDetails); 
+user_route.post('/cancelorder/:orderId', userController.cancelOrderAjax);
+
 
 
 user_route.post('/update_profile',userController.updateProfile)
@@ -56,8 +57,9 @@ user_route.get('/edit_address_checkout/:addressId', userController.editAddressPa
 user_route.post('/edit_address_checkout/:addressId', userController.editAddresscheckout);
 user_route.post('/add_shipping_address', userController.addShippingAddress)
 user_route.post('/place_order', userController.placeOrder)
+user_route.post('/verifyPayment', userController.verifyPayment)
 
-user_route.get('/orderplaced', userController.orderPlaced) 
+user_route.get('/orderplaced', userController.orderPlaced)  
 
  
 module.exports=user_route;

@@ -692,10 +692,10 @@
 														  <thead>
 															<tr>
 															  <th>Order</th>
-															  <th>Date</th>
-															  <th>Status</th>
+															  <th>Order Date</th>
+															  <th>Expected Delivery</th>
 															  <th>Total</th>
-															  <th>Actions</th>
+															  <th></th>
 															</tr>
 														  </thead>
 														  <tbody>
@@ -703,10 +703,10 @@
 															  <tr>
 																<td>#<%= order._id %></td>
 																<td><%= order.orderDate.toDateString() %></td>
-																<td><%= order.status %></td> <!-- You can customize the status based on your order model -->
+																<td><%= order.expectedDelivery.toDateString() %></td> <!-- You can customize the status based on your order model -->
 																<td>
-																  $<%= order.totalAmount.toFixed(2) %> for 
-																  <%= order.products ? order.cart.products.length : 0 %> item
+																  $<%= order.totalAmount.toFixed(2) %> 
+																 
 																</td>
 																<td><a href="/orderdetails/<%= order._id %>" class="btn-small d-block">View</a></td>
 															  </tr>

@@ -17,7 +17,11 @@ const { name } = require('ejs');
 const otpGenerator=require("otp-generator")
 const nodemailer=require("nodemailer")
 const path=require("path")
-const randomstring= require('randomstring')
+const randomstring= require('randomstring');
+const { product } = require("../model/productModel");
+
+const Razorpay = require('razorpay')
+const crypto = require("crypto")
 
 //hashing
 
@@ -837,12 +841,95 @@ const orderDetails = async (req, res) => {
 // };
 
 
-const cancelOrder = async (req, res) => {
+// const cancelOrder = async (req, res) => {
+//   try {
+//     const orderId = req.params.orderId;
+
+//     // Find the order in the database
+//     const order = await Order.findById(orderId).populate({
+//       path: 'cart.products.productId',
+//       model: 'product',
+//     });
+
+//     // Check if the order exists
+//     if (!order) {
+//       return res.status(404).json({
+//         success: false,
+//         message: 'Order not found',
+//       });
+//     }
+
+//     // Check if the order is cancelable (e.g., status is 'Placed' or 'Shipped')
+//     if (product.status !== 'Placed' && product.status !== 'Shipped') {
+//       return res.status(400).json({
+//         success: false,
+//         message: 'Order cannot be canceled at this stage',
+//       });
+//     }
+
+//     // Update the order status to 'Cancelled'
+//     product.status = 'Cancelled';
+//     await order.save();
+
+//     // Redirect to the same page with a confirmation message
+//     res.redirect(`/orderdetails/${orderId}?canceled=true`);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ success: false, message: 'Failed to cancel the order' });
+//   }
+// };
+
+// const cancelOrder = async (req, res) => {
+//   try {
+//     const orderId = req.params.orderId;
+
+//     // Find the order in the database
+//     const order = await Order.findById(orderId).populate({
+//       path: 'cart.products.productId',
+//       model: 'product',
+//     });
+
+//     // Check if the order exists
+//     if (!order) {
+//       return res.status(404).json({
+//         success: false,
+//         message: 'Order not found',
+//       });
+//     }
+
+//     // Check if the order is cancelable (e.g., status is 'Placed' or 'Shipped')
+//     if (order.cart.products.some(product => product.orderStatus !== 'Placed' && product.orderStatus !== 'Shipped')) {
+//       return res.status(400).json({
+//         success: false,
+//         message: 'Order cannot be canceled at this stage',
+//       });
+//     }
+
+//     // Update the order status to 'Cancelled' for all products
+//     order.cart.products.forEach(product => {
+//       product.orderStatus = 'Cancelled';
+//     });
+
+//     // Save the updated order
+//     await order.save();
+
+//     // Redirect to the same page with a confirmation message
+//     res.redirect(`/orderdetails/${orderId}?canceled=true`);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ success: false, message: 'Failed to cancel the order' });
+//   }
+// };
+
+const cancelOrderAjax = async (req, res) => {
   try {
     const orderId = req.params.orderId;
 
     // Find the order in the database
-    const order = await Order.findById(orderId);
+    const order = await Order.findById(orderId).populate({
+      path: 'cart.products.productId',
+      model: 'product',
+    });
 
     // Check if the order exists
     if (!order) {
@@ -850,27 +937,32 @@ const cancelOrder = async (req, res) => {
         success: false,
         message: 'Order not found',
       });
-    }
+    } 
 
     // Check if the order is cancelable (e.g., status is 'Placed' or 'Shipped')
-    if (order.status !== 'Placed' && order.status !== 'Shipped') {
+    if (order.cart.products.some(product => product.orderStatus !== 'Placed' && product.orderStatus !== 'Shipped')) {
       return res.status(400).json({
         success: false,
         message: 'Order cannot be canceled at this stage',
       });
     }
 
-    // Update the order status to 'Cancelled'
-    order.status = 'Cancelled';
+    // Update the order status to 'Cancelled' for all products
+    order.cart.products.forEach(product => {
+      product.orderStatus = 'Cancelled';
+    });
+
+    // Save the updated order
     await order.save();
 
-    // Redirect to the same page with a confirmation message
-    res.redirect(`/orderdetails/${orderId}?canceled=true`);
+    // Respond with JSON indicating success
+    res.json({ success: true, message: 'Order canceled successfully' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: 'Failed to cancel the order' });
   }
 };
+
 
 
 
@@ -1504,65 +1596,130 @@ const shopdetailsLoad = async (req, res) => {
   }
 };
 
+// const addToCart = async (req, res) => {
+//     try {
+//         if (req.session.user_id) {
+//             const productId = req.body.id;
+//             const userId = req.session.user_id;
+
+//             console.log('Received productId:', productId);
+
+//             // Fetch user details
+//             const userData = await userModel.findById(userId);
+//             if (!userData) {
+//                 return res.status(404).json({ error: 'User not found' });
+//             }
+
+//             // Fetch product details
+//             const productData = await Product.findById(productId);
+//             if (!productData) {
+//                 return res.status(404).json({ error: 'Product not found' });
+//             }
+
+//             // Fetch user's cart
+//             let userCart = await Cart.findOne({ user: userId });
+
+//             if (!userCart) {
+//                 // If the user doesn't have a cart, create a new one
+//                 userCart = new Cart({ user: userId, products: [] });
+//             }
+
+//             // Check if the product is already in the cart
+//             const existingProductIndex = userCart.products.findIndex(product =>String(product.productId) === String(productId));
+
+//             if (existingProductIndex !== -1) {
+//                 // If the product is in the cart, update the quantity
+//                 const existingProduct = userCart.products[existingProductIndex];
+
+//                 console.log('Product Stock:', productData.stock);
+//                 console.log('Existing Quantity:', existingProduct.quantity);
+//                 if (productData.stock <= existingProduct.quantity || productData.stock<=0) {
+//                   console.log('Out of stock');
+//                     return res.json({ outofstock: true }); 
+//                 } else {
+//                     existingProduct.quantity += 1;
+//                 }
+//             } else {
+//                 // If the product is not in the cart, add it
+//                 userCart.products.push({ productId: productId, price: productData.price, quantity: 1 });
+//             }
+
+//             // Save the updated cart
+//             await userCart.save();
+
+//             res.json({ success: true });
+//         } else {
+//             res.json({ loginRequired: true });
+//         }
+//     } catch (error) {
+//         console.log(error);
+//         res.status(500).json({ error: 'An error occurred' });
+//     }
+// };
+
 const addToCart = async (req, res) => {
-    try {
-        if (req.session.user_id) {
-            const productId = req.body.id;
-            const userId = req.session.user_id;
+  try {
+      if (req.session.user_id) {
+          const productId = req.body.id;
+          const userId = req.session.user_id;
 
-            console.log('Received productId:', productId);
+          console.log('Received productId:', productId);
 
-            // Fetch user details
-            const userData = await userModel.findById(userId);
-            if (!userData) {
-                return res.status(404).json({ error: 'User not found' });
-            }
+          // Fetch user details
+          const userData = await userModel.findById(userId);
+          if (!userData) {
+              return res.status(404).json({ error: 'User not found' });
+          }
 
-            // Fetch product details
-            const productData = await Product.findById(productId);
-            if (!productData) {
-                return res.status(404).json({ error: 'Product not found' });
-            }
+          // Fetch product details
+          const productData = await Product.findById(productId);
+          if (!productData) {
+              return res.status(404).json({ error: 'Product not found' });
+          }
 
-            // Fetch user's cart
-            let userCart = await Cart.findOne({ user: userId });
+          // Check if the product is out of stock
+          if (productData.stock <= 0) {
+              return res.json({ outofstock: true });
+          }
 
-            if (!userCart) {
-                // If the user doesn't have a cart, create a new one
-                userCart = new Cart({ user: userId, products: [] });
-            }
+          // Fetch user's cart
+          let userCart = await Cart.findOne({ user: userId });
 
-            // Check if the product is already in the cart
-            const existingProductIndex = userCart.products.findIndex(product =>String(product.productId) === String(productId));
+          if (!userCart) {
+              // If the user doesn't have a cart, create a new one
+              userCart = new Cart({ user: userId, products: [] });
+          }
 
-            if (existingProductIndex !== -1) {
-                // If the product is in the cart, update the quantity
-                const existingProduct = userCart.products[existingProductIndex];
+          // Check if the product is already in the cart
+          const existingProductIndex = userCart.products.findIndex(product => String(product.productId) === String(productId));
 
-                console.log('Product Stock:', productData.stock);
-                console.log('Existing Quantity:', existingProduct.quantity);
-                if (productData.stock <= existingProduct.quantity) {
+          if (existingProductIndex !== -1) {
+              // If the product is in the cart, update the quantity
+              const existingProduct = userCart.products[existingProductIndex];
+
+              console.log('Existing Quantity:', existingProduct.quantity);
+              if (productData.stock <= existingProduct.quantity) {
                   console.log('Out of stock');
-                    return res.json({ outofstock: true }); 
-                } else {
-                    existingProduct.quantity += 1;
-                }
-            } else {
-                // If the product is not in the cart, add it
-                userCart.products.push({ productId: productId, price: productData.price, quantity: 1 });
-            }
+                  return res.json({ outofstock: true });
+              } else {
+                  existingProduct.quantity += 1;
+              }
+          } else {
+              // If the product is not in the cart, add it
+              userCart.products.push({ productId: productId, price: productData.price, quantity: 1 });
+          }
 
-            // Save the updated cart
-            await userCart.save();
+          // Save the updated cart
+          await userCart.save();
 
-            res.json({ success: true });
-        } else {
-            res.json({ loginRequired: true });
-        }
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ error: 'An error occurred' });
-    }
+          res.json({ success: true });
+      } else {
+          res.json({ loginRequired: true });
+      }
+  } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: 'An error occurred' });
+  }
 };
 
 
@@ -1999,497 +2156,16 @@ const editAddresscheckout = async (req, res) => {
 };
 
  
-// const placeOrder = async (req, res) => {
-//   try {
-//     const { selected_address, payment_method, totalAmount } = req.body;
-//     const userId = req.session.user_id;
 
-//     console.log('User ID:', userId);
-//     console.log('Address ID:', selected_address);
-//     console.log('Payment Option:', payment_method);
-//     console.log('Total Amount:', totalAmount);
 
-//     const cartItems = await Cart.findOne({ user: userId }).populate({ 
-//       path: 'products.productId',
-//       model: 'product',
-//     });
 
-//     console.log('Cart Items:', cartItems);
+const instance = new Razorpay({
+  key_id: 'rzp_test_fZkpvgMYwl1OFW',
+  key_secret: '7qPA2dWay5GP1spvWde4dVy8',
+});
 
-//     if (!cartItems || !cartItems.products || cartItems.products.length === 0) { 
-//       console.log('Cart is empty. Unable to place an order.');
-//       return res.status(400).json({
-//         success: false,
-//         message: 'Cart is empty. Unable to place an order.',
-//       });
-//     }
 
-//     // Parse totalAmount as a number
-//     const numericTotal = parseFloat(totalAmount);
 
-//     // Create a new order
-//     const newOrder = new Order({
-//       user: userId,
-      
-//       deliveryAddress: selected_address,
-//       paymentOption: payment_method,
-//       totalAmount: numericTotal,
-//       orderDate: new Date(),
-//       // Add more details to the order as needed
-//     });
-
-//     console.log('New Order:', newOrder);
-
-//     // Save the order to the database
-//     await newOrder.save();
-
-//     // Update product stock (for COD payments)
-//     if (payment_method === 'COD') {
-//       for (const item of cartItems.products) {
-//         const productId = item.productId._id;
-//         const quantity = parseInt(item.quantity, 10);
-//         console.log('Updating product stock for Product ID:', productId, 'Quantity:', quantity);
-
-//         // Assuming you have a Product model with a 'quantity' field
-//         await Product.findByIdAndUpdate(productId, {
-//           $inc: { quantity: -quantity },
-//         });
-//       }
-//     }
-
-//     // Clear the user's cart
-//     await Cart.findOneAndUpdate({ user: userId }, { $set: { products: [] } });
-
-//     // Redirect to the orderplaced route
-//     res.redirect('/orderplaced');
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ success: false, message: 'Failed to place the order' });
-//   }
-// };
-
- 
-// 
-// const placeOrder = async (req, res) => {
-//   try {
-//     const { selected_address, payment_method, totalAmount } = req.body;
-//     const userId = req.session.user_id;
-
-//     console.log('User ID:', userId);
-//     console.log('Address ID:', selected_address);
-//     console.log('Payment Option:', payment_method);
-//     console.log('Total Amount:', totalAmount);
-
-//     const cartItems = await Cart.findOne({ user: userId }).populate({ 
-//       path: 'products.productId',
-//       model: 'product',
-//     });
-
-//     console.log('Cart Items:', cartItems);
-
-//     if (!cartItems || !cartItems.products || cartItems.products.length === 0) { 
-//       console.log('Cart is empty. Unable to place an order.');
-//       return res.status(400).json({
-//         success: false,
-//         message: 'Cart is empty. Unable to place an order.',
-//       });
-//     }
-
-//     // Parse totalAmount as a number
-//     const numericTotal = parseFloat(totalAmount);
-
-//     // Create a new order
-//     const newOrder = new Order({
-//       user: userId,
-//       cart: {
-//         user: userId,
-//         products: cartItems.products, // Include product details directly in the cart
-//       },
-//       deliveryAddress: selected_address,
-//       paymentOption: payment_method,
-//       totalAmount: numericTotal,
-//       orderDate: new Date(),
-//       // Add more details to the order as needed
-//     });
-
-//     console.log('New Order:', newOrder);
-
-//     // Save the order to the database
-//     await newOrder.save();
-
-//     // Update product stock (for COD payments)
-//     if (payment_method === 'COD') {
-//       for (const item of cartItems.products) {
-//         const productId = item.productId._id;
-//         const quantity = parseInt(item.quantity, 10);
-//         console.log('Updating product stock for Product ID:', productId, 'Quantity:', quantity);
-
-//         // Assuming you have a Product model with a 'quantity' field
-//         await Product.findByIdAndUpdate(productId, {
-//           $inc: { quantity: -quantity },
-//         });
-//       }
-//     }
-
-//     // Clear the user's cart
-//     await Cart.findOneAndUpdate({ user: userId }, { $set: { products: [] } });
-
-//     // Redirect to the orderplaced route
-//     res.redirect('/orderplaced');
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ success: false, message: 'Failed to place the order' });
-//   }
-// };
-
-
-// const placeOrder = async (req, res) => {
-//   try {
-//     const { selected_address, payment_method, totalAmount } = req.body;
-//     const userId = req.session.user_id;
-
-//     // Fetch cart items
-//     const cartItems = await Cart.findOne({ user: userId }).populate({
-//       path: 'products.productId',
-//       model: 'product',
-//     });
-
-//     // Check if the cart is empty
-//     if (!cartItems || !cartItems.products || cartItems.products.length === 0) {
-//       console.log('Cart is empty. Unable to place an order.');
-//       return res.status(400).json({
-//         success: false,
-//         message: 'Cart is empty. Unable to place an order.',
-//       });
-//     }
-
-//     // Parse totalAmount as a number
-//     const numericTotal = parseFloat(totalAmount);
-
-//     // Create a new order
-//     const newOrder = new Order({
-//       user: userId,
-//       cart: {
-//         user: userId,
-//         products: cartItems.products, // Include product details directly in the cart
-//       },
-//       deliveryAddress: selected_address,
-//       paymentOption: payment_method,
-//       totalAmount: numericTotal,
-//       orderDate: new Date(),
-//       // Add more details to the order as needed
-//     });
-
-//     // Save the order to the database
-//     await newOrder.save();
-
-//     // Update product stock (for COD payments)
-//     if (payment_method === 'COD') {
-//       // Use bulkWrite to update stock atomically
-//       const stockUpdateOperations = cartItems.products.map((item) => {
-//         const productId = item.productId._id;
-//         const quantity = parseInt(item.quantity, 10);
-
-//         return {
-//           updateOne: {
-//             filter: { _id: productId, stock: { $gte: quantity } }, // Ensure enough stock
-//             update: { $inc: { stock: -quantity } },
-//           },
-//         };
-//       });
-
-//       // Execute the bulkWrite operation
-//       const stockUpdateResult = await Product.bulkWrite(stockUpdateOperations);
-
-//       // Check if any stock update failed
-//       if (stockUpdateResult.writeErrors.length > 0) {
-//         console.log('Failed to update stock for some products');
-//         // Handle the case where the stock update failed, e.g., redirect to an error page
-//         return res.status(500).json({
-//           success: false,
-//           message: 'Failed to update stock for some products',
-//         });
-//       }
-//     }
-
-//     // Clear the user's cart
-//     await Cart.findOneAndUpdate({ user: userId }, { $set: { products: [] } });
-
-//     // Redirect to the orderplaced route
-//     res.redirect('/orderplaced');
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ success: false, message: 'Failed to place the order' });
-//   }
-// };
-
-// const placeOrder = async (req, res) => {
-//   try {
-//     const { selected_address, payment_method, totalAmount } = req.body;
-//     const userId = req.session.user_id;
-
-//     // Fetch cart items
-//     const cartItems = await Cart.findOne({ user: userId }).populate({
-//       path: 'products.productId',
-//       model: 'product',
-//     });
-
-//     // Check if the cart is empty or cartItems is null
-//     if (!cartItems || !cartItems.products || !Array.isArray(cartItems.products) || cartItems.products.length === 0) {
-//       console.log('Cart is empty. Unable to place an order.');
-//       return res.status(400).json({
-//         success: false,
-//         message: 'Cart is empty. Unable to place an order.',
-//       });
-//     }
-
-//     // Parse totalAmount as a number
-//     const numericTotal = parseFloat(totalAmount);
-
-//     // Create a new order
-//     const newOrder = new Order({
-//       user: userId,
-//       cart: {
-//         user: userId,
-//         products: cartItems.products, // Include product details directly in the cart
-//       },
-//       deliveryAddress: selected_address,
-//       paymentOption: payment_method,
-//       totalAmount: numericTotal,
-//       orderDate: new Date(),
-//       // Add more details to the order as needed
-//     });
-
-//     // Save the order to the database
-//     await newOrder.save();
-
-//     // Update product stock (for COD payments)
-//     if (payment_method === 'COD') {
-//       // Use bulkWrite to update stock atomically
-//       const stockUpdateOperations = cartItems.products.map((item) => {
-//         const productId = item.productId._id;
-//         const quantity = parseInt(item.quantity, 10);
-
-//         return {
-//           updateOne: {
-//             filter: { _id: productId, stock: { $gte: quantity } }, // Ensure enough stock
-//             update: { $inc: { stock: -quantity } },
-//           },
-//         };
-//       });
-
-//       // Execute the bulkWrite operation
-//       const stockUpdateResult = await Product.bulkWrite(stockUpdateOperations);
-
-//       // Check if any stock update failed
-//       if (stockUpdateResult.writeErrors && stockUpdateResult.writeErrors.length > 0) {
-//         console.log('Failed to update stock for some products');
-//         // Handle the case where the stock update failed, e.g., redirect to an error page
-//         return res.status(500).json({
-//           success: false,
-//           message: 'Failed to update stock for some products',
-//         });
-//       }
-//     }
-
-//     // Clear the user's cart
-//     await Cart.findOneAndUpdate({ user: userId }, { $set: { products: [] } });
-
-//     // Redirect to the orderplaced route
-//     res.redirect('/orderplaced');
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ success: false, message: 'Failed to place the order' });
-//   }
-// };
-
-// const placeOrder = async (req, res) => {
-//   try {
-//     const { selected_address, payment_method, totalAmount } = req.body;
-//     const userId = req.session.user_id;
-
-//     // Fetch cart items
-//     const cartItems = await Cart.findOne({ user: userId }).populate({
-//       path: 'products.productId',
-//       model: 'product',
-//     });
-
-//     // Check if the cart is empty or cartItems is null
-//     if (!cartItems || !cartItems.products || !Array.isArray(cartItems.products) || cartItems.products.length === 0) {
-//       console.log('Cart is empty. Unable to place an order.');
-//       return res.status(400).json({
-//         success: false,
-//         message: 'Cart is empty. Unable to place an order.',
-//       });
-//     }
-
-//     // Parse totalAmount as a number
-//     const numericTotal = parseFloat(totalAmount);
-
-//     // Create a new order with status 'Placed'
-//     const newOrder = new Order({
-//       user: userId,
-//       cart: {
-//         user: userId,
-//         products: cartItems.products, // Include product details directly in the cart
-//       },
-//       deliveryAddress: selected_address,
-//       paymentOption: payment_method,
-//       totalAmount: numericTotal,
-//       orderDate: new Date(),
-//       status: 'Placed', // Set the initial status as 'Placed'
-//     });
-
-//     // Save the order to the database
-//     await newOrder.save();
-
-//     // Update product stock (for COD payments)
-//     if (payment_method === 'COD') {
-//       // Use bulkWrite to update stock atomically
-//       const stockUpdateOperations = cartItems.products.map((item) => {
-//         const productId = item.productId._id;
-//         const quantity = parseInt(item.quantity, 10);
-
-//         return {
-//           updateOne: {
-//             filter: { _id: productId, stock: { $gte: quantity } }, // Ensure enough stock
-//             update: { $inc: { stock: -quantity } },
-//           },
-//         };
-//       });
-
-//       // Execute the bulkWrite operation
-//       const stockUpdateResult = await Product.bulkWrite(stockUpdateOperations);
-
-//       // Check if any stock update failed
-//       if (stockUpdateResult.writeErrors && stockUpdateResult.writeErrors.length > 0) {
-//         console.log('Failed to update stock for some products');
-//         // Handle the case where the stock update failed, e.g., redirect to an error page
-//         return res.status(500).json({
-//           success: false,
-//           message: 'Failed to update stock for some products',
-//         });
-//       }
-//     }
-
-//     // Clear the user's cart
-//     await Cart.findOneAndUpdate({ user: userId }, { $set: { products: [] } });
-
-//     // Redirect to the orderplaced route
-//     res.redirect('/orderplaced');
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ success: false, message: 'Failed to place the order' });
-//   }
-// };
-
-// const placeOrder = async (req, res) => {
-//   try {
-//     const { selected_address, payment_method, totalAmount } = req.body;
-//     const userId = req.session.user_id;
-//     console.log('Selected Address (before conversion):', selected_address);
-
-//     // Fetch cart items
-//     const cartItems = await Cart.findOne({ user: userId }).populate({
-//       path: 'products.productId',
-//       model: 'product',
-//     });
-
-//     // Check if the cart is empty or cartItems is null
-//     if (!cartItems || !cartItems.products || !Array.isArray(cartItems.products) || cartItems.products.length === 0) {
-//       console.log('Cart is empty. Unable to place an order.');
-//       return res.status(400).json({
-//         success: false,
-//         message: 'Cart is empty. Unable to place an order.',
-//       });
-//     }
-
-//     // Parse totalAmount as a number
-//     const numericTotal = parseFloat(totalAmount);
-
-//     // Include address details in the order
-//     const addressDetails = await Address.findOne({
-//       'address._id': selected_address,
-//     });
-//     console.log('Address Details:', addressDetails);
-
-//     if (!addressDetails || !mongoose.Types.ObjectId.isValid(selected_address)) {
-//       console.log('Invalid or not found address ID.');
-//       return res.status(400).json({
-//         success: false,
-//         message: 'Invalid or not found address ID. Unable to place an order.',
-//       });
-//     }
-
-//     // Assuming 'address' is an array, find the specific address within the array
-//     const selectedAddress = addressDetails.address.find(
-//       (address) => address._id.toString() === selected_address
-//     );
-
-//     // Create a new order with status 'Placed'
-//     const newOrder = new Order({
-//       user: userId,
-//       cart: {
-//         user: userId,
-//         products: cartItems.products, // Include product details directly in the cart
-//       },
-//       deliveryAddress: {
-//         fullname: selectedAddress.fullname,
-//         mobile: selectedAddress.mobile,
-//         housename: selectedAddress.housename,
-//         city: selectedAddress.city,
-//         state: selectedAddress.state,
-//         district: selectedAddress.district,
-//         pin: selectedAddress.pin,
-//       },
-//       paymentOption: payment_method,
-//       totalAmount: numericTotal,
-//       orderDate: new Date(),
-//       status: 'Placed', // Set the initial status as 'Placed'
-//     });
-
-//     // Save the order to the database
-//     await newOrder.save();
-
-//     // Update product stock (for COD payments)
-//     if (payment_method === 'COD') {
-//       // Use bulkWrite to update stock atomically
-//       const stockUpdateOperations = cartItems.products.map((item) => {
-//         const productId = item.productId._id;
-//         const quantity = parseInt(item.quantity, 10);
-
-//         return {
-//           updateOne: {
-//             filter: { _id: productId, stock: { $gte: quantity } }, // Ensure enough stock
-//             update: { $inc: { stock: -quantity } },
-//           },
-//         };
-//       });
-
-//       // Execute the bulkWrite operation
-//       const stockUpdateResult = await Product.bulkWrite(stockUpdateOperations);
-
-//       // Check if any stock update failed
-//       if (stockUpdateResult.writeErrors && stockUpdateResult.writeErrors.length > 0) {
-//         console.log('Failed to update stock for some products');
-//         // Handle the case where the stock update failed, e.g., redirect to an error page
-//         return res.status(500).json({
-//           success: false,
-//           message: 'Failed to update stock for some products',
-//         });
-//       }
-//     }
-
-//     // Clear the user's cart
-//     await Cart.findOneAndUpdate({ user: userId }, { $set: { products: [] } });
-
-//     // Redirect to the orderplaced route
-//     res.redirect('/orderplaced');
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ success: false, message: 'Failed to place the order' });
-//   }
-// };
 
 
 const placeOrder = async (req, res) => {
@@ -2533,6 +2209,16 @@ const placeOrder = async (req, res) => {
       (address) => address._id.toString() === selected_address
     );
 
+    // Calculate the expected delivery date (7 days from now)
+    const today = new Date();
+    const deliveryDate = new Date(today);
+    deliveryDate.setDate(today.getDate() + 7);
+
+    // Extract the date, month, and year from the deliveryDate
+    const deliveryDay = deliveryDate.getDate();
+    const deliveryMonth = deliveryDate.getMonth();
+    const deliveryYear = deliveryDate.getFullYear();
+
     // Create a new order with status 'Placed' and set product statuses
     const newOrder = new Order({
       user: userId,
@@ -2542,7 +2228,11 @@ const placeOrder = async (req, res) => {
           productId: item.productId._id,
           quantity: item.quantity,
           price: item.price,
-          status: 'Placed', // Set the initial status for each product as 'Placed'
+          orderStatus: 'Placed', // Set the initial order status for each product as 'Placed'
+          returnOrder: {
+            status: null, // Set the initial return order status as null
+            reason: null, // Set the initial return order reason as null
+          },
         })),
       },
       deliveryAddress: {
@@ -2557,51 +2247,143 @@ const placeOrder = async (req, res) => {
       paymentOption: payment_method,
       totalAmount: numericTotal,
       orderDate: new Date(),
+      expectedDelivery: new Date(deliveryYear, deliveryMonth, deliveryDay), // Set the expected delivery date with only date, month, and year
       status: 'Placed', // Set the initial status for the order as 'Placed'
     });
 
     // Save the order to the database
     await newOrder.save();
 
-    // Update product stock (for COD payments)
-    if (payment_method === 'COD') {
-      // Use bulkWrite to update stock atomically
-      const stockUpdateOperations = cartItems.products.map((item) => {
-        const productId = item.productId._id;
-        const quantity = parseInt(item.quantity, 10);
-
-        return {
-          updateOne: {
-            filter: { _id: productId, stock: { $gte: quantity } }, // Ensure enough stock
-            update: { $inc: { stock: -quantity } },
-          },
-        };
+    // Handle Razorpay payment for onlinePayment method
+    if (payment_method === 'Razorpay') {
+      console.log("entered razorpay")
+      const orderId = newOrder._id;
+      const razorpayOrder = await instance.orders.create({
+        amount: totalAmount * 100, // Amount in paise (Indian currency) or smallest currency unit
+        currency: 'INR', // Use the appropriate currency code for your region
+        receipt: orderId.toString(), // Unique order ID in your system
+        payment_capture: 1, // Automatically capture payment after successful payment
       });
 
-      // Execute the bulkWrite operation
-      const stockUpdateResult = await Product.bulkWrite(stockUpdateOperations);
+      // Include the Razorpay order ID in the order document
+      newOrder.razorpayOrderId = razorpayOrder.id;
 
-      // Check if any stock update failed
-      if (stockUpdateResult.writeErrors && stockUpdateResult.writeErrors.length > 0) {
-        console.log('Failed to update stock for some products');
-        // Handle the case where the stock update failed, e.g., redirect to an error page
-        return res.status(500).json({
-          success: false,
-          message: 'Failed to update stock for some products',
-        });
-      }
+      // Save the updated order with the Razorpay order ID
+      // await newOrder.save();
+
+      // Send Razorpay order details to the client for payment processing
+      res.json({ success: true, razorpayOrder });
+    } else if (payment_method === 'COD') {
+      // ... (same as your existing code)
+ // Use bulkWrite to update stock atomically
+ const stockUpdateOperations = cartItems.products.map((item) => {
+  const productId = item.productId._id;
+  const quantity = parseInt(item.quantity, 10);
+
+  return {
+    updateOne: {
+      filter: { _id: productId, stock: { $gte: quantity } }, // Ensure enough stock
+      update: { $inc: { stock: -quantity } },
+    },
+  };
+});
+
+// Execute the bulkWrite operation
+const stockUpdateResult = await Product.bulkWrite(stockUpdateOperations);
+
+// Check if any stock update failed
+if (stockUpdateResult.writeErrors && stockUpdateResult.writeErrors.length > 0) {
+  console.log('Failed to update stock for some products');
+  // Handle the case where the stock update failed, e.g., redirect to an error page
+  return res.status(500).json({
+    success: false,
+    message: 'Failed to update stock for some products',
+  });
+}
+
+    } else {
+      // Handle other payment methods if needed
     }
-
-    // Clear the user's cart
-    await Cart.findOneAndUpdate({ user: userId }, { $set: { products: [] } });
-
-    // Redirect to the orderplaced route
-    res.redirect('/orderplaced');
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: 'Failed to place the order' });
   }
 };
+
+
+const verifyPayment = async (req, res) => {
+  try {
+    const cartData = await Cart.findOne({ user: req.session.user_id });
+    const products = cartData.products;
+    const details = req.body;
+    console.log("details is:", details);
+    const hmac = crypto.createHmac("sha256", "7qPA2dWay5GP1spvWde4dVy8");
+
+    hmac.update(
+      details.payment.razorpay_order_id +
+        "|" +
+        details.payment.razorpay_payment_id
+    );
+    const hmacValue = hmac.digest("hex");
+    console.log("hmacValue", hmacValue);
+
+    if (hmacValue === details.payment.razorpay_signature) {
+      for (let i = 0; i < products.length; i++) {
+        const productId = products[i].productId;
+        const quantity = products[i].quantity;
+        await Product.findByIdAndUpdate(
+          { _id: productId },
+          { $inc: { quantity: -quantity } }
+        );
+      }
+
+      const orderUpdates = {
+        'cart.products.orderStatus': 'Placed',
+        'cart.products.statusLevel': 1,
+        'cart.products.paymentStatus': 'Paid',
+        'cart.products.returnOrder.status': 'none',
+        'cart.products.returnOrder.reason': 'none',
+        'cart.products.cancelOrder.reason': 'none',
+      };
+
+      await Order.findOneAndUpdate(
+        { _id: details.order.receipt },
+        { $set: orderUpdates }
+      );
+
+      await Order.findByIdAndUpdate(
+        { _id: details.order.receipt },
+        { $set: { paymentId: details.payment.razorpay_payment_id } }
+      );
+
+      await Cart.deleteOne({ user: req.session.user_id });
+      const orderid = details.order.receipt;
+
+      res.json({ codsuccess: true, orderid });
+    } else {
+      await Order.findByIdAndRemove({ _id: details.order.receipt });
+      res.json({ success: false });
+    }
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: 'Error verifying payment' });
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2636,7 +2418,7 @@ module.exports={
 
     profileLoad,
     orderDetails,
-    cancelOrder,
+    cancelOrderAjax,
     updateProfile,
     passwordChange,
     addAddress,
@@ -2657,6 +2439,7 @@ module.exports={
     editAddressPagecheckout,
     editAddresscheckout,
     placeOrder, 
+    verifyPayment,
 
     orderPlaced
 

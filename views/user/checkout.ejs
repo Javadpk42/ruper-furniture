@@ -653,56 +653,7 @@
 											</p>
 										  
 										  </form>
-										<!-- <form class="shipping-fields" action="/add_shipping_address" method="post" onsubmit="return validAddress()">
-											<p class="form-row form-row-wide">
-												
-												<span class="input-wrapper">
-													<input type="text" class="input-text" name="fullname" placeholder="fullname" id="fullname">
-												</span>
-												<p class="error-message" id="name-error"></p>
-											</p>
-											<p class="form-row form-row-wide">
-												
-												<span class="input-wrapper">
-													<input type="text" class="input-text" name="mobile" placeholder="mobile" id="phone">
-												</span>
-											</p>
-											<div class="clear"></div>
-											<p class="form-row form-row-wide">
-												
-												<span class="input-wrapper">
-													<input type="text" class="input-text" name="housename" placeholder="housename" id="housename">
-												</span>
-											</p>
-											<p class="form-row form-row-wide">
-												
-												<span class="input-wrapper">
-													<input type="text" class="input-text" name="pin" placeholder="pincode" id="pinCode">
-												</span>
-											</p>
-											<p class="form-row form-row-wide">
-											
-												<span class="input-wrapper">
-													<input type="text" class="input-text" name="city" placeholder="city" id="city">
-												</span>
-											</p>
-											<p class="form-row form-row-wide">
-												
-												<span class="input-wrapper">
-													<input type="text" class="input-text" name="district" placeholder="district" id="district">
-												</span>
-											</p>
-											<p class="form-row form-row-wide">
-												
-												<span class="input-wrapper">
-													<input type="text" class="input-text" name="state" placeholder="state" id="state">
-												</span>
-											</p>
-											<div class="clear"></div>
-											<p class="form-row form-row-wide">
-												<button type="submit" class="button" name="save_address" value="Save address">Save address</button>
-											</p>
-										</form> -->
+										
 									</div>
 								</div>
 								
@@ -711,7 +662,7 @@
 								
 
 
-										<form name="checkout" method="post" class="checkout" action="/place_order" autocomplete="off">
+										<form name="checkout" class="checkout" autocomplete="off">
 											<div class="row">
 												<div class="col-xl-8 col-lg-7 col-md-12 col-12">
 													<div class="customer-details">
@@ -749,94 +700,9 @@
 													
 														
 														  
-<!-- 
-														<div class="billing-fields">
-															<h3>Billing details</h3>
-															<div class="billing-fields-wrapper">
-																<p class="form-row form-row-first validate-required">
-																	<label>First name <span class="required" title="required">*</span></label>
-																	<span class="input-wrapper"><input type="text" class="input-text" name="billing_first_name" value=""></span>
-																</p>
-																<p class="form-row form-row-last validate-required">
-																	<label>Last name <span class="required" title="required">*</span></label>
-																	<span class="input-wrapper"><input type="text" class="input-text" name="billing_last_name" value=""></span>
-																</p>
-																<p class="form-row form-row-wide">
-																	<label>Company name <span class="optional">(optional)</span></label>
-																	<span class="input-wrapper"><input type="text" class="input-text" name="billing_company" value=""></span>
-																</p>
-																<p class="form-row form-row-wide validate-required">
-																	<label>Country / Region <span class="required" title="required">*</span></label>
-																	<span class="input-wrapper">
-																		<select name="billing_country" class="country-select custom-select">
-																			<option value="">Select a country / region…</option>
-																			<option value="AF">Afghanistan</option>
-																			<option value="AX">Åland Islands</option>
-																			<option value="AL">Albania</option>
-																			<option value="DZ">Algeria</option>
-																			<option value="AS">American Samoa</option>
-																			<option value="AD">Andorra</option>
-																		</select>
-																	</span>
-																</p>
-																<p class="form-row address-field validate-required form-row-wide">
-																	<label>Street address <span class="required" title="required">*</span></label>
-																	<span class="input-wrapper">
-																		<input type="text" class="input-text" name="billing_address_1" placeholder="House number and street name" value="">
-																	</span>
-																</p>
-																<p class="form-row address-field form-row-wide">
-																	<label>Apartment, suite, unit, etc.&nbsp;<span class="optional">(optional)</span></label>
-																	<span class="input-wrapper">
-																		<input type="text" class="input-text" name="billing_address_2" placeholder="Apartment, suite, unit, etc. (optional)" value="">
-																	</span>
-																</p>
-																<p class="form-row address-field validate-required form-row-wide">
-																	<label for="billing_city" class="">Town / City <span class="required" title="required">*</span></label>
-																	<span class="input-wrapper">
-																		<input type="text" class="input-text" name="billing_city" value="">
-																	</span>
-																</p>
-																<p class="form-row address-field validate-required validate-state form-row-wide">
-																	<label>State / County <span class="required" title="required">*</span></label>
-																	<span class="input-wrapper">
-																		<select name="billing_state" class="state-select custom-select">
-																			<option value="">Select a state / county…</option>
-																			<option value="VN">Vinnytsia Oblast</option>
-																			<option value="VL">Volyn Oblast</option>
-																			<option value="DP">Dnipropetrovsk Oblast</option>
-																			<option value="DT">Donetsk Oblast</option>
-																			<option value="ZT">Zhytomyr Oblast</option>
-																		</select>
-																	</span>
-																</p>
-																<p class="form-row address-field validate-required validate-postcode form-row-wide">
-																	<label>Postcode / ZIP <span class="required" title="required">*</span></label>
-																	<span class="input-wrapper">
-																		<input type="text" class="input-text" name="billing_postcode" value="">
-																	</span>
-																</p>
-																<p class="form-row form-row-wide validate-required validate-phone">
-																	<label>Phone <span class="required" title="required">*</span></label>
-																	<span class="input-wrapper">
-																		<input type="tel" class="input-text" name="billing_phone" value="">
-																	</span>
-																</p>
-																<p class="form-row form-row-wide validate-required validate-email">
-																	<label>Email address <span class="required" title="required">*</span></label>
-																	<span class="input-wrapper">
-																		<input type="email" class="input-text" name="billing_email" value="" autocomplete="off">
-																	</span>
-																</p>
-															</div>
-														</div> -->
+
 														<div class="account-fields">
-															<!-- <p class="form-row form-row-wide">
-																<label class="checkbox">
-																	<input class="input-checkbox" type="checkbox" name="createaccount" value="1"> 
-																	<span>Create an account?</span>
-																</label>
-															</p> -->
+														
 															<div class="create-account">
 																<p class="form-row validate-required">
 																	<label>Create account password <span class="required" title="required">*</span></label>
@@ -850,86 +716,7 @@
 														</div>
 													</div>
 													
-															<!-- <p class="form-row form-row-first validate-required">
-																<label>First name <span class="required" title="required">*</span></label>
-																<span class="input-wrapper">
-																	<input type="text" class="input-text" name="shipping_first_name" value="">
-																</span>
-															</p>
-															<p class="form-row form-row-last validate-required">
-																<label>Last name <span class="required" title="required">*</span></label>
-																<span class="input-wrapper">
-																	<input type="text" class="input-text" name="shipping_last_name" value="">
-																</span>
-															</p>
-															<p class="form-row form-row-wide">
-																<label>Company name <span class="optional">(optional)</span></label>
-																<span class="input-wrapper">
-																	<input type="text" class="input-text" name="shipping_company" value="">
-																</span>
-															</p>
-															<p class="form-row form-row-wide address-field validate-required">
-																<label for="shipping_country" class="">Country / Region <span class="required" title="required">*</span></label>
-																<span class="input-wrapper">
-																	<select name="billing_state" class="state-select custom-select">
-																		<option value="">Select a country / region…</option>
-																		<option value="VN">Vinnytsia Oblast</option>
-																		<option value="VL">Volyn Oblast</option>
-																		<option value="DP">Dnipropetrovsk Oblast</option>
-																		<option value="DT">Donetsk Oblast</option>
-																		<option value="ZT">Zhytomyr Oblast</option>
-																	</select>
-																</span>
-															</p>
-															<p class="form-row address-field validate-required form-row-wide">
-																<label>Street address <span class="required" title="required">*</span></label>
-																<span class="input-wrapper">
-																	<input type="text" class="input-text" name="shipping_address_1" placeholder="House number and street name" value="">
-																</span>
-															</p>
-															<p class="form-row address-field form-row-wide">
-																<label>Apartment, suite, unit, etc. <span class="optional">(optional)</span></label>
-																<span class="input-wrapper">
-																	<input type="text" class="input-text" name="shipping_address_2" placeholder="Apartment, suite, unit, etc. (optional)" value="">
-																</span>
-															</p>
-															<p class="form-row address-field validate-required form-row-wide">
-																<label>Town / City <span class="required" title="required">*</span></label>
-																<span class="input-wrapper"><input type="text" class="input-text" name="shipping_city" value=""></span>
-															</p>
-															<p class="form-row address-field validate-required validate-state form-row-wide">
-																<label for="shipping_state" class="">State / County <span class="required" title="required">*</span></label>
-																<span class="input-wrapper">
-																	<select name="billing_state" class="state-select custom-select">
-																		<option value="">Select a state / county…</option>
-																		<option value="VN">Vinnytsia Oblast</option>
-																		<option value="VL">Volyn Oblast</option>
-																		<option value="DP">Dnipropetrovsk Oblast</option>
-																		<option value="DT">Donetsk Oblast</option>
-																		<option value="ZT">Zhytomyr Oblast</option>
-																	</select>
-																</span>
-															</p>
-															<p class="form-row address-field validate-required validate-postcode form-row-wide">
-																<label>Postcode / ZIP <span class="required" title="required">*</span></label>
-																<span class="input-wrapper">
-																	<input type="text" class="input-text" name="shipping_postcode" value="">
-																</span>
-															</p> -->
-
 															
-															
-
-													
-													<!-- <div class="additional-fields">
-														<p class="form-row notes">
-															<label>Order notes <span class="optional">(optional)</span></label>
-															<span class="input-wrapper">
-																<textarea name="order_comments" class="input-text" placeholder="Notes about your order, e.g. special notes for delivery." rows="2" cols="5"></textarea>
-															</span>
-														</p>
-													</div> -->
-
 
 
 												</div>
@@ -937,36 +724,7 @@
 													<div class="checkout-review-order">
 														<div class="checkout-review-order-table">
 															<div class="review-order-title">Product</div>
-															<!-- <div class="cart-items">
-																<div class="cart-item">
-																	<div class="info-product">
-																		<div class="product-thumbnail">
-																			<img width="600" height="600" src="media/product/3.jpg" alt="">					
-																		</div>
-																		<div class="product-name">
-																			Chair Oak Matt Lacquered
-																			<strong class="product-quantity">QTY : 2</strong>											
-																		</div>
-																	</div>
-																	<div class="product-total">
-																		<span>$300.00</span>
-																	</div>
-																</div>
-																<div class="cart-item">
-																	<div class="info-product">
-																		<div class="product-thumbnail">
-																			<img width="600" height="600" src="media/product/1.jpg" alt="">					
-																		</div>
-																		<div class="product-name">
-																			Zunkel Schwarz
-																			<strong class="product-quantity">QTY : 1</strong>											
-																		</div>
-																	</div>
-																	<div class="product-total">
-																		<span>$180.00</span>
-																	</div>
-																</div>
-															</div> -->
+															
 
 															<div class="cart-items">
 																<% if (cart && cart.products && cart.products.length > 0) { %>
@@ -1034,8 +792,8 @@
 																	</div>
 																</li>
 																<li class="payment-method">
-																	<input type="radio" class="input-radio" name="payment_method" value="cheque">
-																	<label>Check payments</label>
+																	<input type="radio" class="input-radio" name="payment_method" value="Razorpay">
+																	<label>online payments</label>
 																	<div class="payment-box">
 																		<p>Please send a check to Store Name, Store Street, Store Town, Store State / County, Store Postcode.</p>
 																	</div>
@@ -1452,6 +1210,106 @@
 		
 		<!-- Site Scripts -->
 		<script src="/public/usernew/assets/js/app.js"></script>
+
+
+
+
+
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+		<script>
+		  $(document).ready(function() {
+			$("#checkout-form").on("submit", function(e) {
+			  e.preventDefault(); // Prevent the default form submission
+		
+			  // Your existing code
+			  console.log("clicked");
+			  var address = $("input[name=selected_address]:checked").val(); // Assuming the name attribute for the address input is 'selected_address'
+			  var total = $("#totalAmount").val(); // Assuming the total amount is in an input field with the id 'totalAmount'
+			  var payment = $("input[name=payment_method]:checked").val(); // Assuming the name attribute for the payment method input is 'payment_method'
+			  console.log('button clicked');
+		
+			  console.log('Before AJAX request');
+			  // Send the data using jQuery AJAX
+			  $.ajax({
+				type: "POST",
+				url: "/place_order", // Assuming the route for placing an order is '/place_order'
+				data: { selected_address: address, payment_method: payment, totalAmount: total },
+				success: function(response) {
+					console.log('ggggggggggggggggggg');
+				  if (response.success === true) {
+					console.log("entered ajax");
+					  razorPayment(response.razorpayOrder)
+					} else {
+					  window.location.href = `/orderPlaced/${response.orderid}`
+				  }
+				}
+			  });
+			  console.log('After AJAX request');
+			});
+		  });
+		
+		  function razorPayment(order) {
+			console.log("entered to razorpay");
+			var options = {
+			  key: "7qPA2dWay5GP1spvWde4dVy8", // Replace with your actual Razorpay key
+			  amount: order.amount,
+			  currency: "INR",
+			  name: "Your Business Name",
+			  description: "Test Transaction",
+			  image: "/user/images/icons/",
+			  order_id: order.id,
+			  handler: function(response) {
+				verifyPayment(response, order);
+			  },
+			  prefill: {
+				name: "Your Customer's Name",
+				email: "customer@example.com",
+				contact: "9230566487",
+			  },
+			  notes: {
+				address: "Your Company Address",
+			  },
+			  theme: {
+				color: "#c96",
+			  },
+			};
+		
+			var rzp1 = new Razorpay(options);
+			rzp1.open();
+		  }
+		
+		  function verifyPayment(payment, order) {
+			const amount2 = $("#totalAmount").val(); // Assuming the total amount is in an input field with the id 'totalAmount'
+			$.ajax({
+			  url: "/verifyPayment",
+			  method: "post",
+			  data: {
+				payment: payment,
+				amount2: amount2,
+				order: order,
+			  },
+			  success: (response) => {
+				if (response.codsuccess == true) {
+				  location.href = '/order_placed';
+				} else {
+				  swal.fire({
+					position: "center",
+					icon: "error",
+					title: "Payment failed",
+					showConfirmButton: false,
+					timer: 1500,
+				  });
+				}
+			  },
+			});
+		  }
+		
+		</script>
+		
+
+
+
 
 		<script>
 			function validAddress() {
