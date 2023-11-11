@@ -2163,169 +2163,420 @@ const instance = new Razorpay({
   key_id: 'rzp_test_fZkpvgMYwl1OFW',
   key_secret: '7qPA2dWay5GP1spvWde4dVy8',
 });
+ 
 
-
-
-
-
-const placeOrder = async (req, res) => {
+const calculateTotalPrice = async (userId) => {
   try {
-    const { selected_address, payment_method, totalAmount } = req.body;
-    const userId = req.session.user_id;
-
-    // Fetch cart items
-    const cartItems = await Cart.findOne({ user: userId }).populate({
-      path: 'products.productId',
-      model: 'product',
-    });
-
-    // Check if the cart is empty or cartItems is null
-    if (!cartItems || !cartItems.products || !Array.isArray(cartItems.products) || cartItems.products.length === 0) {
-      console.log('Cart is empty. Unable to place an order.');
-      return res.status(400).json({
-        success: false,
-        message: 'Cart is empty. Unable to place an order.',
-      });
-    }
-
-    // Parse totalAmount as a number
-    const numericTotal = parseFloat(totalAmount);
-
-    // Include address details in the order
-    const addressDetails = await Address.findOne({
-      'address._id': selected_address,
-    });
-
-    if (!addressDetails || !mongoose.Types.ObjectId.isValid(selected_address)) {
-      console.log('Invalid or not found address ID.');
-      return res.status(400).json({
-        success: false,
-        message: 'Invalid or not found address ID. Unable to place an order.',
-      });
-    }
-
-    // Assuming 'address' is an array, find the specific address within the array
-    const selectedAddress = addressDetails.address.find(
-      (address) => address._id.toString() === selected_address
+    const cart = await Cart.findOne({ user: userId }).populate(
+      'products.productId'
     );
 
-    // Calculate the expected delivery date (7 days from now)
-    const today = new Date();
-    const deliveryDate = new Date(today);
-    deliveryDate.setDate(today.getDate() + 7);
-
-    // Extract the date, month, and year from the deliveryDate
-    const deliveryDay = deliveryDate.getDate();
-    const deliveryMonth = deliveryDate.getMonth();
-    const deliveryYear = deliveryDate.getFullYear();
-
-    // Create a new order with status 'Placed' and set product statuses
-    const newOrder = new Order({
-      user: userId,
-      cart: {
-        user: userId,
-        products: cartItems.products.map(item => ({
-          productId: item.productId._id,
-          quantity: item.quantity,
-          price: item.price,
-          orderStatus: 'Placed', // Set the initial order status for each product as 'Placed'
-          returnOrder: {
-            status: null, // Set the initial return order status as null
-            reason: null, // Set the initial return order reason as null
-          },
-        })),
-      },
-      deliveryAddress: {
-        fullname: selectedAddress.fullname,
-        mobile: selectedAddress.mobile,
-        housename: selectedAddress.housename,
-        city: selectedAddress.city,
-        state: selectedAddress.state,
-        district: selectedAddress.district,
-        pin: selectedAddress.pin,
-      },
-      paymentOption: payment_method,
-      totalAmount: numericTotal,
-      orderDate: new Date(),
-      expectedDelivery: new Date(deliveryYear, deliveryMonth, deliveryDay), // Set the expected delivery date with only date, month, and year
-      status: 'Placed', // Set the initial status for the order as 'Placed'
-    });
-
-    // Save the order to the database
-    await newOrder.save();
-
-    // Handle Razorpay payment for onlinePayment method
-    if (payment_method === 'Razorpay') {
-      console.log("entered razorpay")
-      const orderId = newOrder._id;
-      const razorpayOrder = await instance.orders.create({
-        amount: totalAmount * 100, // Amount in paise (Indian currency) or smallest currency unit
-        currency: 'INR', // Use the appropriate currency code for your region
-        receipt: orderId.toString(), // Unique order ID in your system
-        payment_capture: 1, // Automatically capture payment after successful payment
-      });
-
-      // Include the Razorpay order ID in the order document
-      newOrder.razorpayOrderId = razorpayOrder.id;
-
-      // Save the updated order with the Razorpay order ID
-      // await newOrder.save();
-
-      // Send Razorpay order details to the client for payment processing
-      res.json({ success: true, razorpayOrder });
-    } else if (payment_method === 'COD') {
-      // ... (same as your existing code)
- // Use bulkWrite to update stock atomically
- const stockUpdateOperations = cartItems.products.map((item) => {
-  const productId = item.productId._id;
-  const quantity = parseInt(item.quantity, 10);
-
-  return {
-    updateOne: {
-      filter: { _id: productId, stock: { $gte: quantity } }, // Ensure enough stock
-      update: { $inc: { stock: -quantity } },
-    },
-  };
-});
-
-// Execute the bulkWrite operation
-const stockUpdateResult = await Product.bulkWrite(stockUpdateOperations);
-
-// Check if any stock update failed
-if (stockUpdateResult.writeErrors && stockUpdateResult.writeErrors.length > 0) {
-  console.log('Failed to update stock for some products');
-  // Handle the case where the stock update failed, e.g., redirect to an error page
-  return res.status(500).json({
-    success: false,
-    message: 'Failed to update stock for some products',
-  });
-}
-
-    } else {
-      // Handle other payment methods if needed
+    if (!cart) { 
+      console.log('User does not have a cart.');
+      return 0; // Return 0 if the user doesn't have a cart
     }
+
+    let totalPrice = 0;
+    for (const cartProduct of cart.products) {
+      const { productId, quantity } = cartProduct;
+      const productSubtotal = productId.product_price * quantity; // Update to use the correct field
+      totalPrice += productSubtotal;
+    }
+
+    return totalPrice;
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, message: 'Failed to place the order' });
+    console.error('Error calculating total price:', error.message);
+    return 0;
   }
 };
 
 
+
+
+const generateUniqueTrackId = async () => {
+  try {
+    let orderID;
+    let isUnique = false;
+
+    while (!isUnique) {
+      orderID = Math.floor(100000 + Math.random() * 900000);
+
+      const existingOrder = await Order.findOne({ trackId: orderID });
+
+      if (!existingOrder) {
+        isUnique = true;
+      }
+    }
+
+    return orderID;
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+// =========== place order ===========
+// =========== place order ===========
+// const placeOrder = async (req, res) => {
+//   try {
+//     console.log('Request Body:', req.body);
+//     const addressId = req.body.address;
+//     const paymentType = req.body.payment;
+
+//     // Check if addressId and paymentType are provided
+//     if (!addressId || !paymentType) {
+//       console.log('Invalid address or payment type');
+//       return res.status(400).json({ error: "Invalid address or payment type" });
+//     }
+
+//     const cartDetails = await Cart.findOne({ user: req.session.user_id });
+
+//     const userAddrs = await Address.findOne({ userId: req.session.user_id });
+//     const shipAddress = userAddrs.address.find((address) => {
+//       return address._id.toString() === addressId.toString();
+//     });
+
+//     if (!shipAddress) {
+//       console.log('Address not found');
+//       return res.status(400).json({ error: "Address not found" });
+//     }
+
+//     const cartProducts = cartDetails.products.map((productItem) => ({
+//       productId: productItem.productId,
+//       quantity: productItem.quantity,
+//       orderStatus: "Placed",
+//       returnOrder: {
+//         status: "none",
+//         reason: "none",
+//       },
+//     }));
+
+//     const total = await calculateTotalPrice(req.session.user_id);
+
+//     const today = new Date();
+//     const deliveryDate = new Date(today);
+//     deliveryDate.setDate(today.getDate() + 7);
+
+//     const trackId = await generateUniqueTrackId();
+//     const order = new Order({
+//       user: req.session.user_id,
+//       cart: {
+//         user: req.session.user_id,
+//         products: cartProducts,
+//       },
+//       deliveryAddress: {
+//         fullname: shipAddress.fullname,
+//         mobile: shipAddress.mobile,
+//         housename: shipAddress.housename,
+//         city: shipAddress.city,
+//         state: shipAddress.state,
+//         district: shipAddress.district,
+//         pin: shipAddress.pin,
+//       },
+//       paymentOption: paymentType,
+//       totalAmount: total,
+//       orderDate: new Date(),
+//       expectedDelivery: deliveryDate,
+//       trackId,
+//     });
+
+//     const placeorder = await order.save();
+//     const orderId = placeorder._id;
+
+//     if (paymentType === "COD") {
+//       for (const item of cartDetails.products) {
+//         const productId = item.productId._id;
+//         const quantity = parseInt(item.quantity, 10);
+
+//         await Product.findByIdAndUpdate(
+//           { _id: productId },
+//           {
+//             $inc: { quantity: -quantity },
+//           }
+//         );
+//       }
+
+//       console.log('Order placed successfully');
+//       res.status(200).json({ placeorder, message: "Order placed successfully" });
+//       await Cart.findOneAndDelete({ user: req.session.user_id });
+//     } else if (paymentType === "Razorpay") {
+//       const options = {
+//         amount: total * 100,
+//         currency: "INR",
+//         receipt: "" + orderId,
+//       };
+
+//       instance.orders.create(options, async function (err, razorpayOrder) {
+//         if (err) {
+//           console.error('Razorpay order creation failed:', err);
+//           return res.status(500).json({ error: "Razorpay order creation failed" });
+//         }
+
+//         console.log('Razorpay Order:', razorpayOrder);
+
+//         // Call the razorPayment function with the correct order data
+//         await razorPayment(req, res, razorpayOrder, orderId);
+//       });
+//     }
+//   } catch (error) {
+//     console.error('An error occurred:', error.message);
+//     res.status(500).json({ error: "An error occurred" });
+//   }
+// };
+// const placeOrder = async (req, res) => {
+//   try {
+//     console.log('Request Body:', req.body);
+//     const addressId = req.body.address;
+//     const paymentType = req.body.payment;
+
+//     // Check if addressId and paymentType are provided
+//     if (!addressId || !paymentType) {
+//       console.log('Invalid address or payment type');
+//       return res.status(400).json({ error: "Invalid address or payment type" });
+//     }
+
+//     const cartDetails = await Cart.findOne({ user: req.session.user_id });
+
+//     const userAddrs = await Address.findOne({ user_id: req.session.user_id });
+
+//     if (!userAddrs || !userAddrs.address || userAddrs.address.length === 0) {
+//       console.log('User addresses not found');
+//       return res.status(400).json({ error: "User addresses not found" });
+//     }
+
+//     const shipAddress = userAddrs.address.find((address) => {
+//       return address._id.toString() === addressId.toString();
+//     });
+
+//     if (!shipAddress) {
+//       console.log('Address not found');
+//       return res.status(400).json({ error: "Address not found" });
+//     }
+
+//     const cartProducts = cartDetails.products.map((productItem) => ({
+//       productId: productItem.productId,
+//       quantity: productItem.quantity,
+//       orderStatus: "Placed",
+//       returnOrder: {
+//         status: "none",
+//         reason: "none",
+//       },
+//     }));
+
+//     const total = await calculateTotalPrice(req.session.user_id);
+
+//     const today = new Date();
+//     const deliveryDate = new Date(today);
+//     deliveryDate.setDate(today.getDate() + 7);
+
+//     const trackId = await generateUniqueTrackId();
+//     const order = new Order({
+//       user: req.session.user_id,
+//       cart: {
+//         user: req.session.user_id,
+//         products: cartProducts,
+//       },
+//       deliveryAddress: {
+//         fullname: shipAddress.fullname,
+//         mobile: shipAddress.mobile,
+//         housename: shipAddress.housename,
+//         city: shipAddress.city,
+//         state: shipAddress.state,
+//         district: shipAddress.district,
+//         pin: shipAddress.pin,
+//       },
+//       paymentOption: paymentType,
+//       totalAmount: total,
+//       orderDate: new Date(),
+//       expectedDelivery: deliveryDate,
+//       trackId,
+//     });
+
+//     const placeorder = await order.save();
+//     const orderId = placeorder._id;
+
+//     if (paymentType === "COD") {
+//       for (const item of cartDetails.products) {
+//         const productId = item.productId._id;
+//         const quantity = parseInt(item.quantity, 10);
+
+//         await Product.findByIdAndUpdate(
+//           { _id: productId },
+//           {
+//             $inc: { quantity: -quantity },
+//           }
+//         );
+//       }
+
+//       console.log('Order placed successfully');
+//       res.status(200).json({ placeorder, message: "Order placed successfully" });
+//       await Cart.findOneAndDelete({ user: req.session.user_id });
+//     } else if (paymentType === "Razorpay") {
+//       const options = {
+//         amount: total * 100,
+//         currency: "INR",
+//         receipt: "" + orderId,
+//       };
+
+//       instance.orders.create(options, async function (err, razorpayOrder) {
+//         if (err) {
+//           console.error('Razorpay order creation failed:', err);
+//           return res.status(500).json({ error: "Razorpay order creation failed" });
+//         }
+
+//         console.log('Razorpay Order:', razorpayOrder);
+
+//         // Call the razorPayment function with the correct order data
+//         await razorPayment(req, res, razorpayOrder, orderId);
+//       });
+//     }
+//   } catch (error) {
+//     console.error('An error occurred:', error.message);
+//     res.status(500).json({ error: "An error occurred" });
+//   }
+// };
+
+
+const placeOrder = async (req, res) => {
+  try {
+    console.log('Request Body:', req.body);
+    const addressId = req.body.address;
+    const paymentType = req.body.payment;
+
+    // Check if addressId and paymentType are provided
+    if (!addressId || !paymentType) {
+      console.log('Invalid address or payment type');
+      return res.status(400).json({ error: "Invalid address or payment type" });
+    }
+
+    const cartDetails = await Cart.findOne({ user: req.session.user_id });
+
+    const userAddrs = await Address.findOne({ user_id: req.session.user_id });
+
+    if (!userAddrs || !userAddrs.address || userAddrs.address.length === 0) {
+      console.log('User addresses not found');
+      return res.status(400).json({ error: "User addresses not found" });
+    }
+
+    const shipAddress = userAddrs.address.find((address) => {
+      return address._id.toString() === addressId.toString();
+    });
+
+    if (!shipAddress) {
+      console.log('Address not found');
+      return res.status(400).json({ error: "Address not found" });
+    }
+
+    const cartProducts = cartDetails.products.map((productItem) => ({
+      productId: productItem.productId,
+      quantity: productItem.quantity,
+      orderStatus: "Placed",
+      returnOrder: {
+        status: "none",
+        reason: "none",
+      },
+    }));
+
+    const total = await calculateTotalPrice(req.session.user_id);
+
+    const today = new Date();
+    const deliveryDate = new Date(today);
+    deliveryDate.setDate(today.getDate() + 7);
+
+    const trackId = await generateUniqueTrackId();
+    const order = new Order({
+      user: req.session.user_id,
+      cart: {
+        user: req.session.user_id,
+        products: cartProducts,
+      },
+      deliveryAddress: {
+        fullname: shipAddress.fullname,
+        mobile: shipAddress.mobile,
+        housename: shipAddress.housename,
+        city: shipAddress.city,
+        state: shipAddress.state,
+        district: shipAddress.district,
+        pin: shipAddress.pin,
+      },
+      paymentOption: paymentType,
+      totalAmount: total,
+      orderDate: new Date(),
+      expectedDelivery: deliveryDate,
+      trackId,
+    });
+
+    const placeorder = await order.save();
+    const orderId = placeorder._id;
+
+    if (paymentType === "COD") {
+      for (const item of cartDetails.products) {
+        const productId = item.productId._id;
+        const quantity = parseInt(item.quantity, 10);
+
+        await Product.findByIdAndUpdate(
+          { _id: productId },
+          {
+            $inc: { quantity: -quantity },
+          }
+        );
+      }
+
+      console.log('Order placed successfully');
+      res.status(200).json({ placeorder, message: "Order placed successfully" });
+      await Cart.findOneAndDelete({ user: req.session.user_id });
+    } else if (paymentType === "Razorpay") {
+      const options = {
+        amount: total * 100,
+        currency: "INR",
+        receipt: "" + orderId,
+      };
+
+      instance.orders.create(options, async function (err, order) {
+        if (err) {
+          console.error('Razorpay order creation failed:', err);
+          return razorPaymentFailed(res, "Razorpay order creation failed");
+        }
+
+        console.log('Razorpay Order:', order);
+
+        // Handle the Razorpay order response here
+        res.status(400).json({  order });
+      });
+    } 
+  } catch (error) {
+    console.error('An error occurred:', error.message);
+    res.status(500).json({ error: "An error occurred" });
+  }
+};
+
+// Add the following function definition for razorPaymentFailed
+function razorPaymentFailed(res, errorMessage) {
+  console.error(errorMessage);
+  res.status(500).json({ error: errorMessage });
+}
+
+
+// Add the razorPaymentFailed function
+
+
+
+
+// Function to handle the Razorpay payment response verification
 const verifyPayment = async (req, res) => {
   try {
+    console.log("watg3t")
+    console.log(req.body)
     const cartData = await Cart.findOne({ user: req.session.user_id });
     const products = cartData.products;
     const details = req.body;
-    console.log("details is:", details);
-    const hmac = crypto.createHmac("sha256", "7qPA2dWay5GP1spvWde4dVy8");
+    const hmac = crypto.createHmac("sha256", instance.key_secret);
 
-    hmac.update(
+    hmac.update(  
       details.payment.razorpay_order_id +
         "|" +
         details.payment.razorpay_payment_id
     );
     const hmacValue = hmac.digest("hex");
-    console.log("hmacValue", hmacValue);
 
     if (hmacValue === details.payment.razorpay_signature) {
       for (let i = 0; i < products.length; i++) {
@@ -2336,26 +2587,15 @@ const verifyPayment = async (req, res) => {
           { $inc: { quantity: -quantity } }
         );
       }
-
-      const orderUpdates = {
-        'cart.products.orderStatus': 'Placed',
-        'cart.products.statusLevel': 1,
-        'cart.products.paymentStatus': 'Paid',
-        'cart.products.returnOrder.status': 'none',
-        'cart.products.returnOrder.reason': 'none',
-        'cart.products.cancelOrder.reason': 'none',
-      };
-
-      await Order.findOneAndUpdate(
+      await Order.findByIdAndUpdate(
         { _id: details.order.receipt },
-        { $set: orderUpdates }
+        { $set: { 'products.$[].paymentStatus': 'Success'}}
       );
 
       await Order.findByIdAndUpdate(
         { _id: details.order.receipt },
         { $set: { paymentId: details.payment.razorpay_payment_id } }
       );
-
       await Cart.deleteOne({ user: req.session.user_id });
       const orderid = details.order.receipt;
 
@@ -2366,24 +2606,9 @@ const verifyPayment = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    res.json({ success: false, message: 'Error verifying payment' });
+    res.status(500).json({ error });
   }
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -2396,6 +2621,101 @@ const orderPlaced = async (req, res) => {
   }
 };
 
+
+const loadaddwallet = async (req, res) => {
+  try {
+    res.render('wallet'); // No need to pass any variables if there's no error
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ success: false, message: 'Failed to render orderplaced template' });
+  }
+};
+
+
+
+const addMoneyWallet = async (req,res)=>{
+  try {
+      console.log("monry comong");
+
+  const {amount}=req.body
+  console.log('amount',amount);
+  const id=crypto.randomBytes(8).toString('hex')
+  console.log(id);
+  var options={ 
+      amount:amount*100,
+      currency:'INR',
+      receipt:""+id
+  }
+  console.log('//',options);
+  
+  instance.orders.create(options, (err, order) => {
+      console.log('///orr',order);
+      if(err){
+          console.log('err');
+          res.json({status: false})
+      }else{
+          console.log('stts');
+          res.json({ status: true, order:order })
+      }
+  
+  })
+  
+  } catch (error) {
+      console.log(error);
+  }
+}
+
+
+const verifyWalletpayment = async(req,res)=>{
+  try{
+
+    console.log("entered into post verify wallet payment");
+
+   
+    const userId=req.session.user_id
+
+    const body = req.body;
+    console.log("data",body)
+    const amount = parseInt(body.order.amount)/100;
+        let hmac = crypto.createHmac('sha256',"7qPA2dWay5GP1spvWde4dVy8")
+
+
+        hmac.update(
+          body.payment.razorpay_order_id + '|' + body.payment.razorpay_payment_id
+      )
+      hmac = hmac.digest('hex')
+      if(hmac == body.payment.razorpay_signature){
+          
+        const walletHistory = {
+          date: new Date(),
+          description: 'Deposited via Razorpay',
+          transactionType: 'Credit',
+          amount: amount,
+      }
+          await userModel.findByIdAndUpdate(
+              {_id: userId},
+              {
+                  $inc:{
+                      wallet: amount
+                  },
+                  $push:{
+                      walletHistory
+                  }
+              }
+          );
+
+          const updatedUser = await userModel.findById(userId);
+          console.log('udddd')
+          res.json({status: true,wallet:updatedUser.wallet})
+      }else{
+          res.json({status: false})
+      }
+
+
+  }catch(error){
+    console.log(error);
+  }
+}
  
 
 module.exports={
@@ -2438,9 +2758,17 @@ module.exports={
     addShippingAddress,
     editAddressPagecheckout,
     editAddresscheckout,
+
     placeOrder, 
+    
     verifyPayment,
 
-    orderPlaced
+    orderPlaced,
+
+    loadaddwallet,
+
+    addMoneyWallet,
+    verifyWalletpayment 
+
 
 }

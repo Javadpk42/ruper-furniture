@@ -546,6 +546,9 @@
 														<a class="nav-link" data-toggle="tab" href="#orders" role="tab">Orders</a>
 													</li>
 													<li class="nav-item">
+														<a class="nav-link" data-toggle="tab" href="#wallet" role="tab">Wallet</a>
+													</li>
+													<li class="nav-item">
 														<a class="nav-link" data-toggle="tab" href="#addresses" role="tab">Addresses</a>
 													</li>
 													<li class="nav-item">
@@ -720,6 +723,63 @@
 												  </div>
 												  
 												  
+
+
+												  <div class="tab-pane fade" id="wallet" role="tabpanel">
+													<div class="my-account-addresses">
+													 
+												  
+												  
+												  
+														<div class="addresses">
+													 
+															<div class="addresses-col">
+															  <header class="col-title">
+																<h3>Wallet Balance</h3>
+																<a class="edit" href="">wallet history</a>
+																<!-- Add a button to delete the address -->
+												<a href="/add_wallet">				<button
+													class="btn btn-success delete-address"
+													data-address-id=""
+													
+													>
+													Add Money
+													</button></a>
+												  
+													  
+																<!-- Add a hidden form for each address -->
+																<form
+												  id=""
+												  action=""
+												  method="POST"
+												  onsubmit="return confirm('Are you sure you want to delete this address?');"
+												  >
+												  <!-- You can add any hidden fields or additional data here -->
+												  <input type="hidden" name="_method" value="DELETE">
+												  <input type="submit" style="display: none;">
+												  </form>
+															  </header>
+															  <address>
+																<strong>wallet balance   <%= users.wallet %></strong><br>
+																<!-- kjh<br>
+																sdf<br>
+																sd<br>
+																Pin: <br> -->
+															  </address>
+															</div>
+														  
+														  
+														
+													  </div>
+												  
+												  
+												  
+												  
+														
+													</div>
+												  </div>
+
+
 
 												<div class="tab-pane fade" id="addresses" role="tabpanel">
 													<div class="my-account-addresses">

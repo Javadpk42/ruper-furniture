@@ -56,12 +56,25 @@ user_route.get('/checkout',userController.loadCheckout)
 user_route.get('/edit_address_checkout/:addressId', userController.editAddressPagecheckout);
 user_route.post('/edit_address_checkout/:addressId', userController.editAddresscheckout);
 user_route.post('/add_shipping_address', userController.addShippingAddress)
-user_route.post('/place_order', userController.placeOrder)
-user_route.post('/verifyPayment', userController.verifyPayment)
+
+
+
+
+user_route.post('/placeOrder', userController.placeOrder)
+
+
+user_route.post('/verifyPayment',userController.verifyPayment)
 
 user_route.get('/orderplaced', userController.orderPlaced)  
 
+
+user_route.get('/add_wallet', userController.loadaddwallet)  
+user_route.post('/add_wallet',userController.addMoneyWallet)
+
+user_route.post('/verify_wallet',userController.verifyWalletpayment)
  
+
+  
 module.exports=user_route;
 
 
