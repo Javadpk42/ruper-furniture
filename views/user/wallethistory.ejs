@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 	
-<!-- Mirrored from caketheme.com/html/ruper/shop-checkout.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2023 09:38:23 GMT -->
+<!-- Mirrored from caketheme.com/html/ruper/page-my-account.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2023 09:38:24 GMT -->
 <head>
 		<!-- Meta Data -->
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Shop Checkout | Ruper</title>
+		<title>My Account | Ruper</title>
 		
 		<!-- Favicon -->
 		<link rel="shortcut icon" type="image/x-icon" href="/public/usernew/media/favicon.png">
@@ -23,7 +23,6 @@
 		<link rel="stylesheet" href="/public/usernew/libs/slick/css/slick-theme.css" type="text/css">
 		<link rel="stylesheet" href="/public/usernew/libs/mmenu/css/mmenu.min.css" type="text/css">
 		<link rel="stylesheet" href="/public/usernew/libs/slider/css/jslider.css">
-		<link rel="stylesheet" href="/public/usernew/libs/select2/css/select2.min.css">
 
 		<!-- Site Stylesheet -->
 		<link rel="stylesheet" href="/public/usernew/assets/css/app.css" type="text/css">
@@ -34,7 +33,7 @@
 		<link href="https://fonts.googleapis.com/css?family=EB+Garamond:100,100italic,200,200italic,300,300italic,400,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic&amp;display=swap" rel="stylesheet">
 	</head>
 	
-	<body class="shop">
+	<body class="blog">
 		<div id="page" class="hfeed page-wrapper">
 			<header id="site-header" class="site-header header-v1 absolute">
 				<div class="header-mobile">
@@ -49,7 +48,7 @@
 								<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-6 header-center">
 									<div class="site-logo">
 										<a href="index.html">
-											<img width="400" height="79" src="/public/usernew/media/logo.png" alt="Ruper – Furniture HTML Theme" />
+											<img width="400" height="79" src="media/logo.png" alt="Ruper – Furniture HTML Theme" />
 										</a>
 									</div>
 								</div>
@@ -140,7 +139,7 @@
 									<div class="col-xl-3 col-lg-2 col-md-12 col-sm-12 col-12 header-left">
 										<div class="site-logo">
 											<a href="index.html">
-												<img width="400" height="79" src="/public/usernew/media/logo.png" alt="Ruper – Furniture HTML Theme" />
+												<img width="400" height="79" src="media/logo.png" alt="Ruper – Furniture HTML Theme" />
 											</a>
 										</div>
 									</div>
@@ -150,7 +149,7 @@
 											<nav id="main-navigation">
 												<ul id="menu-main-menu" class="menu">
 													<li class="level-0 menu-item menu-item-has-children mega-menu">
-														<a href="/"><span class="menu-item-text">Home</span></a>
+														<a href="index.html"><span class="menu-item-text">Home</span></a>
 														<div class="sub-menu">
 															<div class="row">
 																<div class="col-md-6">
@@ -215,8 +214,8 @@
 															</div>
 														</div>
 													</li>
-													<li class="level-0 menu-item menu-item-has-children current-menu-item">
-														<a href="/shop"><span class="menu-item-text">Shop</span></a>
+													<li class="level-0 menu-item menu-item-has-children">
+														<a href="shop-grid-left.html"><span class="menu-item-text">Shop</span></a>
 														<ul class="sub-menu">
 															<li class="level-1 menu-item menu-item-has-children">
 																<a href="shop-grid-left.html"><span class="menu-item-text">Shop - Products</span></a>
@@ -342,7 +341,7 @@
 																						</h2>
 																						<div class="post-time">
 																							<span class="post-date">Dec 06, 2022</span>
-																							<span class="post-comment">1 Comment</span>	
+																							<span class="post-comment">1 Comment</span>
 																						</div>
 																					</div>
 																				</li>
@@ -353,7 +352,7 @@
 															</div>
 														</div>
 													</li>
-													<li class="level-0 menu-item menu-item-has-children">
+													<li class="level-0 menu-item menu-item-has-children current-menu-item">
 														<a href="#"><span class="menu-item-text">Pages</span></a>
 														<ul class="sub-menu">
 															<li>
@@ -391,8 +390,6 @@
 										<div class="header-page-link">
 											<!-- Login -->
 											<div class="login-header">
-												<!-- <a class="active-login" href="#">Login</a> -->
-												
 												<a href="/logout"><span class="menu-item-text">Logout</span></a>
 												<div class="form-login-register">
 													<div class="box-form-login">
@@ -462,17 +459,51 @@
 											<div class="ruper-topcart dropdown light">
 												<div class="dropdown mini-cart top-cart">
 													<div class="remove-cart-shadow"></div>
-													<a class="dropdown-toggle cart-icon" href="/view-cart" role="button"  aria-haspopup="true" aria-expanded="false">
+													<a class="dropdown-toggle cart-icon" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 														<div class="icons-cart"><i class="icon-large-paper-bag"></i><span class="cart-count">2</span></div>
 													</a>
-													
-													
+													<div class="dropdown-menu cart-popup">
+														<div class="cart-empty-wrap">
+															<ul class="cart-list">
+																<li class="empty">
+																	<span>No products in the cart.</span>
+																	<a class="go-shop" href="shop-grid-left.html">GO TO SHOP<i aria-hidden="true" class="arrow_right"></i></a>
+																</li>
+															</ul>
+														</div>
+														<div class="cart-list-wrap">
+															<ul class="cart-list ">
+																<li class="mini-cart-item">
+																	<a href="#" class="remove" title="Remove this item"><i class="icon_close"></i></a>
+																	<a href="shop-details.html" class="product-image"><img width="600" height="600" src="media/product/3.jpg" alt=""></a>
+																	<a href="shop-details.html" class="product-name">Chair Oak Matt Lacquered</a>		
+																	<div class="quantity">Qty: 1</div>
+																	<div class="price">$150.00</div>
+																</li>
+																<li class="mini-cart-item">
+																	<a href="#" class="remove" title="Remove this item"><i class="icon_close"></i></a>													
+																	<a href="shop-details.html" class="product-image"><img width="600" height="600" src="media/product/1.jpg" alt=""></a>
+																	<a href="shop-details.html" class="product-name">Zunkel Schwarz</a>
+																	<div class="quantity">Qty: 1</div>
+																	<div class="price">$100.00</div>						
+																</li>
+															</ul>
+															<div class="total-cart">
+																<div class="title-total">Total: </div>
+																<div class="total-price"><span>$100.00</span></div>
+															</div>
+															<div class="free-ship">
+																<div class="title-ship">Buy <strong>$400</strong> more to enjoy <strong>FREE Shipping</strong></div>
+																<div class="total-percent"><div class="percent" style="width:20%"></div></div>
+															</div>
+															<div class="buttons">
+																<a href="shop-cart.html" class="button btn view-cart btn-primary">View cart</a>
+																<a href="shop-checkout.html" class="button btn checkout btn-default">Check out</a>
+															</div>
+														</div>
+													</div>
 												</div>
-												
 											</div>
-											<div class="my-profile-box">
-												<a href="/profile" class="btn btn-outline-dark btn-sm">My Profile</a>
-											  </div>
 										</div>
 									</div>
 								</div>
@@ -489,263 +520,69 @@
 							<div class="section-container">
 								<div class="content-title-heading">
 									<h1 class="text-title-heading">
-										Checkout
+										My Account
 									</h1>
 								</div>
 								<div class="breadcrumbs">
-									<a href="index.html">Home</a><span class="delimiter"></span><a href="shop-grid-left.html">Shop</a><span class="delimiter"></span>Shopping Cart
+									<a href="index.html">Home</a><span class="delimiter"></span>My Account
 								</div>
 							</div>
 						</div>
 
+
+						<div class="container">
 						<div id="content" class="site-content" role="main">
 							<div class="section-padding">
 								<div class="section-container p-l-r">
-									<div class="shop-checkout">
-
-
-										
-
-
-								<div class="shipping-fields">
-									<p class="form-row form-row-wide ship-to-different-address">
-										<label class="checkbox">
-											<input class="input-checkbox" type="checkbox" name="ship_to_different_address" value="1">
-											<span>Ship to a different address?</span>
-										</label>
-									</p>
-									<div class="shipping-address">
-										<form class="edit-account" action="/add_shipping_address" method="post" onsubmit="return validAddress()">
-											<p class="form-row">
-											  <input type="text" class="input-text" name="fullname" id="fullName" placeholder="Full Name">
-											  <p class="error-message" id="name-error"></p>
-											</p>
-											<p class="form-row">
-											  <input type="text" class="input-text" name="mobile" id="phone" placeholder="Mobile">
-											  <p class="error-message" id="mobile-error"></p>
-											</p>
-											<div class="clear"></div>
-											<p class="form-row">
-											  <input type="text" class="input-text" name="housename" id="housename" placeholder="House Name">
-											  <p class="error-message" id="housename-error"></p>
-											</p>
-											<p class="form-row">
-											  <input type="text" class="input-text" name="pin" id="pinCode" placeholder="Pincode">
-											  <p class="error-message" id="pincode-error"></p>
-											</p>
-											<p class="form-row">
-											  <input type="text" class="input-text" name="city" id="city" placeholder="City">
-											  <p class="error-message" id="city-error"></p>
-											</p>
-											<p class="form-row">
-											  <input type="text" class="input-text" name="district" id="district" placeholder="District">
-											  <p class="error-message" id="district-error"></p>
-											</p>
-											<p class="form-row">
-											  <input type="text" class="input-text" name="state" id="state" placeholder="State">
-											  <p class="error-message" id="state-error"></p>
-											</p>
-											<div class="clear"></div>
-										  
-											<p class="form-row">
-											  <button type="submit" class="button" name="save_account_details" value="Save changes">Save address</button>
-											</p>
-										  
-										  </form>
-										
-									</div>
-								</div>
-								
-
-								
-								
-
-
-										<form name="checkout" class="checkout" autocomplete="off">
-											<div class="row">
-												<div class="col-xl-8 col-lg-7 col-md-12 col-12">
-													<div class="customer-details">
-
-
-
-														  <div class="addresses">
-															<% if (addresses && addresses.length > 0) { %>
-																<% addresses.reverse().forEach((addressItem, index) => { %>
-																	<div class="addresses-col" style="float: left; width: 50%;">
-																		<input type="radio" name="selected_address" value="<%= addressItem._id %>">
-																		<header class="col-title">
-																			
-																			<a class="edit text-danger" href="/edit_address_checkout/<%= addressItem._id %>">Edit</a>
-																		</header>
-																		<address>
-																			<%= addressItem.fullname %><br>
-																			Mobile: <%= addressItem.mobile %><br>
-																			<%= addressItem.housename %><br>
-																			<%= addressItem.city %>, <%= addressItem.state %>, <%= addressItem.district %><br>
-																			Pin: <%= addressItem.pin %><br>
-																		</address>
-																	</div>
-																	<% if ((index + 1) % 2 === 0) { %>
-																		<div style="clear: both;"></div>
-																	<% } %>
-																<% }); %>
-															<% } else { %>
-																<p>No addresses found.</p>
-															<% } %>
-														</div>
+									<div class="page-my-account">
+										<div class="my-account-wrap clearfix">
+											<!-- <div class="my-account-content tab-content">
+												<div class="tab-pane fade show active"  role="tabpanel">
+													<div class="my-account-addresses"> -->
+														<h1>Wallet Transactions</h1>
+														<div class="my-account-account-details">
 														
-														
-														
-													
-														
-														  
-
-														<div class="account-fields">
-														
-															<div class="create-account">
-																<p class="form-row validate-required">
-																	<label>Create account password <span class="required" title="required">*</span></label>
-																	<span class="input-wrapper password-input">
-																		<input type="password" class="input-text" name="account_password" value="" autocomplete="off">
-																		<span class="show-password-input"></span>
-																	</span>
-																</p>								
-																<div class="clear"></div>
-															</div>
-														</div>
-													</div>
-													
+															
+                                                            <table>
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Date</th>
+                                                                        <th>Amount</th>
+                                                                        <th>Description</th>
+                                                                        <th>Transaction Type</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <% walletHistory.forEach(entry => { %>
+                                                                        <tr>
+                                                                            <td><%= entry.date %></td>
+                                                                            <td><%= entry.amount %></td>
+                                                                            <td><%= entry.description %></td>
+                                                                            <td><%= entry.transactionType %></td>
+                                                                        </tr>
+                                                                    <% }); %>
+                                                                </tbody>
+                                                            </table>
 															
 
-
+														</div>
+													<!-- </div>
 												</div>
-												<div class="col-xl-4 col-lg-5 col-md-12 col-12 ">
-													<div class="checkout-review-order">
-														<div class="checkout-review-order-table">
-															<div class="review-order-title">Product</div>
-															
-
-															<div class="cart-items">
-																<% if (cart && cart.products && cart.products.length > 0) { %>
-																	<% cart.products.forEach(product => { %>
-																	
-																		<div class="cart-item">
-																			<div class="info-product">
-																				<div class="product-thumbnail">
-																					<img width="600" height="600" src="/public/products/images/<%= product.productId.images.image1 %>" alt="">
-																				</div>
-																				<div class="product-name">
-																					<%= product.productId.product_name %>
-																					<strong class="product-quantity">QTY : <%= product.quantity %></strong>
-																				</div>
-																			</div>
-																			<div class="product-total">
-																				<span>$<%= product.productId.product_price %></span>
-																			</div>
-																		</div>
-																	<% }); %>
-																<% } else { %>
-																	<p>No items in the cart.</p>
-																<% } %>
-															</div>
-															
-
-															<div class="cart-subtotal">
-																<h2>Subtotal</h2>
-																<div class="subtotal-price">
-																	<span>&#8377; <%= total.toFixed(2) %></span>
-																</div>
-															</div>
-															<div class="shipping-totals shipping">
-																<h2>Shipping</h2>
-																<div data-title="Shipping">
-																	<ul class="shipping-methods custom-radio">
-																		<li>
-																			<input type="radio" name="shipping_method" data-index="0" value="free_shipping" class="shipping_method" checked="checked"><label>Free shipping</label>
-																		</li>
-																		<li>
-																			<input type="radio" name="shipping_method" data-index="0" value="flat_rate" class="shipping_method"><label>Flat rate</label>					
-																		</li>
-																	</ul>
-																</div>
-															</div>
-															<div class="order-total">
-																<h2>Total</h2>
-																<div class="total-price">
-																	<strong>
-																		<span>&#8377; <%= total.toFixed(2) %></span>
-
-																		<input type="hidden" name="totalAmount" value="<%= total.toFixed(2) %>">
-
-																	</strong> 
-																</div>
-															</div>
-														</div>
-														<div id="payment" class="checkout-payment">
-															<ul class="payment-methods methods custom-radio">
-																<li class="payment-method">
-																	<input type="radio" class="input-radio" name="payment_method" value="Wallet" checked="checked">
-																	<label for="payment_method_bacs">Wallet</label>
-																	<div class="payment-box">
-																		<p>Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order will not be shipped until the funds have cleared in our account.</p>
-																	</div>
-																</li>
-																<li class="payment-method">
-																	<input type="radio" class="input-radio" name="payment_method" value="Razorpay">
-																	<label>Razorpay</label>
-																	<div class="payment-box">
-																		<p>Please send a check to Store Name, Store Street, Store Town, Store State / County, Store Postcode.</p>
-																	</div>
-																</li>
-																<li class="payment-method">
-																	<input type="radio" class="input-radio" name="payment_method" value="COD">
-																	<label>Cash on delivery</label>
-																	<div class="payment-box">
-																		<p>Pay with cash upon delivery.</p>
-																	</div>
-																</li>
-																<li class="payment-method">
-																	<input type="radio" class="input-radio" name="payment_method" value="paypal">
-																	<label>PayPal</label>
-																	<div class="payment-box">
-																		<p>Pay via PayPal; you can pay with your credit card if you don’t have a PayPal account.</p>
-																	</div>
-																</li>
-															</ul>
-															<div class="form-row place-order">
-																<div class="terms-and-conditions-wrapper">
-																	<div class="privacy-policy-text"></div>
-																</div>
-																<!-- <button type="submit" class="button alt" name="checkout_place_order" value="Place order">Place order</button> -->
-																<!-- Add this input field to store Razorpay Order ID -->
-																<input type="hidden" id="razorpayOrderId" name="razorpayOrderId">
-
-
-<!-- Modify the Place Order button to trigger the Razorpay payment -->
-<button type="button" class="button alt" id="placeOrderButton">Place order</button>
-
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</form>
-
-
-										
-
-
-
-
-
+											</div> -->
+										</div>
 									</div>
 								</div>
 							</div>
-						</div><!-- #content -->
-					</div><!-- #primary -->
-				</div><!-- #main-content -->
-			</div>
+						</div>
+						
+</div>
 
+
+					
+
+					</div>
+				</div>
+			</div>
 
 			<footer id="site-footer" class="site-footer background">
 				<div class="footer">
@@ -1086,6 +923,78 @@
 		    </div>
 		</div>
 
+		<!-- Quickview -->
+		<div class="quickview-popup">
+			<div id="quickview-container"> 
+				<div class="quickview-container"> 
+					<a href="#" class="quickview-close"></a> 
+					<div class="quickview-notices-wrapper"></div> 
+					<div class="product single-product product-type-simple">
+						<div class="product-detail">
+							<div class="row"> 
+								<div class="img-quickview"> 
+									<div class="product-images-slider">
+										<div id="quickview-slick-carousel"> 
+											<div class="images"> 
+												<div class="scroll-image">
+													<div class="slick-wrap">
+														<div class="slick-sliders image-additional" data-dots="true" data-columns4="1" data-columns3="1" data-columns2="1" data-columns1="1" data-columns="1" data-nav="true">
+															<div class="img-thumbnail slick-slide"> 
+																<a href="media/product/3.jpg" class="image-scroll" title="">
+																	<img width="900" height="900" src="media/product/3.jpg" alt="">
+																</a> 
+															</div>
+															<div class="img-thumbnail slick-slide"> 
+																<a href="media/product/3-2.jpg" class="image-scroll" title="">
+																	<img width="900" height="900" src="media/product/3-2.jpg" alt="">
+																</a> 
+															</div>
+														</div>
+													</div>
+												</div> 
+											</div> 
+										</div> 
+									</div> 
+								</div> 
+								<div class="quickview-single-info">
+									<div class="product-content-detail entry-summary">
+										<h1 class="product-title entry-title">Chair Oak Matt Lacquered</h1>
+										<div class="price-single">
+											<div class="price">
+												<del><span>$150.00</span></del>
+												<span>$100.00</span>
+											</div>
+										</div>
+										<div class="product-rating"> 
+											<div class="star-rating" role="img" aria-label="Rated 4.00 out of 5">
+												<span style="width:80%">Rated <strong class="rating">4.00</strong> out of 5 based on <span class="rating">1</span> customer rating</span>
+											</div> 
+											<a href="#" class="review-link">(<span class="count">1</span> customer review)</a> 
+										</div>
+										<div class="description"> 
+											<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore…</p> 
+										</div>
+										<form class="cart" method="post" enctype="multipart/form-data">
+											<div class="quantity-button">
+												<div class="quantity"> 
+													<button type="button" class="plus">+</button> 
+													<input type="number" class="input-text qty text" step="1" min="1" max="" name="quantity" value="1" title="Qty" size="4" placeholder="" inputmode="numeric" autocomplete="off"> 
+													<button type="button" class="minus">-</button> 
+												</div> 
+												<button type="submit" class="single-add-to-cart-button button alt">Add to cart</button> 
+											</div> 
+											<button class="button quick-buy">Buy It Now</button>
+										</form> 
+									</div> 
+								</div> 
+							</div> 
+						</div>
+					</div> 
+					<div class="clearfix"></div> 
+				</div> 
+			</div>
+		</div>
+
 		<!-- Page Loader -->
 		<div class="page-preloader">
 	    	<div class="loader">
@@ -1093,12 +1002,6 @@
 	    		<div></div>
 	    	</div>
 	    </div>
-
-
-
-
-
-		
 
 		<!-- Dependency Scripts -->
 		<script src="/public/usernew/libs/popper/js/popper.min.js"></script>
@@ -1111,194 +1014,28 @@
 		<script src="/public/usernew/libs/slider/js/jquery.dependClass-0.1.js"></script>
 		<script src="/public/usernew/libs/slider/js/draggable-0.1.js"></script>
 		<script src="/public/usernew/libs/slider/js/jquery.slider.js"></script>
-		<script src="/public/usernew/libs/elevatezoom/js/jquery.elevatezoom.js"></script>
-		<script src="/public/usernew/libs/select2/js/select2.min.js"></script>
 		
 		<!-- Site Scripts -->
 		<script src="/public/usernew/assets/js/app.js"></script>
-
-
-
-
-
-<!-- Add the Razorpay script at the end of the body -->
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-
-
-
-  <script>
-
-
-
-function placeOrder() {
-  
-
-
-
-  const placeOrderBtn = document.getElementById('placeOrderButton');
-  console.log('placeOrderBtn:', placeOrderBtn);
-
-  placeOrderBtn.addEventListener('click', async function (event) {
-    event.preventDefault();
-
-    try {
-      console.log('Place Order button clicked');
-
-      const selectedAddress = document.querySelector('input[name="selected_address"]:checked');
-      console.log('selectedAddress:', selectedAddress);
-
-      const paymentMethodRadio = document.querySelector('input[name="payment_method"]:checked');
-      console.log('paymentMethodRadio:', paymentMethodRadio);
-
-      if (!selectedAddress || !paymentMethodRadio) {
-        throw new Error('Either address or payment method is not selected');
-      }
-
-      const addressId = selectedAddress.value;
-      const paymentMethod = paymentMethodRadio.value;
-
-      console.log('Selected Address:', addressId);
-      console.log('Payment Method:', paymentMethod);
-
-      const data = {
-        address: addressId,
-        payment: paymentMethod
-      };
-
-      console.log('Sending request to /placeOrder with data:', data);
-
-      const response = await fetch('/placeOrder', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data)
-      });
-
-      console.log(response);
-
-	  if (response.ok) {
-  const contentType = response.headers.get('content-type');
-  if (contentType && contentType.includes('application/json')) {
-    const responseData = await response.json();
-    console.log('Response Data:', responseData);
-    window.location.href = "/orderplaced";
-  } else {
-    throw new Error('Response was not in JSON format');
-  }
-} else {
-  const responseData = await response.json();
-  razorPayment(responseData.order);
-
-  if (paymentMethod !== 'Razorpay') {
-    window.location.href = '/otherPaymentPage';
-  }
-}
-
-    } catch (error) {
-      console.error('There was an error:', error);
-      Swal.fire('Insufficient wallet balance');
-    }
-  });
-}
-
-placeOrder();
-
-  
-	// Rest of your script...
-  
-	function verifyPayment(payment, order) {
-		console.log('h');
-	//   const amount2 = document.getElementById("total1").innerHTML;
-	  $.ajax({
-		url: "/verifyPayment",
-		method: "post",
-		data: {
-		  payment: payment,
-		//   amount2: amount2,
-		  order: order,
-		},
-		success: (response) => {
-		  console.log('Verification Response:', response);
-		  if (response.codsuccess == true) {
-			window.location.href = "/orderplaced";
-		
-		  } else {
-			swal.fire({
-			  position: "center",
-			  icon: "error",
-			  title: "Payment failed",
-			  showConfirmButton: false,
-			  timer: 1500,
-			});
-		  }
-		}
-	  });
-	}
-  
-	// Add razorPayment here within the same script tag
-	function razorPayment(order) {
-	  console.log('Razorpay Order:', order);
-  
-	  var options = {
-		key: 'rzp_test_fZkpvgMYwl1OFW',
-		amount: order.amount,
-		currency: "INR",
-		name: "Brand hub",
-		description: "Test Transaction",
-		image: "/user/images/icons/",
-		order_id: order.id,
-		handler: function (response) {
-		  console.log('Razorpay Response:', response);
-		  verifyPayment(response, order);
-		},
-		prefill: {
-		  name: "Gaurav Kumar",
-		  email: "gaurav.kumar@example.com",
-		  contact: "9000090000"
-		},
-		notes: {
-		  address: "Razorpay Corporate Office",
-		},
-		theme: {
-		  color: "#3399cc"
-		},
-	  };
-  
-	  var rzp1 = new Razorpay(options);
-	  rzp1.open();
-	}
-  </script>
-  
-  
-  
-  
-	
-
-		
-		
-		
-
-
 
 
 		<script>
 			function validAddress() {
   const name = document.getElementById('fullName').value;
   const mobile = document.getElementById('phone').value;
-  const state = document.getElementById('state').value;
-  const district = document.getElementById('district').value;
-  const city = document.getElementById('city').value;
+  const housename = document.getElementById('housename').value;
   const pincode = document.getElementById('pinCode').value;
+  const city = document.getElementById('city').value;
+  const district = document.getElementById('district').value;
+  const state = document.getElementById('state').value;
 
   document.getElementById('name-error').textContent = '';
-  document.getElementById('state-error').textContent = '';
   document.getElementById('mobile-error').textContent = '';
-  document.getElementById('district-error').textContent = '';
-  document.getElementById('city-error').textContent = '';
+  document.getElementById('housename-error').textContent = '';
   document.getElementById('pincode-error').textContent = '';
+  document.getElementById('city-error').textContent = '';
+  document.getElementById('district-error').textContent = '';
+  document.getElementById('state-error').textContent = '';
 
   if (!name) {
       document.getElementById('name-error').textContent = 'Name field should not be empty!';
@@ -1315,6 +1052,25 @@ if (new Set(mobile).size === 1) {
   document.getElementById('mobile-error').textContent = 'Mobile number should not consist of the same digit.';
   return false;
 }
+if (!housename) {
+      document.getElementById('housename-error').textContent = 'Housename field should not be empty!';
+      return false;
+  }
+const pincodeRegex = /^\d{6}$/;
+
+if (!pincode || !pincode.match(pincodeRegex)) {
+	document.getElementById('pincode-error').textContent = 'Pincode should be a 6-digit numeric value.';
+	return false;
+}
+if (!city) {
+      document.getElementById('city-error').textContent = 'City field should not be empty!';
+      return false;
+  }
+  if (!district) {
+      document.getElementById('district-error').textContent = 'District field should not be empty!';
+      return false;
+  }
+
 
   if (!state) {
       document.getElementById('state-error').textContent = 'State field should not be empty!';
@@ -1322,35 +1078,20 @@ if (new Set(mobile).size === 1) {
   }
 
 
-  if (!district) {
-      document.getElementById('district-error').textContent = 'District field should not be empty!';
-      return false;
-  }
-
-  if (!city) {
-      document.getElementById('city-error').textContent = 'City field should not be empty!';
-      return false;
-  }
-
-  const pincodeRegex = /^\d{6}$/;
-
-  if (!pincode || !pincode.match(pincodeRegex)) {
-      document.getElementById('pincode-error').textContent = 'Pincode should be a 6-digit numeric value.';
-      return false;
-  }
-
   return true;
 }
 
-		</script>
+</script>
+
 
 		<style>
 			.error-message{
 				color: red;
 			}
 		</style>
+	
 
 	</body>
 
-<!-- Mirrored from caketheme.com/html/ruper/shop-checkout.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2023 09:38:24 GMT -->
+<!-- Mirrored from caketheme.com/html/ruper/page-my-account.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2023 09:38:24 GMT -->
 </html>

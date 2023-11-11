@@ -61,7 +61,7 @@ user_route.post('/add_shipping_address', userController.addShippingAddress)
 
 
 user_route.post('/placeOrder', userController.placeOrder)
-
+ 
 
 user_route.post('/verifyPayment',userController.verifyPayment)
 
@@ -72,6 +72,7 @@ user_route.get('/add_wallet', userController.loadaddwallet)
 user_route.post('/add_wallet',userController.addMoneyWallet)
 
 user_route.post('/verify_wallet',userController.verifyWalletpayment)
+user_route.get('/wallethistory', userController.loadwalletHistory) 
  
 
   

@@ -747,9 +747,9 @@
 																	<td class="product-quantity">
 																		<% if (product.orderStatus !== "Cancelled") { %>
 																			<% if (product.orderStatus == "Delivered") { %>
-																				<a href="#" onclick="confirmAndCancel('<%= order._id %>')" style="color: red;">Return Product</a>
+																				<a href="#" onclick="confirmAndCancel('<%= product._id %>')" style="color: red;">Return Product</a>
 																				<% }  else{%>
-																		<a href="#" onclick="confirmAndCancel('<%= order._id %>')" style="color: red;">Cancel Order</a>
+																		<a href="#" onclick="confirmAndCancel('<%= product._id %>')" style="color: red;">Cancel Order</a>
 																		<%} %> 
 																		<% }  %>  
 																	</td>
