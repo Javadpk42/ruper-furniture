@@ -20,6 +20,6 @@ app.use("/", userRoute);
 app.use("/admin", adminRoute);
 
 app.listen(process.env.PORT, function () {
-  console.log("server is running @ http://localhost:3000");
+  console.log("server is running @ http://localhost:3000"); 
 });
-  
+   

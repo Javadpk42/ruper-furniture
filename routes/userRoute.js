@@ -53,6 +53,7 @@ user_route.post('/cart-quantity',userController.cartQuantity)
 user_route.post('/remove-product',userController.removeProductRouteHandler) 
 
 user_route.get('/checkout',userController.loadCheckout)
+user_route.post('/apply-coupon',userController.applyCoupon)
 user_route.get('/edit_address_checkout/:addressId', userController.editAddressPagecheckout);
 user_route.post('/edit_address_checkout/:addressId', userController.editAddresscheckout);
 user_route.post('/add_shipping_address', userController.addShippingAddress)
@@ -73,6 +74,13 @@ user_route.post('/add_wallet',userController.addMoneyWallet)
 
 user_route.post('/verify_wallet',userController.verifyWalletpayment)
 user_route.get('/wallethistory', userController.loadwalletHistory) 
+
+
+
+user_route.patch('/CouponCheak',userController.CouponCheak)
+
+user_route.patch('/CouponRemove',userController.CouponRemove)
+
  
 
   

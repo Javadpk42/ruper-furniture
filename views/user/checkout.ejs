@@ -561,7 +561,7 @@
 								
 
 
-										<form name="checkout" class="checkout" autocomplete="off">
+										<!-- <form name="checkout" class="checkout" autocomplete="off"> -->
 											<div class="row">
 												<div class="col-xl-8 col-lg-7 col-md-12 col-12">
 													<div class="customer-details">
@@ -572,7 +572,7 @@
 															<% if (addresses && addresses.length > 0) { %>
 																<% addresses.reverse().forEach((addressItem, index) => { %>
 																	<div class="addresses-col" style="float: left; width: 50%;">
-																		<input type="radio" name="selected_address" value="<%= addressItem._id %>">
+																		<input type="radio" name="selected_address" value="<%= addressItem._id %>" <%= index === 0 ? 'checked' : '' %>>
 																		<header class="col-title">
 																			
 																			<a class="edit text-danger" href="/edit_address_checkout/<%= addressItem._id %>">Edit</a>
@@ -657,27 +657,45 @@
 																</div>
 															</div>
 															<div class="shipping-totals shipping">
-																<h2>Shipping</h2>
-																<div data-title="Shipping">
-																	<ul class="shipping-methods custom-radio">
-																		<li>
-																			<input type="radio" name="shipping_method" data-index="0" value="free_shipping" class="shipping_method" checked="checked"><label>Free shipping</label>
-																		</li>
-																		<li>
-																			<input type="radio" name="shipping_method" data-index="0" value="flat_rate" class="shipping_method"><label>Flat rate</label>					
-																		</li>
-																	</ul>
-																</div>
+		
+   <form action="/apply-coupon" method="POST">
+	
+	<!-- <div class="form-group">
+	  <input type="text" id="couponCode" name="couponCode" placeholder="Enter coupon code">
+	
+	  <button type="submit" class="btn btn-default">Apply Coupon</button>
+	</div>
+  </form> -->
+  <div class="form-group">
+	<input type="text" id="couponCode" name="couponCode" placeholder="Enter coupon code">
+	<button type="submit" class="btn btn-default">Apply Coupon</button>
+  
+	<% if (errorMessage) { %>
+	  <p class="error-message"><%= errorMessage %></p>
+	<% } %>
+  </div>
+  </form>
+  
+  
+  <!-- Display applied coupon and total -->
+  <% if (appliedCoupon) { %>
+	<p>Applied Coupon: <%= appliedCoupon.code %></p>
+	<p>Discount: <%= appliedCoupon.discountPercentage %>%</p>
+  <% } %>
+  
+  
 															</div>
 															<div class="order-total">
 																<h2>Total</h2>
 																<div class="total-price">
-																	<strong>
-																		<span>&#8377; <%= total.toFixed(2) %></span>
+					
 
-																		<input type="hidden" name="totalAmount" value="<%= total.toFixed(2) %>">
-
-																	</strong> 
+<strong>
+	<span>&#8377; <%= updatedTotal ? updatedTotal : total.toFixed(2) %></span>
+	<input type="hidden" name="totalAmount" value="<%= updatedTotal ? updatedTotal : total.toFixed(2) %>">
+  </strong>
+  
+  
 																</div>
 															</div>
 														</div>
@@ -729,7 +747,7 @@
 													</div>
 												</div>
 											</div>
-										</form>
+										<!-- </form> -->
 
 
 										
@@ -1098,6 +1116,11 @@
 
 
 
+
+		
+
+
+
 		
 
 		<!-- Dependency Scripts -->
@@ -1177,7 +1200,7 @@ function placeOrder() {
         body: JSON.stringify(data)
       });
 
-      console.log(response);
+      console.log('response',response);
 
 	  if (response.ok) {
   const contentType = response.headers.get('content-type');
@@ -1203,6 +1226,7 @@ function placeOrder() {
     }
   });
 }
+
 
 placeOrder();
 

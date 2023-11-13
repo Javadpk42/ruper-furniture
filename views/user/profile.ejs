@@ -549,6 +549,9 @@
 														<a class="nav-link" data-toggle="tab" href="#wallet" role="tab">Wallet</a>
 													</li>
 													<li class="nav-item">
+														<a class="nav-link" data-toggle="tab" href="#coupon" role="tab">Coupons</a>
+													</li>
+													<li class="nav-item">
 														<a class="nav-link" data-toggle="tab" href="#addresses" role="tab">Addresses</a>
 													</li>
 													<li class="nav-item">
@@ -778,6 +781,53 @@
 														
 													</div>
 												  </div>
+
+
+												  <div class="tab-pane fade" id="coupon" role="tabpanel">
+													<div class="my-account-addresses">
+													 
+												  
+												  
+												  
+														<div class="addresses">
+													 
+															<div class="addresses-col">
+															  <header class="col-title">
+																<h2>Your Coupons</h2>
+															  </header>
+															  
+															  <div class="card-deck">
+																<% if (coupons && coupons.length > 0) { %>
+																  <% coupons.forEach((coupon) => { %>
+																	<div class="card">
+																	  <div class="card-body">
+																		<h5 class="card-title">Coupon Code: <%= coupon.code %></h5>
+																		<p class="card-text">
+																		  <strong>Discount Percentage:</strong> <%= coupon.discountPercentage %><br>
+																		  <strong>Start Date:</strong> <%= coupon.startDate %><br>
+																		  <strong>Expire Date:</strong> <%= coupon.expireDate %><br>
+																		</p>
+																	  </div>
+																	</div>
+																  <% }) %>
+																<% } else { %>
+																  <p>No coupons available.</p>
+																<% } %>
+															  </div>
+															
+															</div>
+														  
+														  
+														
+													  </div>
+												  
+												  
+												  
+												  
+														
+													</div>
+												  </div>
+												  
 
 
 

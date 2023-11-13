@@ -49,6 +49,19 @@ admin_route.post('/editproduct',fileUpload.productImagesUpload,productController
 admin_route.get('/orders',adminAuth.isAdminLogin,adminController.orderLoad)
 admin_route.get('/orderdetails/:orderId', adminController.orderDetails); 
 admin_route.post('/updateOrderStatus/:orderId', adminController.updateOrderStatus);
+
+admin_route.get('/coupons',adminAuth.isAdminLogin,adminController.couponLoad)
+
+
+admin_route.get('/addCoupon',adminController.couponAdd)
+
+admin_route.post('/addCoupon',adminController.couponSet)
+
+admin_route.delete('/delete-coupon',adminController.deleteCoupon)
+
+admin_route.get('/coupon-edit',adminController.loadCouponEdit)
+
+admin_route.post('/editCoupon',adminController.editCoupon)
  
 
 module.exports=admin_route;

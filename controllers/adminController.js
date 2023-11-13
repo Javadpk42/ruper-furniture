@@ -8,6 +8,7 @@ const Category = require("../model/productModel").category;
 const { category } = require("../model/productModel");
 
 const Order = require("../model/orderModel")
+const Coupon = require("../model/couponModel")
 
 const bcrypt=require('bcrypt');
 const { name } = require('ejs');
@@ -640,7 +641,85 @@ const updateOrderStatus = async (req, res) => {
   }
 };
 
+const couponLoad = async (req, res) => {
+  try {
+    const couponData = await Coupon.find()
+    res.render('coupon', { couponData })
+  } catch (error) {
+    console.log(error);
+  }
+};
 
+const couponAdd = async (req, res,next) => {
+  try {
+    res.render('addcoupon')
+  } catch (err) {
+  next(err)
+  }
+}
+
+const couponSet = async (req, res,next) => {
+  try {
+
+
+    const code = req.body.code
+    const already = await Coupon.findOne({ code: code })
+
+    if (already) {
+      res.render('coupon_admin', { message: 'code already exists' })
+    } else {
+      const newCoupon = new Coupon({
+        code: req.body.code,
+        discountPercentage: req.body.discountPercentage,
+        startDate: req.body.startDate,
+        expireDate: req.body.expiryDate
+      })
+
+      await newCoupon.save()
+      res.redirect('/admin/coupons')
+
+    }
+
+
+  } catch (err) {
+  next(err)
+  }
+}
+
+const deleteCoupon = async (req, res,next) => {
+  try {
+    const id = req.body.id
+    await Coupon.findByIdAndDelete({ _id: id })
+    console.log('hai');
+    res.json({ success: true })
+  } catch (err) {
+  next(err)
+  }
+}
+const loadCouponEdit=async(req,res,next)=>{
+  try {
+    const id=req.query.id
+    const couponData=await Coupon.findById({_id:id})
+  res.render('couponEdit',{data:couponData})
+    
+  } catch (err) {
+    next(err)
+  }
+}
+
+const editCoupon=async(req,res,next)=>{
+  try {
+    const id=req.body.id
+const    code= req.body.code
+const discountPercentage= req.body.discountPercentage
+const startDate= req.body.startDate
+const  expireDate= req.body.expiryDate
+    await Coupon.findByIdAndUpdate({_id:id},{$set:{code:code,discountPercentage:discountPercentage,startDate:startDate,expireDate:expireDate}})
+    res.redirect('/admin/coupons')
+  } catch (err) {
+    next(err)
+  }
+}
 
 
 module.exports={
@@ -660,6 +739,12 @@ module.exports={
     verifyLogin,
     orderLoad,
     orderDetails,
-    updateOrderStatus
+    updateOrderStatus,
+    couponLoad,
+    couponAdd,
+    couponSet,
+    deleteCoupon,
+    loadCouponEdit,
+    editCoupon
    
 }

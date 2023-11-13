@@ -1,11 +1,7 @@
+
 <%-include("../adminlayouts/header.ejs")-%>
 
-
-<!-- sidebar -->
-  
-
-
-<aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark" id="sidenav-main">
+  <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark" id="sidenav-main">
     <div class="sidenav-header">
       <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
       <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/material-dashboard/pages/dashboard " target="_blank">
@@ -25,7 +21,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white bg-gradient-primary" href="/admin/customers">
+          <a class="nav-link text-white  " href="/admin/customers">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">table_view</i>
             </div>
@@ -41,7 +37,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="/admin/products">
+          <a class="nav-link text-white  " href="/admin/products">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">view_in_ar</i>
             </div>
@@ -57,7 +53,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="/admin/coupons">
+          <a class="nav-link text-white bg-gradient-primary" href="../pages/notifications.html">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">notifications</i>
             </div>
@@ -99,30 +95,23 @@
       </div>
     </div>
   </aside>
-
-
-
-<!-- sidebar end -->
-
-
-
   <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
-    
-    
     <!-- Navbar -->
-    
-    
     <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" navbar-scroll="true">
       <div class="container-fluid py-1 px-3">
         <nav aria-label="breadcrumb">
           <!-- <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
-            <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
-            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Tables</li>
+            <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;"></a></li>
+            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">
+               
+            </li>
           </ol> -->
+          <!-- <span class="badge badge-sm" style="background-color:#e91e63;">
+            <a class="nav-link text-white text-capitalize" href="/admin/addproducts " style="color: white !important;">Add Product</a>
+        </span> -->
+          <h6 class="font-weight-bolder mb-0">
           
-            <h6 class="font-weight-bolder mb-0"></h6>
-
-          
+          </h6>
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
           <div class="ms-md-auto pe-md-3 d-flex align-items-center">
@@ -130,9 +119,10 @@
               <!-- <label class="form-label">Type here...</label>
               <input type="text" class="form-control"> -->
               <form class="search1">
-                <input type="text", placeholder="Search users" name="search">
+                <input type="text", placeholder="Search orders" name="search">
                 <input type="submit" value="search">
               </form>
+              
             </div>
           </div>
           <ul class="navbar-nav  justify-content-end">
@@ -233,236 +223,78 @@
         </div>
       </div>
     </nav>
-
-
     <!-- End Navbar -->
-    
-    
     <div class="container-fluid py-4">
-
- <!-- contents -->
-
       <div class="row">
         <div class="col-12">
           <div class="card my-4">
             <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
               <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                <h6 class="text-white text-capitalize ps-3">Users list</h6>
+                <h6 class="text-white text-capitalize ps-3">Orders</h6>
               </div>
             </div>
             <div class="card-body px-0 pb-2">
-              <!-- <div class="table-responsive p-0">
-                <table class="table align-items-center mb-0">
-                  <thead>
-                    <tr>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">username/email</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">mobile</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Join Date</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
-                   
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <% for (var i = 0; i < userss.length; i++) { %>
-                    <tr>
-                      <td>
-                        <div class="d-flex px-2 py-1">
-                          
-                          <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm"><%= userss[i].username %></h6>
-                            <p class="text-xs text-secondary mb-0"><%= userss[i].email %></p>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <p class="text-xs font-weight-bold mb-0"><%= userss[i].mobile%></p>
-                       
-                      </td>
-                      <td class="align-middle text-center text-sm">
-                        <span class="text-secondary text-xs font-weight-bold">
-                          <%= new Date(userss[i].createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })%>
-                        </span>
-                      
-                        <td class="align-middle text-center text-sm">
-                          
-                          <% if( userss[i].is_verified === 1){ %>
-                            <a href="/admin/is_verified?id=<%= userss[i]._id %>">
-                              <h6 class="mb-0 text-sm"></h6>
-                          <button type="button" class="btn btn-success btn-md">Unblock</button></a>
-                            <% }else{ %>
-                              <a href="/admin/is_verified?id=<%= userss[i]._id %>">
-                                <h6 class="mb-0 text-sm"></h6>
-                                <button type="button" class="btn btn-outline-secondary btn-md">Block</button></a>
-                              <%}%>
-  
-                        </td>
-                      </td>
-                   
-                    </tr>
-                    <% } %>
-                   
-                  </tbody>
-                </table>
-              </div> -->
+             
 
-
-
-
-
-
-
-              <div class="table-responsive p-0">
-                <table class="table align-items-center mb-0">
-                  <thead>
-                    <tr>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">username/email</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">mobile</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Join Date</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <% if (userss.length > 0) { %>
-                      <!-- Loop through and display users -->
-                      <% for (let i = 0; i < userss.length; i++) { %>
-                        <tr>
-                          <td>
-                            <div class="d-flex px-2 py-1">
-                              <div class="d-flex flex-column justify-content-center">
-                                <h6 class="mb-0 text-sm"><%= userss[i].username %></h6>
-                                <p class="text-xs text-secondary mb-0"><%= userss[i].email %></p>
-                              </div>
-                            </div>
-                          </td>
-                          <td>
-                            <p class="text-xs font-weight-bold mb-0"><%= userss[i].mobile%></p>
-                          </td>
-                          <td class="align-middle text-center text-sm">
-                            <span class="text-secondary text-xs font-weight-bold">
-                              <%= new Date(userss[i].createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })%>
-                            </span>
-                          </td>
-
-                          <td class="align-middle text-center text-sm">
-                            <% if (userss[i].is_verified === false) { %>
-                                <a href="javascript:void(0);" onclick="showConfirmationModal('<%= userss[i]._id %>')">
-                                    <h6 class="mb-0 text-sm"></h6>
-                                    <button type="button" class="btn btn-success btn-md">Unblock</button>
-                                </a>
-                            <% } else { %>
-                                <a href="javascript:void(0);" onclick="showConfirmationModal('<%= userss[i]._id %>')">
-                                    <h6 class="mb-0 text-sm"></h6>
-                                    <button type="button" class="btn btn-outline-secondary btn-md">Block</button>
-                                </a>
-                            <% } %>
-                        </td>
-                        
-
-                        
-                        </tr>
-                      <% } %>
-                    <% } else { %>
-                      <!-- Display no data placeholder when there are no results -->
-                      <tr>
-                        <td colspan="4" class="text-center">No users found. Try a different search.</td>
-                      </tr>
-                    <% } %>
-                  </tbody>
-                </table>
-
-                <form id="blockUserForm" action="/admin/is_verified" method="POST">
-                  <!-- Hidden input to store user ID -->
-                  <input type="hidden" name="id" id="userIdInput" value="">
-                </form>
-                
-
-              </div>
-
-              <!-- Add this in your HTML body section -->
-<div class="modal" id="confirmationModal" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title">Confirmation</h5>
-              <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-              </button> -->
-          </div>
-          <div class="modal-body">
-              Are you sure you want to block/unblock this user?
-          </div>
-          <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancelAction">Cancel</button>
-              <button type="button" class="btn btn-primary" id="confirmAction">Confirm</button>
-          </div>
-      </div>
-  </div>
-</div>
               
 
 
+
+                <div class="container mt-5">
+                    <h1 class="mb-4">Create Coupon</h1>
+                    <form action="/admin/addCoupon" method="POST">
+                        <% if (typeof message !== 'undefined') { %>
+                            <p style="color: red;"><%= message %></p>
+                          <% } %>
+                        <div class="form-group">
+                            <label for="code">Code:</label>
+                            <input type="text" class="form-control" id="code" name="code" required>
+                            <div class="error-message" style="color: red;" id="codeError"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="discountPercentage">Discount Percentage:</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="discountPercentage" name="discountPercentage" required>
+                                <div class="input-group-append">
+                                    <span class="input-group-text">%</span>
+                                    <div class="error-message" style="color: red;" id="discountError"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="startDate">Start Date:</label>
+                            <input type="date" class="form-control" id="startDate" name="startDate" required>
+                            <div class="error-message" style="color: red;" id="startDateError"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="expireDate">Expire Date:</label>
+                            <input type="date" class="form-control" id="expiryDate" name="expiryDate" required>
+                            <div class="error-message" style="color: red;" id="startDateError"></div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Save Coupon
+                        </button>
+                        <!-- Add a cancel button to go back or reset the form -->
+                        <a href="/admin/coupons" class="btn btn-secondary">
+                            <i class="fas fa-times"></i> Cancel
+                        </a>
+                    </form>
+                </div>
+
+
+
+
+
             </div>
           </div>
         </div>
       </div>
 
-       <!-- end contents -->
-
-       <!-- Pagination -->
-       <div class="d-flex justify-content-center">
-        <nav aria-label="Page navigation">
-          <ul class="pagination">
-            <% for (let i = 1; i <= totalPages; i++) { %>
-              <% if (i === currentPage) { %>
-                <li class="page-item active" aria-current="page">
-                  <span class="page-link"><%= i %><span class="sr-only">(current)</span></span>
-                </li>
-              <% } else { %>
-                <li class="page-item"><a class="page-link" href="?page=<%= i %>&search=<%= search %>"><%= i %></a></li>
-              <% } %>
-            <% } %>
-          </ul>
-        </nav>
-      </div>
 
       
-      <!-- <footer class="footer py-4  ">
-        <div class="container-fluid">
-          <div class="row align-items-center justify-content-lg-between">
-            <div class="col-lg-6 mb-lg-0 mb-4">
-              <div class="copyright text-center text-sm text-muted text-lg-start">
-                © <script>
-                  document.write(new Date().getFullYear())
-                </script>,
-                made with <i class="fa fa-heart"></i> by
-                <a href="https://www.creative-tim.com" class="font-weight-bold" target="_blank">Creative Tim</a>
-                for a better web.
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <ul class="nav nav-footer justify-content-center justify-content-lg-end">
-                <li class="nav-item">
-                  <a href="https://www.creative-tim.com" class="nav-link text-muted" target="_blank">Creative Tim</a>
-                </li>
-                <li class="nav-item">
-                  <a href="https://www.creative-tim.com/presentation" class="nav-link text-muted" target="_blank">About Us</a>
-                </li>
-                <li class="nav-item">
-                  <a href="https://www.creative-tim.com/blog" class="nav-link text-muted" target="_blank">Blog</a>
-                </li>
-                <li class="nav-item">
-                  <a href="https://www.creative-tim.com/license" class="nav-link pe-0 text-muted" target="_blank">License</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </footer> -->
+      
     </div>
   </main>
-
-<!-- settings button -->
-
   <div class="fixed-plugin">
     <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">
       <i class="material-icons py-2">settings</i>
@@ -478,7 +310,7 @@
             <i class="material-icons">clear</i>
           </button>
         </div>
-        <!-- <!-- End Toggle Button -->
+        <!-- End Toggle Button -->
       </div>
       <hr class="horizontal dark my-1">
       <div class="card-body pt-sm-3 pt-0">
@@ -536,11 +368,6 @@
       </div>
     </div>
   </div>
-   
-  <!-- settings button ended -->
-  
-  
-  
   <!--   Core JS Files   -->
   <script src="/public/admin/js/core/popper.min.js"></script>
   <script src="/public/admin/js/core/bootstrap.min.js"></script>
@@ -558,63 +385,60 @@
   <!-- Github buttons -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="/public/admin/js/material-dashboard.min.js?v=3.0.0"></script> 
+  <script src="/public/admin/js/material-dashboard.min.js?v=3.0.0"></script>
 
 
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha384-tsQFqpEReu7ZLhBV2VZlTQMH5dosP+XBiCAJWmzA9szlJf8aWlxK+pzweWE00g5P" crossorigin="anonymous"></script>
-
-
-
-  <!-- <script>
-    // Function to set the user ID and show the modal
-    function showConfirmationModal(userId) {
-        // Set the user ID to the hidden input field
-        document.getElementById('userIdInput').value = userId;
-        document.getElementById('confirmationModal').style.display = 'block';
-    }
-
-    // Handle the confirmation action without AJAX
-    document.getElementById('confirmAction').addEventListener('click', function () {
-        // Submit the form
-        document.getElementById('blockUserForm').submit();
-
-        // Close the modal
-        document.getElementById('confirmationModal').style.display = 'none';
-    });
-</script> -->
-
-<script>
-  // Function to set the user ID and show the modal
-  function showConfirmationModal(userId) {
-      // Set the user ID to the hidden input field
-      document.getElementById('userIdInput').value = userId;
-      document.getElementById('confirmationModal').style.display = 'block';
-  }
-
-  // Handle the confirmation action without AJAX
-  document.getElementById('confirmAction').addEventListener('click', function () {
-      // Submit the form
-      document.getElementById('blockUserForm').submit();
-
-      // Close the modal
-      document.getElementById('confirmationModal').style.display = 'none';
-  });
-
-  // Handle the cancel action
-  document.getElementById('cancelAction').addEventListener('click', function () {
-      // Close the modal
-      document.getElementById('confirmationModal').style.display = 'none';
-  });
-
-  // Close the modal if clicked outside the modal content
-  window.addEventListener('click', function (event) {
-      const modal = document.getElementById('confirmationModal');
-      if (event.target === modal) {
-          modal.style.display = 'none';
+  <script>
+    const couponForm = document.getElementById('couponForm');
+  
+    couponForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      if (validateForm()) {
+        this.submit();
       }
-  });
-</script>
-
+    });
+  
+    function validateForm() {
+      const codeInput = document.getElementById('code');
+      const discountInput = document.getElementById('discountPercentage');
+      const startDateInput = document.getElementById('startDate');
+      const expiryDateInput = document.getElementById('expiryDate');
+  
+      const codeError = document.getElementById('codeError');
+      const discountError = document.getElementById('discountError');
+      const startDateError = document.getElementById('startDateError');
+      const expiryDateError = document.getElementById('expiryDateError');
+  
+      codeError.textContent = '';
+      discountError.textContent = '';
+      startDateError.textContent = '';
+      expiryDateError.textContent = '';
+  
+      let isValid = true;
+  
+      if (codeInput.value.trim() === '') {
+        codeError.textContent = 'Coupon Code is required';
+        isValid = false;
+      }
+  
+      if (discountInput.value === '' || discountInput.value < 10 || discountInput.value > 80) {
+        discountError.textContent = 'Discount Percentage must be between 10 and 80';
+        isValid = false;
+      }
+  
+      if (startDateInput.value.trim() === '') {
+        startDateError.textContent = 'Start Date is required';
+        isValid = false;
+      }
+  
+      if (expiryDateInput.value.trim() === '') {
+        expiryDateError.textContent = 'Expiry Date is required';
+        isValid = false;
+      }
+  
+      return isValid;
+    }
+  </script>
 
 
 

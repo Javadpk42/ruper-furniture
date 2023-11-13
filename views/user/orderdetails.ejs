@@ -748,6 +748,7 @@
 																		<% if (product.orderStatus !== "Cancelled") { %>
 																			<% if (product.orderStatus == "Delivered") { %>
 																				<a href="#" onclick="confirmAndCancel('<%= product._id %>')" style="color: red;">Return Product</a>
+																				
 																				<% }  else{%>
 																		<a href="#" onclick="confirmAndCancel('<%= product._id %>')" style="color: red;">Cancel Order</a>
 																		<%} %> 
@@ -1198,6 +1199,10 @@
 
 
 
+	
+
+
+
 
 
   
@@ -1224,6 +1229,14 @@
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+
+
+
+
+		
+
+
 		<script>
 
 function confirmAndCancel(orderId) {

@@ -9,6 +9,7 @@ const { ObjectId } = require('mongoose').Types;
 
 const Address = require("../model/addressModel")
 const Order = require("../model/orderModel")
+const Coupon = require("../model/couponModel")
 
 const validateAddress = require('../middlewares/validation');
 
@@ -426,6 +427,7 @@ const profileLoad = async (req, res) => {
 
     // Fetch user address data
     const addressData = await Address.findOne({ user_id: userId });
+    const coupons=await Coupon.find()
 
     // Fetch user orders
     const orders = await Order.find({ user: userId }).sort({ orderDate: -1 });
@@ -435,7 +437,7 @@ const profileLoad = async (req, res) => {
 
     // Check if userData is not null or undefined
     if (userData) {
-      res.render('profile', { users: userData, user: userId, address: addressData ? addressData.address : null, orders, cart });
+      res.render('profile', { users: userData, user: userId, address: addressData ? addressData.address : null, orders, cart,coupons });
     } else {
       console.log('User Data is null or undefined');
       res.render('profile', { users: null, user: userId, orders: [], cart: null });
@@ -1054,9 +1056,13 @@ const removeProductRouteHandler = async (req, res) => {
 
 
 
+
+
 const loadCheckout = async (req, res, next) => {
   try {
-    const userId = req.session.user_id;
+    console.log(req.query)
+    let date = new Date();
+    const userId = req.session.user_id; 
 
     // Fetch user data
     const userData = await userModel.findById(userId);
@@ -1070,43 +1076,108 @@ const loadCheckout = async (req, res, next) => {
     // Fetch user addresses
     const addresses = await Address.findOne({ user_id: userId });
 
-    if (!cart || !cart.products || cart.products.length === 0) {
-      console.log('Cart is empty');
-      return res.redirect('/view-cart');
-    }
+    let total = 0;
 
-    // Check product quantities against available stock
-    const insufficientStockProducts = cart.products.filter((product) => {
-      return product.quantity > product.productId.stock;
+    // Calculate total
+    cart.products.forEach((product) => {
+      total += product.quantity * product.productId.product_price;
     });
 
-    if (insufficientStockProducts.length > 0) {
-      console.log('Some products have insufficient stock');
-      return res.redirect('/view-cart?error=insufficient-stock');
+    let appliedCoupon = null;
+    const couponCode = req.body.couponCode;
+
+    // Check if a valid coupon code is provided
+    if (couponCode) {
+      const coupon = await Coupon.findOne({ code: couponCode });
+
+      if (coupon && coupon.startDate <= date && date <= coupon.expireDate) {
+        // Coupon is valid, apply discount to the total
+        const discountAmount = (total * coupon.discountPercentage) / 100;
+        total -= discountAmount;
+
+        // Set appliedCoupon to the coupon details
+        appliedCoupon = coupon;
+      } else {
+        // Invalid coupon code
+        console.log('Invalid coupon code');
+        return res.redirect('/checkout?error=invalid-coupon');
+      }
     }
 
-    if (addresses && addresses.address && addresses.address.length > 0) {
-      let total = 0;
-
-      // Calculate total
-      cart.products.forEach((product) => {
-        total += product.quantity * product.productId.product_price;
-      });
-
-      res.render('checkout', { cart, addresses: addresses.address, total, userData });
-    } else {
-      res.render('checkout', {
-        userData,
-        cart,
-        addresses: [],
-        total: 0
-      });
-    }
+    res.render('checkout', { cart, addresses: addresses.address, total, userData,  appliedCoupon,updatedTotal: req.query.updatedTotal,errorMessage: null });
   } catch (err) {
     console.error('Error in loadCheckout:', err);
     next(err);
   }
 };
+
+
+
+
+
+const applyCoupon = async (req, res, next) => {
+  try {
+    let date = new Date();
+    const userId = req.session.user_id;
+
+    // Fetch cart details
+    const cart = await Cart.findOne({ user: userId }).populate({
+      path: 'products.productId',
+      model: 'product',
+    });
+
+    let total = 0;
+
+    // Calculate total
+    cart.products.forEach((product) => {
+      total += product.quantity * product.productId.product_price;
+    });
+
+    const couponCode = req.body.couponCode;
+
+    if (couponCode) {
+      const coupon = await Coupon.findOne({ code: couponCode });
+
+      if (coupon && coupon.startDate <= date && date <= coupon.expireDate) {
+        // Check if the user has already used the coupon
+        if (coupon.user.includes(userId)) {
+          console.log('User has already used this coupon.');
+          return res.redirect('/checkout?error=already-used-coupon');
+        }
+
+        // Coupon is valid, apply discount to the total
+        const discountAmount = (total * coupon.discountPercentage) / 100;
+        total -= discountAmount;
+
+        // Add user to the coupon's user array to mark it as used
+        await Coupon.findOneAndUpdate({ code: couponCode }, { $push: { user: userId } });
+
+        req.session.appliedCoupon = {
+          couponCode,
+          updatedTotal: total,
+        };
+
+        // Redirect back to the checkout page with the updated total
+        return res.redirect(`/checkout?appliedCoupon=${couponCode}&updatedTotal=${total}`);
+      } else {
+        // Invalid coupon code or expired
+        console.log('Invalid coupon code or expired.');
+        return res.redirect('/checkout?error=invalid-coupon');
+      }
+    }
+
+    // Redirect back to the checkout page without applying a coupon
+    res.redirect('/checkout');
+  } catch (err) {
+    console.error('Error applying coupon:', err);
+
+    // Redirect back to the checkout page with an error message
+    res.redirect('/checkout?error=apply-coupon-error');
+  }
+};
+
+
+
 
 
 
@@ -1274,26 +1345,29 @@ const calculateTotalPrice = async (userId) => {
 
 
 
-const generateUniqueTrackId = async () => {
-  try {
-    let orderID;
-    let isUnique = false;
+// const generateUniqueTrackId = async () => {
+//   try {
+//     let orderID;
+//     let isUnique = false;
 
-    while (!isUnique) {
-      orderID = Math.floor(100000 + Math.random() * 900000);
+//     while (!isUnique) {
+//       orderID = Math.floor(100000 + Math.random() * 900000);
 
-      const existingOrder = await Order.findOne({ trackId: orderID });
+//       const existingOrder = await Order.findOne({ trackId: orderID });
 
-      if (!existingOrder) {
-        isUnique = true;
-      }
-    }
+//       if (!existingOrder) {
+//         isUnique = true;
+//       }
+//     }
 
-    return orderID;
-  } catch (error) {
-    console.log(error.message);
-  }
-};
+//     return orderID;
+//   } catch (error) {
+//     console.log(error.message);
+//   }
+// };
+
+
+
 
 
 
@@ -1339,14 +1413,21 @@ const placeOrder = async (req, res) => {
         reason: "none",
       },
     }));
-
-    const total = await calculateTotalPrice(userId);
+    let total;
+    if (req.session.appliedCoupon) {
+      total = req.session.appliedCoupon.updatedTotal;
+      // Clear the applied coupon from the session once used
+      delete req.session.appliedCoupon;
+    } else {
+      // If no updated total in session, calculate it
+      total = await calculateTotalPrice(userId);
+    }
 
     const today = new Date();
     const deliveryDate = new Date(today);
     deliveryDate.setDate(today.getDate() + 7);
 
-    const trackId = await generateUniqueTrackId();
+    
     const order = new Order({
       user: userId,
       cart: {
@@ -1366,11 +1447,14 @@ const placeOrder = async (req, res) => {
       totalAmount: total,
       orderDate: new Date(),
       expectedDelivery: deliveryDate,
-      trackId,
+      
     });
 
     const placeorder = await order.save();
     const orderId = placeorder._id;
+
+   
+  
 
     if (paymentType === "COD" || paymentType === 'Wallet') {
       for (const item of cartDetails.products) {
@@ -1385,28 +1469,14 @@ const placeOrder = async (req, res) => {
             return res.status(400).json({ error: "Insufficient wallet balance" });
           }
 
-          let changeOrderStatus = await Order.updateOne(
-            { _id: placeorder._id },
-            {
-              $set: {
-                'products.$[].paymentStatus': 'Success', "products.$[].OrderStatus": "Placed"
-              },
-            }
-          );
-          // const walletHistory = {
-          //   transactionDate: new Date(),
-          //   transactionDetails: 'Product Purchased',
-          //   transactionType: 'Debit',
-          //   transactionAmount: total,
-          //   currentBalance: !isNaN(userId.wallet) ? userId.wallet - total : total
-          // };
+
           const walletHistory = {
             date: new Date(),
             amount: total,
             description: 'Order placed using Wallet',
             transactionType: 'Debit',
           };
-        
+
           await userModel.findByIdAndUpdate(
             { _id: userId },
             {
@@ -1418,37 +1488,44 @@ const placeOrder = async (req, res) => {
               }
             }
           );
+
+          // Update stock only if the wallet payment is successful
+          await Product.findByIdAndUpdate(
+            { _id: productId },
+            { $inc: { stock: -quantity } }
+          );
         } else {
           console.log('Entered COD');
-          let changeOrderStatus = await Order.updateOne(
-            { _id: placeorder._id },
-            {
-              $set: {
-                "products.$[].OrderStatus": "Placed",
-              },
-            }
+        
+
+          // Update stock only if the COD payment is successful
+          await Product.findByIdAndUpdate(
+            { _id: productId },
+            { $inc: { stock: -quantity } }
           );
         }
-
-        await Product.findByIdAndUpdate(
-          { _id: productId },
-          {
-            $inc: { quantity: -quantity },
-          }
-        );
       }
 
       console.log('Order placed successfully');
       res.status(200).json({ placeorder, message: "Order placed successfully" });
 
-      await Cart.findOneAndDelete({ user: userId });
+      console.log('Before cart clearing');
 
+      // Clear the user's cart after a successful order placement
+      await Cart.findOneAndDelete({ user: userId });
+      console.log('After cart clearing');
     } else if (paymentType === "Razorpay") {
+
+     
+
+      console.log('Entered Razorpay block');
       const options = {
         amount: total * 100,
         currency: "INR",
         receipt: "" + orderId,
       };
+
+     
 
       instance.orders.create(options, async function (err, order) {
         if (err) {
@@ -1456,26 +1533,35 @@ const placeOrder = async (req, res) => {
           return razorPaymentFailed(res, "Razorpay order creation failed");
         }
 
+
+        
+
         console.log('Razorpay Order:', order);
+
+        for (const item of cartDetails.products) {
+          const productId = item.productId._id;
+          const quantity = parseInt(item.quantity, 10);
+    
+          // Update stock
+          await Product.findByIdAndUpdate(
+            { _id: productId },
+            { $inc: { stock: -quantity } }
+          );
+        }
+
 
         // Handle the Razorpay order response here
         res.status(400).json({  order });
       });
     }
+
   } catch (error) {
     console.error('An error occurred:', error.message);
     res.status(500).json({ error: "An error occurred" });
   }
-};
-
-// Add the following function definition for razorPaymentFailed
-function razorPaymentFailed(res, errorMessage) {
-  console.error(errorMessage);
-  res.status(500).json({ error: errorMessage });
-}
+}; 
 
 
-// Add the razorPaymentFailed function
 
 
 
@@ -1651,6 +1737,90 @@ const verifyWalletpayment = async(req,res)=>{
     console.log(error);
   }
 }
+
+
+const CouponCheak =async(req,res,next)=>{
+  try {
+   const couponCode=req.body.couponCode
+   const avgprice=[]
+  const total = req.body.total
+  const couponData = await Coupon.findOne({ code : couponCode })
+
+  
+  if(couponData) {
+    const userExist = couponData.user.find((u) => u.toString() == req.session.userid)
+    if(userExist) {
+      res.json({failed:true})
+    }else{
+      req.session.code=couponCode
+      const discountTotal = Math.floor((couponData.discountPercentage/100)*total)
+      
+        const cartDatacc=await Cart.findOneAndUpdate(
+          { userId: req.session.userid },
+          {
+            $inc: { grandTotal: -discountTotal },
+          $push: {
+            cuoponCode: {
+              code: couponCode,
+              incprice: discountTotal
+            }
+          },
+          
+        }
+        );
+        const cartDataUpdate=await Cart.findOne({userId:req.session.userid})
+          for(let i=0;i<cartDataUpdate.items.length;i++){
+            avgprice.push(Math.floor(cartDataUpdate.items[i].total-(couponData.discountPercentage/100)*cartDataUpdate.items[i].total))
+          }
+        
+      for (let i = 0; i < avgprice.length; i++) {
+         await Cart.findOneAndUpdate(
+          { userId: req.session.userid, "items._id": cartDatacc.items[i]._id },
+          { $set: { "items.$.total": avgprice[i] } },
+          { new: true }
+        );
+      }
+     
+      
+     res.json({success:true})
+      }
+   }else{
+    res.json({failed:true})
+   }
+  } catch (err) {
+  next(err)
+  }
+}
+
+const CouponRemove=async(req,res,next)=>{
+  try {
+    const value=req.body.value
+    const avgprice=[]
+   const cartDatacc =await Cart.findOneAndUpdate(
+      { userId: req.session.userid },
+      {
+        $inc: { grandTotal: value },
+        $unset: { cuoponCode:1 }
+      }
+    );
+    req.session.code=null
+    for(let i=0;i<cartDatacc.items.length;i++){
+      avgprice.push(cartDatacc.items[i].quantity*cartDatacc.items[i].price)
+    }
+  
+    for (let i = 0; i < avgprice.length; i++) {
+      ab = await Cart.findOneAndUpdate(
+      { userId: req.session.userid, "items._id": cartDatacc.items[i]._id },
+      { $set: { "items.$.total": avgprice[i] } },
+      { new: true }
+    );
+  }
+
+    res.json({success:true})
+  } catch (err) {
+  next(err)
+  }
+}
  
 
 module.exports={
@@ -1704,7 +1874,11 @@ module.exports={
     loadwalletHistory,
 
     addMoneyWallet,
-    verifyWalletpayment 
+    verifyWalletpayment ,
+
+applyCoupon,
+    CouponCheak,
+    CouponRemove
 
 
 }
