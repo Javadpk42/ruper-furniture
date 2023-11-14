@@ -15,6 +15,10 @@ const validateAddress = require('../middlewares/validation');
 
 const bcrypt=require('bcrypt');
 const { name } = require('ejs');
+const ejs = require('ejs');
+
+const fs = require('fs');
+const puppeteer = require('puppeteer');
 const otpGenerator=require("otp-generator")
 const nodemailer=require("nodemailer")
 const path=require("path")
@@ -435,6 +439,7 @@ const profileLoad = async (req, res) => {
     // Fetch user cart
     const cart = await Cart.findOne({ user: userId }).populate('products.productId');
 
+    
     // Check if userData is not null or undefined
     if (userData) {
       res.render('profile', { users: userData, user: userId, address: addressData ? addressData.address : null, orders, cart,coupons });
@@ -445,6 +450,112 @@ const profileLoad = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.render('profile', { users: null, user: req.session.user_id, address: null, orders: [], cart: null, error: 'Error fetching user data' });
+  }
+};
+
+
+// const invoiceDownload = async (req, res,next) => {
+//   try {
+//     const { orderId } = req.query;
+//     const orderData = await Order.findById(orderId).populate('cart.products.productId');
+    
+//       const userId = req.session.user_id
+//       let sumTotal = 0
+//       const userData = await userModel.findById(userId)
+      
+
+//       orderData.products.forEach(item => {
+//           const total = item.product_Id.price * item.quantity
+//           sumTotal += total
+//       })
+
+//       const date = new Date() 
+//       const data = {
+//           order: orderData,
+//           user: userData,
+//           date,
+//           sumTotal
+//       }
+
+//       const filepathName = path.resolve(__dirname, "../views/user/invoice.ejs")
+//       const html = fs.readFileSync(filepathName).toString()
+//       const ejsData = ejs.render(html, data)
+//       const browser = await puppeteer.launch({ headless: "new" });
+//       const page = await browser.newPage();
+//       await page.setContent(ejsData, { waitUntil: "networkidle0" });
+//       const pdfBytes = await page.pdf({ format: "Letter" });
+//       await browser.close();
+
+//       res.setHeader("Content-Type", "application/pdf");
+//       res.setHeader(
+//           "Content-Disposition",
+//           "attachment; filename= order invoice.pdf"
+//       );
+//       res.send(pdfBytes);
+//   } catch (error) {
+//       next(error)
+//   }
+// }
+
+const invoiceDownload = async (req, res, next) => {
+  try {
+    const { orderId } = req.query;
+    console.log('orderId:', orderId);
+
+    // const orderData = await Order.findById(orderId).populate('cart.products.productId');
+    const orderData = await Order.findById(orderId).populate('cart.products.productId').populate('user');
+
+    console.log('orderData:', orderData);
+
+    if (!orderData) {
+      // Handle the case where the order with the specified orderId doesn't exist
+      console.log('Order not found');
+      return res.status(404).send('Order not found');
+    } 
+
+    const userId = req.session.user_id;
+    let sumTotal = 0;
+    const userData = await userModel.findById(userId);
+    console.log('userData:', userData);
+
+    orderData.cart.products.forEach(item => {
+      const total = item.productId.product_price * item.quantity;
+      sumTotal += total;
+    });
+
+    console.log('sumTotal:', sumTotal);
+
+    const date = new Date();
+    console.log('date:', date);
+
+    const data = {
+      order: orderData,
+      user: userData,
+      date,
+      sumTotal,
+    };
+
+    const filepathName = path.resolve(__dirname, "../views/user/invoice.ejs");
+    const html = fs.readFileSync(filepathName).toString();
+    const ejsData = ejs.render(html, data);
+    
+    console.log('ejsData:', ejsData);
+
+    const browser = await puppeteer.launch({ headless: true });
+    const page = await browser.newPage();
+    await page.setContent(ejsData, { waitUntil: "networkidle0" });
+    const pdfBytes = await page.pdf({ format: "Letter" });
+    await browser.close();
+
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=order_invoice.pdf"
+    );
+    res.send(pdfBytes);
+  } catch (error) {
+    console.error('Error in invoiceDownload:', error);
+    next(error);
   }
 };
 
@@ -555,6 +666,12 @@ const cancelOrderAjax = async (req, res) => {
           // Update the order status to 'Cancelled' for the specific product
           product.orderStatus = 'Cancelled';
           break; // Exit the loop after processing the specific product
+        }else if (order.paymentOption === 'COD') {
+          // Handle COD payment method (replace this comment with actual COD logic)
+          // Update the order status to 'Cancelled' for the specific product
+          product.orderStatus = 'Cancelled';
+          // Handle any specific COD refund logic if needed
+          break; // Exit the loop after processing the specific product
         }
       }
     }
@@ -609,6 +726,56 @@ const updateProfile = async (req, res, next) => {
 
 
 
+// const passwordChange = async (req, res, next) => {
+//   try {
+//     const userId = req.session.user_id;
+//     const newPassword = req.body.newPassword;
+//     const confirmPassword = req.body.confirmPassword;
+//     const currentPassword = req.body.currentPassword;
+
+//     const userData = await userModel.findById(userId);
+    
+
+//     if (!userData) {
+//       return res.status(404).send('User not found');
+//     }
+
+//     // Check if a new password is provided and it matches the confirm password
+//     if (newPassword && newPassword === confirmPassword) {
+//       // Check if the current password matches
+//       const isCurrentPasswordValid = await bcrypt.compare(currentPassword, userData.password);
+//       const issamePassword = await bcrypt.compare(newPassword, userData.password);
+
+//       if (!isCurrentPasswordValid) {
+//         // return res.status(400).render('400', { message: 'Current password is incorrect' });
+//         return res.render('profile', { error: 'New password and confirm password do not match' });
+    
+//       }
+//       if (!issamePassword) {
+//         // return res.status(400).render('400', { message: 'Current password is incorrect' });
+//         return res.render('profile', { error: 'New password and old password are same' });
+    
+//       }
+
+
+//       // Hash and update the new password
+//       const hashedPassword = await bcrypt.hash(newPassword, 10);
+//       userData.password = hashedPassword;
+
+//       await userData.save();
+
+//       res.redirect('/profile');
+//     } else {
+//       // Handle password mismatch error
+//       return res.status(400).render('400', { message: 'New password and confirm password do not match' });
+//     }
+//   } catch (err) {
+//     // Handle specific errors or log them for debugging
+//     console.error(err);
+//     next(err);
+//   }
+// };
+
 const passwordChange = async (req, res, next) => {
   try {
     const userId = req.session.user_id;
@@ -619,16 +786,23 @@ const passwordChange = async (req, res, next) => {
     const userData = await userModel.findById(userId);
 
     if (!userData) {
-      return res.status(404).send('User not found');
+      return res.status(404).json({ error: 'User not found' });
     }
 
     // Check if a new password is provided and it matches the confirm password
     if (newPassword && newPassword === confirmPassword) {
       // Check if the current password matches
       const isCurrentPasswordValid = await bcrypt.compare(currentPassword, userData.password);
-
+      const isSamePassword = await bcrypt.compare(newPassword, userData.password);
+ 
       if (!isCurrentPasswordValid) {
-        return res.status(400).render('400', { message: 'Current password is incorrect' });
+        // Return JSON response for the client
+        return res.status(400).json({ error: 'Current password is incorrect' });
+      }
+
+      if (isSamePassword) {
+        // Return JSON response for the client
+        return res.status(400).json({ error: 'New password and old password are the same' });
       }
 
       // Hash and update the new password
@@ -637,10 +811,11 @@ const passwordChange = async (req, res, next) => {
 
       await userData.save();
 
-      res.redirect('/profile');
+      // Return JSON response for the client
+      return res.json({ success: true });
     } else {
-      // Handle password mismatch error
-      return res.status(400).render('400', { message: 'New password and confirm password do not match' });
+      // Return JSON response for the client
+      return res.status(400).json({ error: 'New password and confirm password do not match' });
     }
   } catch (err) {
     // Handle specific errors or log them for debugging
@@ -648,6 +823,9 @@ const passwordChange = async (req, res, next) => {
     next(err);
   }
 };
+
+
+
 
 
 
@@ -1083,28 +1261,26 @@ const loadCheckout = async (req, res, next) => {
       total += product.quantity * product.productId.product_price;
     });
 
+    console.log(req.query.appliedCoupon)
     let appliedCoupon = null;
-    const couponCode = req.body.couponCode;
-
-    // Check if a valid coupon code is provided
-    if (couponCode) {
-      const coupon = await Coupon.findOne({ code: couponCode });
-
-      if (coupon && coupon.startDate <= date && date <= coupon.expireDate) {
-        // Coupon is valid, apply discount to the total
-        const discountAmount = (total * coupon.discountPercentage) / 100;
-        total -= discountAmount;
-
-        // Set appliedCoupon to the coupon details
-        appliedCoupon = coupon;
-      } else {
-        // Invalid coupon code
-        console.log('Invalid coupon code');
-        return res.redirect('/checkout?error=invalid-coupon');
-      }
+    let discount=null
+    if(req.query.appliedCoupon){
+      appliedCoupon=req.query.appliedCoupon
+      const coupon = await Coupon.findOne({ code: appliedCoupon });
+      discount=coupon.discountPercentage
     }
 
-    res.render('checkout', { cart, addresses: addresses.address, total, userData,  appliedCoupon,updatedTotal: req.query.updatedTotal,errorMessage: null });
+    let error = null;
+    
+    if(req.query.error){
+      error=req.query.error
+      
+    }
+    
+
+  
+
+    res.render('checkout', { cart, addresses: addresses.address, total, userData,  appliedCoupon,discount,error,updatedTotal: req.query.updatedTotal });
   } catch (err) {
     console.error('Error in loadCheckout:', err);
     next(err);
@@ -1134,6 +1310,7 @@ const applyCoupon = async (req, res, next) => {
     });
 
     const couponCode = req.body.couponCode;
+    // req.session.couponCode = couponCode;
 
     if (couponCode) {
       const coupon = await Coupon.findOne({ code: couponCode });
@@ -1149,13 +1326,9 @@ const applyCoupon = async (req, res, next) => {
         const discountAmount = (total * coupon.discountPercentage) / 100;
         total -= discountAmount;
 
-        // Add user to the coupon's user array to mark it as used
-        await Coupon.findOneAndUpdate({ code: couponCode }, { $push: { user: userId } });
+       
 
-        req.session.appliedCoupon = {
-          couponCode,
-          updatedTotal: total,
-        };
+       
 
         // Redirect back to the checkout page with the updated total
         return res.redirect(`/checkout?appliedCoupon=${couponCode}&updatedTotal=${total}`);
@@ -1176,6 +1349,20 @@ const applyCoupon = async (req, res, next) => {
   }
 };
 
+const removeCoupon = (req, res) => {
+  try {
+    // Remove the applied coupon from the session
+    delete req.session.appliedCoupon;
+
+    // Redirect back to the checkout page
+    res.redirect('/checkout?couponRemoved=true');
+  } catch (err) {
+    console.error('Error removing coupon:', err);
+
+    // Redirect back to the checkout page with an error message
+    res.redirect('/checkout?error=remove-coupon-error');
+  }
+};
 
 
 
@@ -1450,8 +1637,9 @@ const placeOrder = async (req, res) => {
       
     });
 
-    const placeorder = await order.save();
-    const orderId = placeorder._id;
+    // const placeorder = await order.save();
+    // const orderId = placeorder._id;
+    let placeorder;
 
    
   
@@ -1507,6 +1695,9 @@ const placeOrder = async (req, res) => {
       }
 
       console.log('Order placed successfully');
+
+      placeorder = await order.save();
+
       res.status(200).json({ placeorder, message: "Order placed successfully" });
 
       console.log('Before cart clearing');
@@ -1519,6 +1710,10 @@ const placeOrder = async (req, res) => {
      
 
       console.log('Entered Razorpay block');
+
+      placeorder = await order.save();
+      const orderId = placeorder._id;
+
       const options = {
         amount: total * 100,
         currency: "INR",
@@ -1842,6 +2037,7 @@ module.exports={
     resetPassword,
 
     profileLoad,
+    invoiceDownload,
     orderDetails,
     cancelOrderAjax,
     updateProfile,
@@ -1877,6 +2073,7 @@ module.exports={
     verifyWalletpayment ,
 
 applyCoupon,
+removeCoupon,
     CouponCheak,
     CouponRemove
 

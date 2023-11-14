@@ -39,6 +39,7 @@ const orderSchema = new mongoose.Schema({
         status:{
           type:String
         },
+      
         reason:{
           type:String
         }

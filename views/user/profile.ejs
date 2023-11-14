@@ -570,22 +570,7 @@
 											</nav>
 											<div class="my-account-content tab-content">
 												<div class="tab-pane fade show active" id="dashboard" role="tabpanel">
-													<!-- <div class="my-account-dashboard">
-													
-
-														
-															<h1 class="text-center">My Profile</h1>
-													
-<p>Full Name: <%= users ? users.username : 'N/A' %></p>
-<p>Email Address: <%= users ? users.email : 'N/A' %></p>
-<p>Phone Number: <%= users ? users.mobile : 'N/A' %></p>
-<p>Country: India</p>
-<p>Address 1: <%= users ? users.address1 : 'N/A' %></p>
-<p>Address 2: <%= users ? users.address2 : 'N/A' %></p>
-
-														  
-														  
-													</div> -->
+						
 
 													<div class="my-account-dashboard">
 														<h1 class="">Profile Information</h1>
@@ -702,6 +687,7 @@
 															  <th>Expected Delivery</th>
 															  <th>Total</th>
 															  <th></th>
+															  <th></th>
 															</tr>
 														  </thead>
 														  <tbody>
@@ -715,6 +701,8 @@
 																 
 																</td>
 																<td><a href="/orderdetails/<%= order._id %>" class="btn-small d-block">View</a></td>
+																<td><a href="/invoice?orderId=<%= order._id %>" class="btn-small d-block">Download Invoice</a></td>
+															
 															  </tr>
 															<% }); %>
 												  
@@ -1109,7 +1097,8 @@ Delete Address
 															</p>
 														</form> -->
 
-														<form class="edit-account" action="/password_change" method="post" onsubmit="return validPasswordChange()">
+														<!-- <form class="edit-account" action="/password_change" method="post" onsubmit="return validPasswordChange()"> -->
+															<form class="edit-account" action="/password_change" method="post" onsubmit="return validPasswordChange(event);">
 															<!-- Existing HTML code for the form -->
 															<fieldset>
 																<legend>Password change</legend>
@@ -1127,9 +1116,13 @@ Delete Address
 																	<label for="password_2">Confirm new password</label>
 																	<input type="password" class="input-text" id="password_2" name="confirmPassword" autocomplete="off">
 																	<p class="error-message" id="confirm-password-error"></p>
+																	<p class="error-message" id="fetch-password-error"></p>
 																</p>
 															</fieldset>
 															<div class="clear"></div>
+
+															
+
 															<p class="form-row">
 																<button type="submit" class="button" name="save_account_details" value="Save changes">Save changes</button>
 															</p>
@@ -1848,37 +1841,161 @@ return true;
 
 </script>
 
-<script>
-    function validPasswordChange() {
-        const currentPassword = document.getElementById('password_current').value;
-        const newPassword = document.getElementById('password_1').value;
-        const confirmPassword = document.getElementById('password_2').value;
 
-        document.getElementById('current-password-error').textContent = '';
-        document.getElementById('new-password-error').textContent = '';
-        document.getElementById('confirm-password-error').textContent = '';
 
-        // Validate current password
-        if (!currentPassword) {
-            document.getElementById('current-password-error').textContent = 'Current password should not be empty!';
-            return false;
-        }
+<!-- <script>
+  async function validPasswordChange(event) {
+    console.log("validPasswordChange function is called"); 
+    event.preventDefault(); 
 
-        // Validate new password
-        if (!newPassword || newPassword.length < 6) {
-            document.getElementById('new-password-error').textContent = 'New password should be at least 6 characters long.';
-            return false;
-        }
+    const currentPassword = document.getElementById('password_current').value;
+    const newPassword = document.getElementById('password_1').value;
+    const confirmPassword = document.getElementById('password_2').value;
 
-        // Validate password match
-        if (newPassword !== confirmPassword) {
-            document.getElementById('confirm-password-error').textContent = 'Passwords do not match.';
-            return false;
-        }
+    document.getElementById('current-password-error').textContent = '';
+    document.getElementById('new-password-error').textContent = '';
+    document.getElementById('confirm-password-error').textContent = '';
 
-        return true;
+    // Validate current password
+    if (!currentPassword) {
+        document.getElementById('current-password-error').textContent = 'Current password should not be empty!';
+        return false;
     }
+
+    // Validate new password
+    if (!newPassword || newPassword.length < 6) {
+        document.getElementById('new-password-error').textContent = 'New password should be at least 6 characters long.';
+        return false;
+    }
+
+    // Validate password match
+    if (newPassword !== confirmPassword) {
+        document.getElementById('confirm-password-error').textContent = 'Passwords do not match.';
+        return false;
+    }
+
+    try {
+        console.log("Before fetch"); // Add this line
+        const response = await fetch('/password_change', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                currentPassword,
+                newPassword,
+                confirmPassword,
+            }),
+        });
+
+        console.log("After fetch"); // Add this line
+
+        const result = await response.json();
+
+        console.log("Response:", response); // Add this line
+        console.log("Result:", result); // Add this line
+
+        if (response.ok) {
+            // Password change successful
+            alert('Password changed successfully');
+            window.location.href = '/profile'; // Redirect to the profile page
+        } else {
+            // Display the error message on the same page
+            document.getElementById('fetch-password-error').textContent = result.error;
+        }
+
+        return response.ok;
+    } catch (error) {
+        console.error('Error during password change:', error);
+        return false;
+    }
+}
+
+</script> -->
+
+
+<script>
+	let errorTimeout; // Global variable to track the timeout
+
+async function validPasswordChange(event) {
+    event.preventDefault(); // Prevent the default form submission behavior
+
+    const currentPassword = document.getElementById('password_current').value;
+    const newPassword = document.getElementById('password_1').value;
+    const confirmPassword = document.getElementById('password_2').value;
+
+    const currentPasswordError = document.getElementById('current-password-error');
+    const newPasswordError = document.getElementById('new-password-error');
+    const confirmPasswordError = document.getElementById('confirm-password-error');
+    const fetchPasswordError = document.getElementById('fetch-password-error');
+
+    // Clear existing timeouts and error messages
+    clearTimeout(errorTimeout);
+    currentPasswordError.textContent = '';
+    newPasswordError.textContent = '';
+    confirmPasswordError.textContent = '';
+    fetchPasswordError.textContent = '';
+
+    // Validate current password
+    if (!currentPassword) {
+        currentPasswordError.textContent = 'Current password should not be empty!';
+        errorTimeout = setTimeout(() => { currentPasswordError.textContent = ''; }, 3000);
+        return false;
+    }
+
+    // Validate new password
+    if (!newPassword || newPassword.length < 6) {
+        newPasswordError.textContent = 'New password should be at least 6 characters long.';
+        errorTimeout = setTimeout(() => { newPasswordError.textContent = ''; }, 3000);
+        return false;
+    }
+
+    // Validate password match
+    if (newPassword !== confirmPassword) {
+        confirmPasswordError.textContent = 'Passwords do not match.';
+        errorTimeout = setTimeout(() => { confirmPasswordError.textContent = ''; }, 3000);
+        return false;
+    }
+
+    try {
+        const response = await fetch('/password_change', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                currentPassword,
+                newPassword,
+                confirmPassword,
+            }),
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            
+       
+            window.location.href = '/profile'; 
+        } else {
+            // Display the error message on the same page
+            fetchPasswordError.textContent = result.error;
+            errorTimeout = setTimeout(() => { fetchPasswordError.textContent = ''; }, 3000);
+        }
+
+        return response.ok;
+    } catch (error) {
+        console.error('Error during password change:', error);
+        return false;
+    }
+}
+
+
 </script>
+
+
+
+
+
 
 
 <!-- <script>

@@ -660,31 +660,40 @@
 		
    <form action="/apply-coupon" method="POST">
 	
-	<!-- <div class="form-group">
+
+  
+   <!-- Coupon Form -->
+<form action="/apply-coupon" method="POST">
+	<div class="form-group">
 	  <input type="text" id="couponCode" name="couponCode" placeholder="Enter coupon code">
-	
 	  <button type="submit" class="btn btn-default">Apply Coupon</button>
 	</div>
-  </form> -->
-  <div class="form-group">
-	<input type="text" id="couponCode" name="couponCode" placeholder="Enter coupon code">
-	<button type="submit" class="btn btn-default">Apply Coupon</button>
   
-	<% if (errorMessage) { %>
-	  <p class="error-message"><%= errorMessage %></p>
-	<% } %>
-  </div>
+	
   </form>
   
-  
   <!-- Display applied coupon and total -->
-  <% if (appliedCoupon) { %>
-	<p>Applied Coupon: <%= appliedCoupon.code %></p>
-	<p>Discount: <%= appliedCoupon.discountPercentage %>%</p>
-  <% } %>
+
+</div>
+  <div class="shipping-totals shipping">
+	<% if (appliedCoupon) { %>
+		<div class="applied-coupon-info">
+		  <h5>Applied Coupon: <%= appliedCoupon %></h5>
+		  <h5>Discount: <%= discount%>%</h5>
+		  <form action="/remove-coupon" method="POST">
+		  <button type="submit" class="btn btn-default">Remove Coupon</button>
+		</form>
+		</div>
+	  <% } %>
+	  <% if (error) { %>
+		<h5 class="error-message"><%= error %></h5>
+	  <% } %>
+</div>
+   
+
   
   
-															</div>
+															
 															<div class="order-total">
 																<h2>Total</h2>
 																<div class="total-price">

@@ -30,6 +30,7 @@ user_route.get('/resetpassword',userController.resetpasswordLoad)
 user_route.post('/resetpassword',userController.resetPassword)
  
 user_route.get('/profile',userController.profileLoad)
+user_route.get('/invoice',userController.invoiceDownload)
 user_route.get('/orderdetails/:orderId', userController.orderDetails); 
 user_route.post('/cancelorder/:orderId', userController.cancelOrderAjax);
 
@@ -54,6 +55,7 @@ user_route.post('/remove-product',userController.removeProductRouteHandler)
 
 user_route.get('/checkout',userController.loadCheckout)
 user_route.post('/apply-coupon',userController.applyCoupon)
+user_route.post('/remove-coupon',userController.removeCoupon)
 user_route.get('/edit_address_checkout/:addressId', userController.editAddressPagecheckout);
 user_route.post('/edit_address_checkout/:addressId', userController.editAddresscheckout);
 user_route.post('/add_shipping_address', userController.addShippingAddress)
