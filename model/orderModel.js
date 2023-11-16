@@ -36,13 +36,23 @@ const orderSchema = new mongoose.Schema({
         default: 'Placed',
       },
       returnOrder:{
-        status:{
-          type:String
+        status: {
+          type: Boolean,
+          default: false, 
+        },
+        returnStatus: {
+          type: String,
+          enum: ['Placed', 'Out for pickup','Returned','Refund'],
+          default: 'Placed',
+        },
+        statusLevel: {
+          type: Number,
+          default: 1
         },
       
-        reason:{
-          type:String
-        }
+        // reason:{
+        //   type:String
+        // }
         
       },
 
@@ -96,7 +106,12 @@ const orderSchema = new mongoose.Schema({
   expectedDelivery:{
     type:Date,
     required:true
-  }
+  },
+  status: {
+    type: Boolean,
+    default: false, // Set the default value to false
+  },
+
 
 
   // You can add more fields as needed, such as order items, order status, etc.

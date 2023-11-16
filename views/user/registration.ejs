@@ -555,14 +555,28 @@
 															  
 											
  																<form method="post" class="register" action="/signup" onsubmit="return validRegister()">
+																	<!-- <% if (message) { %>
+																		<p class="error-message"><%= message %></p>
+																	<% } %> -->
+																	<% if (message) { %>
+																		<p id="errorMessage" class="error-message"><%= message %></p>
+																		<script>
+																		  // JavaScript code to hide the error message after 3 seconds
+																		  setTimeout(function() {
+																			var errorMessage = document.getElementById('errorMessage');
+																			if (errorMessage) {
+																			  errorMessage.style.display = 'none';
+																			}
+																		  }, 5000);
+																		</script>
+																	  <% } %>
+																	  
 																<div class="username">
 																	<label>Username <span class="required">*</span></label>
 																	<input type="text" class="input-text" name="username" id="username" >
 																	<p id="username-error" class="error-message"></p>
 																</div>
-																<% if (message) { %>
-																	<p class="error-message"><%= message %></p>
-																<% } %>
+																
 																<div class="email">
 																	<label>Email address <span class="required">*</span></label>
 																	<input type="email" class="input-text" name="email" id="email" >
@@ -586,6 +600,10 @@
 																	<input type="password" class="input-text" name="cpassword" id="cpassword"  >
 																	<p id="password-mismatch" class="error-message"></p>
 																	
+																</div>
+																<div class="referral-code">
+																	<label>Referral Code (Optional)</label>
+																	<input type="text" class="input-text" name="referralCode" id="referralCode">
 																</div>
 															
 																<div class="button-register">

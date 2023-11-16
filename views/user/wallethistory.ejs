@@ -543,13 +543,14 @@
 														<div class="my-account-account-details">
 														
 															
-                                                            <table>
+                                                            <!-- <table>
                                                                 <thead>
                                                                     <tr>
                                                                         <th>Date</th>
                                                                         <th>Amount</th>
                                                                         <th>Description</th>
                                                                         <th>Transaction Type</th>
+																		<th>Balance</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -562,7 +563,35 @@
                                                                         </tr>
                                                                     <% }); %>
                                                                 </tbody>
-                                                            </table>
+                                                            </table> -->
+															<table>
+																<thead>
+																  <tr>
+																	<th>Date</th>
+																	<th>Amount</th>
+																	<th>Description</th>
+																	<th>Transaction Type</th>
+																	<th>Balance</th>
+																  </tr>
+																</thead>
+																<tbody>
+																  <% let balance = 0; %>
+																  <% walletHistory.forEach(entry => { %>
+																	<tr>
+																	  <td><%= entry.date %></td>
+																	  <td><%= entry.amount %></td>
+																	  <td><%= entry.description %></td>
+																	  <td><%= entry.transactionType %></td>
+																	  <% if (entry.transactionType === 'Debit') { %>
+																		<% balance -= entry.amount; %>
+																	  <% } else { %>
+																		<% balance += entry.amount; %>
+																	  <% } %>
+																	  <td><%= balance %></td>
+																	</tr>
+																  <% }); %>
+																</tbody>
+															  </table>
 															
 
 														</div>

@@ -49,6 +49,7 @@ admin_route.post('/editproduct',fileUpload.productImagesUpload,productController
 admin_route.get('/orders',adminAuth.isAdminLogin,adminController.orderLoad)
 admin_route.get('/orderdetails/:orderId', adminController.orderDetails); 
 admin_route.post('/updateOrderStatus/:orderId', adminController.updateOrderStatus);
+admin_route.post('/updateReturnStatus/:orderId', adminController.updateReturnStatus);
 
 admin_route.get('/coupons',adminAuth.isAdminLogin,adminController.couponLoad)
 

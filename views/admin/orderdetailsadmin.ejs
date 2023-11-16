@@ -245,8 +245,10 @@
                       <th>Image</th>
                       <th>Price</th>
                       <th>Quantity</th>
-                      <th>Expected Delivery</th>
-                      <th>Status</th>
+                      <th>Order Status</th>
+                      <th>Update Status</th>
+                      <th>Return Status</th>
+                      
                       <th></th>
                     </tr>
                   </thead>
@@ -271,6 +273,23 @@
                             </select>
                             <button type="submit">Update Status</button>
                           </form>
+                        </td>
+                        <td>
+                          <% if (product.returnOrder.status) { %>
+                            <form action="/admin/updateReturnStatus/<%= product._id %>" method="post">
+                              <select name="returnstatus" id="status">
+                                <option value="Placed" <%= product.returnOrder.returnStatus === 'Placed' ? 'selected' : '' %>>Placed</option>
+                                <option value="Out for pickup" <%= product.returnOrder.returnStatus === 'Out for pickup' ? 'selected' : '' %>>Out for pickup</option>
+                                <option value="Returned" <%= product.returnOrder.returnStatus === 'Returned' ? 'selected' : '' %>>Returned</option>
+                                <option value="Refund" <%= product.returnOrder.returnStatus === 'Refund' ? 'selected' : '' %>>Refund</option>
+                               
+                              </select>
+                              <button type="submit">Update Status</button>
+                            </form>
+                          <% } else { %>
+                            
+                          <% } %>
+                     
                         </td>
                       </tr>
                     <% }); %>

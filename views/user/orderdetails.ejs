@@ -162,6 +162,142 @@
   }
 </style>
 
+
+<!-- <style>
+	/* progress bar */
+  
+	/* delivery progress bar  */
+  
+	:-moz-any-link:focus {
+	  outline: 0;
+	}
+  
+	#progressbar {
+	  margin-bottom: 3vh;
+	  overflow: hidden;
+	  color: #000;
+	  padding-left: 0;
+	  margin-top: 3vh;
+	}
+  
+	#progressbar li {
+	  list-style-type: none;
+	  font-size: .8rem;
+	  width: 25%;
+	  float: left;
+	  position: relative;
+	  font-weight: 400;
+	  color: #000;
+	}
+  
+	#progressbar #step1:before {
+	  content: "";
+	  color: #000;
+	  width: 20px;
+	  height: 20px;
+	  margin-left: 0 !important;
+	}
+  
+	#progressbar #step2:before {
+	  content: "";
+	  color: #000;
+	  width: 20px;
+	  height: 20px;
+	  margin-left: 32%;
+	}
+  
+	#progressbar #step3:before {
+	  content: "";
+	  color: #000;
+	  width: 20px;
+	  height: 20px;
+	  margin-right: 32%;
+	}
+  
+	#progressbar #step4:before {
+	  content: "";
+	  color: rgb(151, 149, 149, 0.651);
+	  width: 20px;
+	  height: 20px;
+	  margin-right: 0 !important;
+	}
+  
+	#progressbar li:before {
+	  line-height: 29px;
+	  display: block;
+	  font-size: 12px;
+	  background: #d1d1d1;
+	  border-radius: 50%;
+	  margin: auto;
+	  z-index: -1;
+	  margin-bottom: 1vh;
+	}
+  
+	#progressbar li:after {
+	  content: '';
+	  height: 3px;
+	  background: #d1d1d1;
+	  position: absolute;
+	  left: 0;
+	  right: 0;
+	  margin-bottom: 2vh;
+	  top: 8px;
+	  z-index: 1;
+	}
+  
+	.progress-track {
+	  padding: 0 8%;
+	}
+  
+	#progressbar li:nth-child(2):after {
+	  margin-right: auto;
+	}
+  
+	#progressbar li:nth-child(1):after {
+	  margin: auto;
+	}
+  
+	#progressbar li:nth-child(3):after {
+	  float: left;
+	  width: 68%;
+	}
+  
+	#progressbar li:nth-child(4):after {
+	  margin-left: auto;
+	  width: 132%;
+	}
+  
+	#progressbar li.active:after,
+	#progressbar li.active:before {
+	  background: #00ff0d;
+	}
+  
+	#three {
+	  font-size: 1.2rem;
+	}
+  
+	@media (max-width: 767px) {
+	  #three {
+		font-size: 1rem;
+	  }
+	}
+  
+	/* Custom style for return status */
+	#progressbar.returnStatus li:before {
+	  background: #ff8c00; /* Orange color for return status */
+	}
+  
+	#progressbar.returnStatus li:after {
+	  background: #ff8c00; /* Orange color for return status */
+	}
+  
+	#progressbar.returnStatus li.active:after,
+	#progressbar.returnStatus li.active:before {
+	  background: rgb(255, 163, 57); /* Green color for active step */
+	}
+  </style> -->
+  
+
 	</head>
 
 	
@@ -707,7 +843,7 @@
 
 																<tr class="cart-item">		
 																	<td class="product-thumbnail">
-																		<a href="shop-details.html">
+																		<a href="">
 																			<!-- <img width="600" height="600" src="media/product/3.jpg" class="product-image" alt=""> -->
 																			<img src="/public/products/images/<%= product.productId.images.image1 %>" alt="IMG">
 																		</a>				
@@ -736,31 +872,44 @@
 																										
 																		<%= order.paymentOption %>
 																	</td>
-																	<td class="product-remove" id="orderStatus-<%= product._id %>">
+																	<!-- <td class="product-remove" id="orderStatus-<%= product._id %>">
 																		<%= product.orderStatus %>
+																	  </td> -->
+																	  <td class="product-remove" id="orderStatus-<%= product._id %>">
+																		<% if (product.returnOrder.status) { %>
+																			<%= product.returnOrder.returnStatus %>
+																		<% } else { %>
+																		  <%= product.orderStatus %>
+																		<% } %>
 																	  </td>
-																	  
+																	
 																	<!-- <td class="product-quantity">
-																		<a href="#" onclick="confirmAndCancel('<%= order._id %>')" style="color: red;">Cancel Order</a>
-																		
-																	</td> -->
-																	<td class="product-quantity">
 																		<% if (product.orderStatus !== "Cancelled") { %>
-																			<% if (product.orderStatus == "Delivered") { %>
-																				<a href="#" onclick="confirmAndCancel('<%= product._id %>')" style="color: red;">Return Product</a>
+																			<% if (product.orderStatus == "Delivered" && !product.returnOrder.status) { %>
+																				<a href="#" onclick="confirmAndReturn('<%= product._id %>')" style="color: red;">Return Product</a>
 																				
 																				<% }  else{%>
 																		<a href="#" onclick="confirmAndCancel('<%= product._id %>')" style="color: red;">Cancel Order</a>
 																		<%} %> 
+																		
 																		<% }  %>  
-																	</td>
+																	</td> -->
+																	<td class="product-quantity">
+																		<% if (product.orderStatus !== "Cancelled") { %>
+																		  <% if (product.orderStatus == "Delivered" && !product.returnOrder.status) { %>
+																			<a href="#" onclick="confirmAndReturn('<%= product._id %>')" style="color: red;">Return Product</a>
+																		  <% } else if (!product.returnOrder.status) { %>
+																			<a href="#" onclick="confirmAndCancel('<%= product._id %>')" style="color: red;">Cancel Order</a>
+																		  <% } %>
+																		<% } %>
+																	  </td>
 																	  
 																</tr>
 																
 														
-																<tr class="status-bar-row" id="status-row-<%= order._id %>">
-																	<td colspan="7">
-																	  <% if (product.orderStatus !== "Cancelled") { %>
+																<tr class="status-bar-row" id="status-row-<%= product._id %>">
+																	<!-- <td colspan="7">
+																	  <% if (!(product.orderStatus === "Cancelled" || product.returnOrder.status)){ %>
 																		<div class="progress-track">
 																		  <ul id="progressbar">
 																			<li style="font-size: 12px;" class="step0 active" id="step1">Order placed</li>
@@ -770,31 +919,54 @@
 																		  </ul>
 																		</div>
 																	  <% }  %>
-																	</td>
+																	</td> -->
+																	<!-- <td colspan="7">
+																		<% if (!(product.orderStatus === "Cancelled" || product.returnOrder.status)){ %>
+																		  <div class="progress-track">
+																			<ul id="progressbar">
+																			  <li style="font-size: 12px;" class="step0 active" id="step1">Order placed</li>
+																			  <li style="font-size: 12px;" class="step0 text-center <%= product.statusLevel >= 2 ? 'active' : '' %>" id="step2">Shipped</li>
+																			  <li style="font-size: 12px;" class="step0 text-right <%= product.statusLevel >= 3 ? 'active' : '' %>" id="step3">Out for Delivery</li>
+																			  <li style="font-size: 12px;" class="step0 text-right text-success <%= product.statusLevel >= 4 ? 'active' : '' %>" id="step4">Delivered</li>
+																			</ul>
+																		  </div>
+																		<% } else if (product.returnOrder.status) { %>
+																		  <div class="progress-track">
+																			<ul id="progressbar">
+																			  <li style="font-size: 12px;" class="step0 active" id="step1">Return placed</li>
+																			  <li style="font-size: 12px;" class="step0 text-center <%= product.returnOrder.statusLevel >= 2 ? 'active' : '' %>" id="step2">Out for Pickup</li>
+																			  <li style="font-size: 12px;" class="step0 text-right <%= product.returnOrder.statusLevel >= 3 ? 'active' : '' %>" id="step3">Returned</li>
+																			  <li style="font-size: 12px;" class="step0 text-right text-success <%= product.returnOrder.statusLevel >= 4 ? 'active' : '' %>" id="step4">Refund</li>
+																			</ul>
+																		  </div>
+																		<% } %>
+																	  </td> -->
+																	  <td colspan="7">
+																		<% if (!(product.orderStatus === "Cancelled" || product.returnOrder.status)){ %>
+																		  <div class="progress-track">
+																			<ul id="progressbar">
+																			  <li style="font-size: 12px;" class="step0 active" id="step1">Order placed</li>
+																			  <li style="font-size: 12px;" class="step0 text-center <%= product.statusLevel >= 2 ? 'active' : '' %>" id="step2">Shipped</li>
+																			  <li style="font-size: 12px;" class="step0 text-right <%= product.statusLevel >= 3 ? 'active' : '' %>" id="step3">Out for Delivery</li>
+																			  <li style="font-size: 12px;" class="step0 text-right text-success <%= product.statusLevel >= 4 ? 'active' : '' %>" id="step4">Delivered</li>
+																			</ul>
+																		  </div>
+																		<% } else if (product.returnOrder.status) { %>
+																		  <div class="progress-track">
+																			<ul id="progressbar" class="returnStatus">
+																			  <li style="font-size: 12px;" class="step0 active" id="step1">Return placed</li>
+																			  <li style="font-size: 12px;" class="step0 text-center <%= product.returnOrder.statusLevel >= 2 ? 'active' : '' %>" id="step2">Out for Pickup</li>
+																			  <li style="font-size: 12px;" class="step0 text-right <%= product.returnOrder.statusLevel >= 3 ? 'active' : '' %>" id="step3">Returned</li>
+																			  <li style="font-size: 12px;" class="step0 text-right text-success <%= product.returnOrder.statusLevel >= 4 ? 'active' : '' %>" id="step4">Refund</li>
+																			</ul>
+																		  </div>
+																		<% } %>
+																	  </td>
+																	  
+																	  
 																  </tr>
 																  
-<!-- 
-																<tr class="status-bar-row">
-																	<td colspan="7">
-																	  <% if (product.orderStatus !== "Cancelled") { %>
-																		<div class="progress-track">
-																		  <ul id="progressbar">
-																			<li style="font-size: 12px;" class="step0 active" id="step1">Order placed</li>
-																			<li style="font-size: 12px;" class="step0 text-center <%= product.statusLevel >= 2 ? 'active' : '' %>" id="step2">Shipped</li>
-																			<li style="font-size: 12px;" class="step0 text-right <%= product.statusLevel >= 3 ? 'active' : '' %>" id="step3">Out for Delivery</li>
-																			<li style="font-size: 12px;" class="step0 text-right text-success <%= product.statusLevel >= 4 ? 'active' : '' %>" id="step4">Delivered</li>
-																		  </ul>
-																		</div>
-																	  <% } else { %>
-																		<div class="progress-track col-12">
-																		  <ul id="progressbar">
-																			<li class="step0 active" style="width: 50%; font-size: 1rem" id="step1">Order placed</li>
-																			<li class="step0 active text-right text-danger" style="width: 50%; font-size: 1rem" id="step4">Cancelled</li>
-																		  </ul>
-																		</div>
-																	  <% } %>
-																	</td>
-																  </tr> -->
+
 																  
 																
 
@@ -1288,59 +1460,127 @@ function confirmAndCancel(orderId) {
   });
 }
 
+// function confirmAndReturn(orderId) {
+//   console.log('Confirm and return function called');
 
-
-// function confirmAndCancel(orderId) {
 //   Swal.fire({
 //     title: 'Are you sure?',
-//     text: 'You are about to cancel this order.',
+//     text: 'You are about to return this order.',
 //     icon: 'warning',
 //     showCancelButton: true,
 //     confirmButtonColor: '#d33',
 //     cancelButtonColor: '#3085d6',
-//     confirmButtonText: 'Yes, cancel it!'
+//     confirmButtonText: 'Yes, return it!'
 //   }).then((result) => {
 //     if (result.isConfirmed) {
+//       console.log('Confirmed to return order');
+
 //       // Send AJAX request to cancel the order
-//       axios.post(`/cancelorder/${orderId}`)
+//       axios.post(`/returnorder/${orderId}`)
 //         .then(response => {
+//           console.log('Cancel order AJAX response:', response);
+
 //           if (response.data.success) {
 //             // Update the DOM to remove the status bar row and cancel td
 //             const statusRow = document.querySelector(`#status-row-${orderId}`);
+// 			console.log(statusRow);
 //             if (statusRow) {
 //               statusRow.remove();
 //             }
 
-//             Swal.fire('Success!', 'Order canceled successfully!', 'success');
+//             // Update the order status dynamically
+//             const orderStatusElement = document.querySelector(`#orderStatus-${orderId}`);
+// 			console.log(orderStatusElement);
+//             if (orderStatusElement) {
+//               orderStatusElement.textContent = 'Cancelled';
+//             }
+
+//             Swal.fire('Success!', 'Order return placed successfully!', 'success');
+// 			location.reload();
 //           } else {
-//             Swal.fire('Error!', response.data.message, 'error');
+//             Swal.fire('Error!', 'an error occured', 'error');
 //           }
 //         })
 //         .catch(error => {
-//           console.error(error);
-//           Swal.fire('Error!', 'Failed to cancel the order', 'error');
+//           console.error('Error in cancel order AJAX request:', error);
+//           Swal.fire('Error!', 'cannot return now', 'error');
 //         });
 //     }
 //   });
 // }
 
 
-		//   function confirmAndCancel(orderId) {
-		// 	Swal.fire({
-		// 	  title: 'Are you sure?',
-		// 	  text: 'You are about to cancel this order.',
-		// 	  icon: 'warning',
-		// 	  showCancelButton: true,
-		// 	  confirmButtonColor: '#d33',
-		// 	  cancelButtonColor: '#3085d6',
-		// 	  confirmButtonText: 'Yes, cancel it!'
-		// 	}).then((result) => {
-		// 	  if (result.isConfirmed) {
-		// 		// Redirect to the cancel order route
-		// 		window.location.href = `/cancelorder/${orderId}`;
-		// 	  }
-		// 	});
-		//   }
+function confirmAndReturn(orderId, productId) {
+  console.log('Confirm and return function called');
+
+  Swal.fire({
+    title: 'Are you sure?',
+    text: 'You are about to return this order.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Yes, return it!'
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      console.log('Confirmed to return order');
+
+      try {
+        // Send AJAX request to return the order
+        const response = await axios.post(`/returnorder/${orderId}`);
+        console.log('Return order AJAX response:', response);
+
+        if (response.data.success) {
+          // Update the DOM to remove the status bar row and set order status to 'Returned'
+          const statusRow = document.querySelector(`#status-row-${orderId}`);
+          console.log('Selected status row:', statusRow);
+
+          if (statusRow) {
+            statusRow.remove();
+            console.log('Status row removed');
+          } else {
+            // If the direct selection doesn't work, try using a different approach
+            const orderElement = document.querySelector(`#order-${orderId}`);
+            const statusRowAlternative = orderElement ? orderElement.querySelector('.status-bar-row') : null;
+
+            if (statusRowAlternative) {
+              statusRowAlternative.remove();
+              console.log('Alternative status row removed');
+            } else {
+              console.log('Status row not found');
+            }
+          }
+
+          // Update the order status dynamically
+          const orderStatusElement = document.querySelector(`#orderStatus-${productId}`);
+          console.log('Selected order status element:', orderStatusElement);
+
+          if (orderStatusElement) {
+            orderStatusElement.textContent = 'Returned';
+            console.log('Order status updated to Returned');
+          } else {
+            console.log('Order status element not found');
+          }
+
+          Swal.fire('Success!', 'Order return placed successfully!', 'success');
+          // Optionally reload the page
+          // location.reload();
+        } else {
+          Swal.fire('Error!', 'An error occurred during return', 'error');
+        }
+      } catch (error) {
+        console.error('Error in return order AJAX request:', error);
+        Swal.fire('Error!', 'Cannot return the order at this stage', 'error');
+      }
+    }
+  });
+}
+
+
+
+
+
+
 		</script>
 
 	</body>

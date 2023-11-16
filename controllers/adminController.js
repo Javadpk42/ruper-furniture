@@ -9,6 +9,7 @@ const { category } = require("../model/productModel");
 
 const Order = require("../model/orderModel")
 const Coupon = require("../model/couponModel")
+const Product = require('../model/productModel').product;
 
 const bcrypt=require('bcrypt');
 const { name } = require('ejs');
@@ -112,26 +113,7 @@ const usersLoad = async (req, res) => {
   }
 };
 
-// const blockOrNot = async (req, res) => {
-//   try {
-//     const id = req.body.id; // Use req.body to get the user ID from the form submission
-//     const userData = await userModel.findOne({ _id: id });
 
-//     if (userData.is_verified === true) {
-//       await userModel.updateOne(
-//         { _id: id },
-//         { $set: { is_verified: false } }
-//       );
-//     } else {
-//       await userModel.updateOne({ _id: id }, { $set: { is_verified: true } });
-//     }
-
-//     res.redirect("/admin/customers");
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send("Internal Server Error"); // Handle the error appropriately
-//   }
-// }
 
 const blockOrNot = async (req, res) => {
   try {
@@ -315,57 +297,7 @@ const   updateCategoryData = async (req, res) => {
 
 
 
-// const productLoadd = async (req, res) => {
-//   try {
-//       let products = await productModel.find().populate("category");
-//       const categories = await categoryModel.find();
-//       res.render('products', {
-//           productss: products,
-//           Category: categories,
-//       });
-//   } catch (error) {
-//       console.log(error);
-//   }
-// }
 
-
-
-
-// const loadaddProduct=async(req,res)=>{
-//   try {
-//       res.render('addproduct')
-//   } catch (error) {
-//       console.log(error.message )
-//   }
-// }
-// const addProductd = async (req, res) => {
-//   try {
-//     const name = req.body.name;
-//     if (name.trim().length == 0) {
-//       res.redirect("/admin/products");
-//     } else {
-//       const already = await productModel.findOne({
-//         name: { $regex: name, $options: "i" },
-//       });
-//       if (already) {
-//         res.render("addproducts", { message: "The Product already exits" });
-//       } else {
-//         const productData = new productModel({ name: name });
-//         const addData = await productData.save();
-//         console.log(productData);
-//         console.log(addData);
-
-//         if (addData) {
-//           res.redirect("/admin/products");
-//         } else {
-//           res.render("addcategories", { message: "Something went Wrong" });
-//         }
-//       }
-//     }
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
 
 
 
@@ -400,24 +332,7 @@ const updateproducts=async(req,res)=>{
 
 
 
-// const orderLoad = async (req, res) => {
-//   try {
-//     // Fetch all orders
-//     const orders = await Order.find({}).sort({ orderDate: -1 });
-    
 
-//     // Check if orders data is not null or undefined
-//     if (orders) {
-//       res.render('orders', { orders });
-//     } else {
-//       console.log('Orders Data is null or undefined');
-//       res.render('orders', { orders: [] });
-//     }
-//   } catch (error) {
-//     console.log(error);
-//     res.render('orders', { orders: [], error: 'Error fetching orders data' });
-//   }
-// };
 const orderLoad = async (req, res) => {
   try {
     // Fetch all orders with user information
@@ -442,43 +357,7 @@ const orderLoad = async (req, res) => {
   }
 };
 
-// const orderDetails = async (req, res) => {
-//   try {
-//     const orderId = req.params.orderId;
 
-//     // Fetch order details
-//     const order = await Order.findById(orderId).populate({
-//       path: 'cart.products.productId',
-//       model: 'product',
-//     });
-
-//     // Check if the order exists
-//     if (!order) {
-//       return res.status(404).render('error', { message: 'Order not found' });
-//     }
- 
-
-//     // Access the order details
-//     const { cart, deliveryAddress, paymentOption, totalAmount, orderDate, orderStatus } = order;
-
-//     // Render order details view with order data
-//     res.render('orderdetailsadmin', {
-//       order: { 
-//         _id: order._id,
-//         user: order.user,
-//         cart,
-//         deliveryAddress,
-//         paymentOption,
-//         totalAmount,
-//         orderDate,
-//         status,
-//       }
-//     });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).render('error', { message: 'Error fetching order details' });
-//   }
-// };
 const orderDetails = async (req, res) => {
   try {
     const orderId = req.params.orderId;
@@ -520,76 +399,12 @@ const orderDetails = async (req, res) => {
 
 
 
-// const updateOrderStatus = async (req, res) => {
-//   try {
-//     const orderId = req.params.orderId;
-//     const newStatus = req.body.status;
-//     console.log(orderId)
 
-//     // Find the order in the database
-//     // const order = await Order.findById(orderId);
-//     const orders = await Order.find({ 'cart.products._id': mongoose.Types.ObjectId(orderId) });
-// console.log(orders)
-//     // Check if the order exists
-//     if (!orders) {
-//       return res.status(404).json({
-//         success: false,
-//         message: 'Order not found',
-//       });
-//     }
-
-//     // Update the order status
-//     orders.orderStatus = newStatus;
-//     await orders.save();
-
-//     // Redirect back to the order details page or orders page
-//     res.redirect('/admin/orders');
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ success: false, message: 'Failed to update order status' });
-//   }
-// };
-
-// const updateOrderStatus = async (req, res) => {
-//   try {
-//     const productId = req.params.orderId;
-//     const newStatus = req.body.status;
-// console.log(productId)
-//     // Find the order containing the product
-//     const order = await Order.findOne({ 'cart.products._id': new mongoose.Types.ObjectId(productId) });
-// console.log(order)
-//     // Check if the order exists
-//     if (!order) {
-//       return res.status(404).json({
-//         success: false,
-//         message: 'Order not found',
-//       });
-//     }
-
-//     // Find the product within the order and update its status
-//     const product = order.cart.products.find(product => product._id.toString() === productId);
-//     if (product) {
-//       product.orderStatus = newStatus;
-//       await order.save();
-
-//     } else {
-//       return res.status(404).json({
-//         success: false,
-//         message: 'Product not found in order',
-//       });
-//     }
-
-//     // Redirect back to the order details page or orders page
-//     res.redirect('/admin/orders');
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ success: false, message: 'Failed to update order status' });
-//   }
-// };
 const updateOrderStatus = async (req, res) => {
   try {
     const productId = req.params.orderId;
     const newStatus = req.body.status;
+   
 
     // Find the order containing the product
     const order = await Order.findOne({ 'cart.products._id': new mongoose.Types.ObjectId(productId) });
@@ -640,6 +455,140 @@ const updateOrderStatus = async (req, res) => {
     res.status(500).json({ success: false, message: 'Failed to update order status' });
   }
 };
+
+// const updateReturnStatus = async (req, res) => {
+//   try {
+//     const productId = req.params.orderId;
+//     const newStatus = req.body.returnstatus;
+
+//     console.log(newStatus)
+
+//     // Find the order containing the product
+//     const order = await Order.findOne({ 'cart.products._id': new mongoose.Types.ObjectId(productId) });
+
+//     // Check if the order exists
+//     if (!order) {
+//       return res.status(404).json({
+//         success: false,
+//         message: 'Order not found',
+//       });
+//     }
+
+//     // Find the product within the order and update its status
+//     const product = order.cart.products.find(product => product._id.toString() === productId);
+//     if (product) {
+//       product.returnOrder.returnStatus = newStatus;
+
+//       // Update statusLevel based on newStatus
+//       switch (newStatus) {
+//         case 'Out for pickup':
+//           product.returnOrder.statusLevel = 2;
+//           break;
+//         case 'Returned':
+//           product.returnOrder.statusLevel = 3;
+//           break;
+//         case 'Refund':
+//           product.returnOrder.statusLevel = 4;
+//           break;
+//         // Add more cases if needed
+
+//         default:
+//           // Handle other status cases
+//           break;
+//       }
+
+//       await order.save();
+//     } else {
+//       return res.status(404).json({
+//         success: false,
+//         message: 'Product not found in order',
+//       });
+//     }
+
+//     // Redirect back to the order details page or orders page
+//     res.redirect('/admin/orders');
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ success: false, message: 'Failed to update return status' });
+//   }
+// };
+
+const updateReturnStatus = async (req, res) => {
+  try {
+    
+    const productId = req.params.orderId;
+    const newStatus = req.body.returnstatus;
+
+    // Find the order containing the product
+    const order = await Order.findOne({ 'cart.products._id': new mongoose.Types.ObjectId(productId) });
+
+    // Check if the order exists
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        message: 'Order not found',
+      });
+    }
+
+    // Find the product within the order and update its status
+    const product = order.cart.products.find(product => product._id.toString() === productId);
+    if (product) {
+      product.returnOrder.returnStatus = newStatus;
+
+      // Update statusLevel based on newStatus
+      switch (newStatus) {
+        case 'Out for pickup':
+          product.returnOrder.statusLevel = 2;
+          break;
+        case 'Returned':
+          product.returnOrder.statusLevel = 3;
+          break;
+        case 'Refund':
+          product.returnOrder.statusLevel = 4;
+
+          // Fetch the product by ID to get its price
+          const refundedProduct = await Product.findById(product.productId);
+
+          // Increase user's wallet balance
+          const user = await userModel.findById(order.user);
+          const refundAmount = refundedProduct.product_price;
+          user.wallet += refundAmount;
+          await user.save();
+
+          // Update wallet history
+          user.walletHistory.push({
+            date: new Date(),
+            amount: refundAmount,
+            description: `Refund from order return ${order._id}`,
+            transactionType: 'credit',
+          });
+
+          await user.save();
+
+          break;
+        // Add more cases if needed
+
+        default:
+          // Handle other status cases
+          break;
+      }
+
+      await order.save();
+    } else {
+      return res.status(404).json({
+        success: false,
+        message: 'Product not found in order',
+      });
+    }
+
+    // Redirect back to the order details page or orders page
+    res.redirect('/admin/orders');
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Failed to update return status' });
+  }
+};
+
 
 const couponLoad = async (req, res) => {
   try {
@@ -740,6 +689,7 @@ module.exports={
     orderLoad,
     orderDetails,
     updateOrderStatus,
+    updateReturnStatus,
     couponLoad,
     couponAdd,
     couponSet,

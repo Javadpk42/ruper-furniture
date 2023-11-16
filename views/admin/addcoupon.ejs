@@ -242,19 +242,20 @@
 
                 <div class="container mt-5">
                     <h1 class="mb-4">Create Coupon</h1>
-                    <form action="/admin/addCoupon" method="POST">
+  
+                    <!-- <form id="couponForm" action="/admin/addCoupon" method="POST">
                         <% if (typeof message !== 'undefined') { %>
                             <p style="color: red;"><%= message %></p>
                           <% } %>
                         <div class="form-group">
                             <label for="code">Code:</label>
-                            <input type="text" class="form-control" id="code" name="code" required>
+                            <input type="text" class="form-control" id="code" name="code" >
                             <div class="error-message" style="color: red;" id="codeError"></div>
                         </div>
                         <div class="form-group">
                             <label for="discountPercentage">Discount Percentage:</label>
                             <div class="input-group">
-                                <input type="number" class="form-control" id="discountPercentage" name="discountPercentage" required>
+                                <input type="number" class="form-control" id="discountPercentage" name="discountPercentage" >
                                 <div class="input-group-append">
                                     <span class="input-group-text">%</span>
                                     <div class="error-message" style="color: red;" id="discountError"></div>
@@ -263,22 +264,54 @@
                         </div>
                         <div class="form-group">
                             <label for="startDate">Start Date:</label>
-                            <input type="date" class="form-control" id="startDate" name="startDate" required>
+                            <input type="date" class="form-control" id="startDate" name="startDate" >
                             <div class="error-message" style="color: red;" id="startDateError"></div>
                         </div>
                         <div class="form-group">
                             <label for="expireDate">Expire Date:</label>
-                            <input type="date" class="form-control" id="expiryDate" name="expiryDate" required>
+                            <input type="date" class="form-control" id="expiryDate" name="expiryDate" >
                             <div class="error-message" style="color: red;" id="startDateError"></div>
                         </div>
                         <button type="submit" class="btn btn-primary">
                             <i class="fas fa-save"></i> Save Coupon
                         </button>
-                        <!-- Add a cancel button to go back or reset the form -->
                         <a href="/admin/coupons" class="btn btn-secondary">
                             <i class="fas fa-times"></i> Cancel
                         </a>
+                    </form> -->
+                    <form id="couponForm" action="/admin/addCoupon" method="POST">
+                      <% if (typeof message !== 'undefined') { %>
+                        <p style="color: red;"><%= message %></p>
+                      <% } %>
+                      <div class="form-group">
+                        <label for="code">Code:</label>
+                        <input type="text" class="form-control" id="code" name="code">
+                        <div class="error-message" style="color: red;" id="codeError"></div>
+                      </div>
+                      <div class="form-group">
+                        <label for="discountPercentage">Discount Percentage:</label>
+                        <input type="number" class="form-control" id="discountPercentage" name="discountPercentage">
+                        <div class="error-message" style="color: red;" id="discountError"></div>
+                      </div>
+                      <div class="form-group">
+                        <label for="startDate">Start Date:</label>
+                        <input type="date" class="form-control" id="startDate" name="startDate">
+                        <div class="error-message" style="color: red;" id="startDateError"></div>
+                      </div>
+                      <div class="form-group">
+                        <label for="expireDate">Expire Date:</label>
+                        <input type="date" class="form-control" id="expiryDate" name="expiryDate">
+                        <div class="error-message" style="color: red;" id="expiryDateError"></div>
+                      </div>
+                      <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Save Coupon
+                      </button>
+                      <!-- Add a cancel button to go back or reset the form -->
+                      <a href="/admin/coupons" class="btn btn-secondary">
+                        <i class="fas fa-times"></i> Cancel
+                      </a>
                     </form>
+                    
                 </div>
 
 
@@ -388,7 +421,7 @@
   <script src="/public/admin/js/material-dashboard.min.js?v=3.0.0"></script>
 
 
-  <script>
+  <!-- <script>
     const couponForm = document.getElementById('couponForm');
   
     couponForm.addEventListener('submit', function (event) {
@@ -438,6 +471,62 @@
   
       return isValid;
     }
+  </script> -->
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const couponForm = document.getElementById('couponForm');
+  
+      couponForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        if (validateForm()) {
+          this.submit();
+        }
+      });
+  
+      function validateForm() {
+        console.log('Form submitted!');
+        const codeInput = document.getElementById('code');
+        const discountInput = document.getElementById('discountPercentage');
+        const startDateInput = document.getElementById('startDate');
+        const expiryDateInput = document.getElementById('expiryDate');
+  
+        const codeError = document.getElementById('codeError');
+        const discountError = document.getElementById('discountError');
+        const startDateError = document.getElementById('startDateError');
+        const expiryDateError = document.getElementById('expiryDateError');
+  
+        codeError.textContent = '';
+        discountError.textContent = '';
+        startDateError.textContent = '';
+        expiryDateError.textContent = '';
+  
+        let isValid = true;
+  
+        if (codeInput.value.trim() === '') {
+          codeError.textContent = 'Coupon Code is required';
+          isValid = false;
+        }
+  
+        if (discountInput.value === '' || discountInput.value < 3 || discountInput.value > 50) {
+          discountError.textContent = 'Discount Percentage must be between 10 and 80';
+          isValid = false;
+        }
+  
+        if (startDateInput.value.trim() === '') {
+          startDateError.textContent = 'Start Date is required';
+          isValid = false;
+        }
+  
+        if (expiryDateInput.value.trim() === '') {
+          expiryDateError.textContent = 'Expiry Date is required';
+          isValid = false;
+        }
+  
+        return isValid;
+      }
+    });
   </script>
 
 
