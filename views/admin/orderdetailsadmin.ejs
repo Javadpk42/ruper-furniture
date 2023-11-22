@@ -258,11 +258,12 @@
                         <td><%= index + 1 %></td>
                         <td><%= product.productId.product_name %></td>
                         <td><img src="/public/products/images/<%= product.productId.images.image1 %>" alt="<%= product.productId.product_name %>" width="50" height="50"></td>
-                        <td>$<%= product.productId.product_price %></td>
+                        <td>&#8377;<%= product.productId.product_price %></td>
                         <td><%= product.quantity %></td>
                         <!-- <td><%= product.expectedDelivery %></td> -->
                         <td><%= product.orderStatus %></td>
                         <td>
+                          <% if (!product.returnOrder.status) { %>
                           <form action="/admin/updateOrderStatus/<%= product._id %>" method="post">
                             <select name="status" id="status">
                               <option value="Placed" <%= product.orderStatus === 'Placed' ? 'selected' : '' %>>Placed</option>
@@ -273,6 +274,9 @@
                             </select>
                             <button type="submit">Update Status</button>
                           </form>
+                          <% } else { %>
+                            product returned
+                            <% } %>
                         </td>
                         <td>
                           <% if (product.returnOrder.status) { %>

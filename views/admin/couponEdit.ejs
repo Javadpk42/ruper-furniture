@@ -230,7 +230,7 @@
           <div class="card my-4">
             <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
               <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                <h6 class="text-white text-capitalize ps-3">Orders</h6>
+                <h6 class="text-white text-capitalize ps-3">Coupons</h6>
               </div>
             </div>
             <div class="card-body px-0 pb-2">
@@ -240,7 +240,59 @@
 
 
 
-                <div class="container mt-5">
+              <div class="container mt-5">
+                <h1 class="mb-4">Edit Coupon</h1>
+                <form action="/admin/editCoupon" method="post" id="couponForm">
+                    <% if (typeof message !== 'undefined') { %>
+                        <p style="color: red;"><%= message %></p>
+                      <% } %>
+                      <input type="hidden" value="<%=data._id%>" name="id">
+                    <div class="form-group">
+                        <label for="code">Code:</label>
+                        <input type="text" class="form-control" id="code" name="code" value="<%=data.code%>" >
+                        <div class="error-message" style="color: red;" id="codeError"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="discountPercentage">Discount Percentage:</label>
+                        
+                            <input type="number" class="form-control" id="discountPercentage" name="discountPercentage" value="<%=data.discountPercentage%>" >
+                            
+                                <div class="error-message" style="color: red;" id="discountError"></div>
+                            
+                        
+                    </div>
+                    <div class="form-group">
+                        <label for="startDate">Start Date:</label>
+                        <input type="date" class="form-control" id="startDate" name="startDate" value="<%=data.startDate.toISOString().split('T')[0]%>" >
+                        <div class="error-message" style="color: red;" id="startDateError"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="expireDate">Expire Date:</label>
+                        <input type="date" class="form-control" id="expiryDate" name="expiryDate" value="<%=data.expireDate.toISOString().split('T')[0]%>" >
+                        <div class="error-message" style="color: red;" id="expiryDateError"></div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Save Coupon
+                    </button>
+                    <!-- Add a cancel button to go back or reset the form -->
+                    <a href="/admin/dashbord" class="btn btn-secondary">
+                        <i class="fas fa-times"></i> Cancel
+                    </a>
+                </form>
+            </div>
+
+            <style>
+              .error-message {
+                  color: red;
+                  font-size: 14px;
+                  margin-top: 5px;
+                  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                  font-weight: bold;
+              }
+            </style>
+
+
+                <!-- <div class="container mt-5">
                     <h1 class="mb-4">Create Coupon</h1>
                     <form action="/admin/addCoupon" method="POST">
                         <% if (typeof message !== 'undefined') { %>
@@ -274,12 +326,11 @@
                         <button type="submit" class="btn btn-primary">
                             <i class="fas fa-save"></i> Save Coupon
                         </button>
-                        <!-- Add a cancel button to go back or reset the form -->
                         <a href="/admin/coupons" class="btn btn-secondary">
                             <i class="fas fa-times"></i> Cancel
                         </a>
                     </form>
-                </div>
+                </div> -->
 
 
 
@@ -421,8 +472,8 @@
         isValid = false;
       }
   
-      if (discountInput.value === '' || discountInput.value < 10 || discountInput.value > 80) {
-        discountError.textContent = 'Discount Percentage must be between 10 and 80';
+      if (discountInput.value === '' || discountInput.value < 2 || discountInput.value > 50) {
+        discountError.textContent = 'Discount Percentage must be between 2 and 50';
         isValid = false;
       }
   

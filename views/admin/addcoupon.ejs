@@ -230,7 +230,7 @@
           <div class="card my-4">
             <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
               <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                <h6 class="text-white text-capitalize ps-3">Orders</h6>
+                <h6 class="text-white text-capitalize ps-3">Coupons</h6>
               </div>
             </div>
             <div class="card-body px-0 pb-2">
@@ -473,6 +473,16 @@
     }
   </script> -->
 
+  <style>
+    .error-message {
+        color: red;
+        font-size: 14px;
+        margin-top: 5px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bold;
+    }
+  </style>
+
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -509,8 +519,8 @@
           isValid = false;
         }
   
-        if (discountInput.value === '' || discountInput.value < 3 || discountInput.value > 50) {
-          discountError.textContent = 'Discount Percentage must be between 10 and 80';
+        if (discountInput.value === '' || discountInput.value < 2 || discountInput.value > 50) {
+          discountError.textContent = 'Discount Percentage must be between 2 and 50';
           isValid = false;
         }
   
@@ -528,6 +538,8 @@
       }
     });
   </script>
+
+
 
 
 

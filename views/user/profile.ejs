@@ -677,6 +677,8 @@
 														</p>
 														<p>Phone Number: <%= users.mobile || 'N/A' %>
 														</p>
+														<p>Referral Code: <%= users.referralCode || 'N/A' %>
+														</p>
 
 
 														<% if (address && address.length> 0) { %>
@@ -736,7 +738,7 @@
 																		</td>
 																		<!-- You can customize the status based on your order model -->
 																		<td>
-																			$<%= order.totalAmount.toFixed(2) %>
+																			&#8377;<%= order.totalAmount.toFixed(2) %>
 
 																		</td>
 																		<td><a href="/orderdetails/<%= order._id %>"
@@ -787,7 +789,7 @@
 																</form>
 															</header>
 															<address>
-																<strong>wallet balance <%= users.wallet %></strong><br>
+																<strong>&#8377;<%= users.wallet %></strong><br>
 															
 															</address>
 														</div>

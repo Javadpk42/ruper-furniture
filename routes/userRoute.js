@@ -2,9 +2,9 @@ const express=require('express');
 const user_route=express();
 
 user_route.use(express.json());
-user_route.use(express.urlencoded({ extended: true }));
+user_route.use(express.urlencoded({ extended: true }));//common
 
-user_route.set('view engine','ejs');
+user_route.set('view engine','ejs'); //
 user_route.set('views','./views/user')
 
 const userAuth = require('../middlewares/userAuth')
@@ -71,9 +71,9 @@ user_route.post('/verifyPayment',userController.verifyPayment)
 user_route.get('/orderplaced',userAuth.isUserLogin, userController.orderPlaced)
 
 user_route.post('/addToWish',userController.addWishlist)
-//To load the wishlist page 
+
 user_route.get('/wishlist',userController.loadWishlist)
-//To remove the  product from the wishlist 
+
 user_route.delete('/wish-delete', userController.deleteWishlist)
  
   

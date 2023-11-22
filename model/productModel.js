@@ -47,6 +47,8 @@ const productSchema = mongoose.Schema({
 
 })
 
+
+
 const categorySchema = mongoose.Schema({
   category_name:{
     type:String,

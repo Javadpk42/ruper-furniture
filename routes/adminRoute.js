@@ -63,6 +63,13 @@ admin_route.delete('/delete-coupon',adminController.deleteCoupon)
 admin_route.get('/coupon-edit',adminController.loadCouponEdit)
 
 admin_route.post('/editCoupon',adminController.editCoupon)
+
+admin_route.get('/offer',adminAuth.isAdminLogin,adminController.offerLoad)
+admin_route.get('/banner',adminAuth.isAdminLogin,adminController.bannerLoad)
+
+admin_route.get('/salesreport',adminAuth.isAdminLogin,adminController.salesreportLoad)
+admin_route.post('/salesreport' , adminController.sortSalesReport)
+
  
 
 module.exports=admin_route;

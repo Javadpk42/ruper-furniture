@@ -9,7 +9,7 @@ const app = express();
 
 const dotenv = require("dotenv");
 dotenv.config();
-mongoos.connect(process.env.MONGO_URI);
+mongoos.connect(process.env.MONGO_URI); //
 
 app.use(session({ secret: "secret", saveUninitialized: true, resave: false }));
 

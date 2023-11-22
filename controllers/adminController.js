@@ -2,6 +2,8 @@ const adminModel = require("../model/adminModel")
 const userModel = require("../model/userModel")
 const mongoose=require("mongoose")
 
+
+
 const { ObjectId } = require('mongoose').Types;
 
 const Category = require("../model/productModel").category;
@@ -65,13 +67,6 @@ const verifyLogin=async(req,res)=>{
   catch(error){
      console.log(error.message)
   }
-}
-const loaddashboard=async(req,res)=>{
-    try {
-        res.render('dashboard')
-    } catch (error) {
-        console.log(error.message )
-    }
 }
 
 
@@ -669,7 +664,233 @@ const  expireDate= req.body.expiryDate
     next(err)
   }
 }
+
+const loaddashboard = async (req, res, next) => {
+  try {
+    // Fetch the total number of products
+    const totalProducts = await Product.countDocuments();
+
+    // Fetch the total number of categories
+    const totalCategories = await Category.countDocuments();
+
+    // Fetch the total number of users
+    const totalUsers = await userModel.countDocuments();
+
+    // Fetch the total revenue
+    const totalRevenue = await Order.aggregate([
+      {
+        $match: {
+          status: { $ne: "pending" },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalAmount: { $sum: "$totalAmount" },
+        },
+      },
+    ]);
+
+    const revenue = totalRevenue.length > 0 ? totalRevenue[0].totalAmount : 0;
+
+    const totalOrders = await Order.countDocuments();
+
+    // Fetch data for payment methods
+    const paymentMethods = await Order.aggregate([
+      {
+        $group: {
+          _id: "$paymentOption",
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+
+    const startDate = new Date();
+    startDate.setFullYear(startDate.getFullYear() - 1);
+
+    const dailyOrderCounts = await Order.aggregate([
+      {
+        $match: {
+          orderDate: { $gte: startDate },
+        },
+      },
+      {
+        $group: {
+          _id: {
+            dayOfWeek: { $dayOfWeek: "$orderDate" },
+            weekOfYear: { $isoWeek: "$orderDate" },
+          },
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+
+    // Map the daily order counts to a nested array
+    const dailyOrderCountsArray = Array(7).fill(0).map(() => Array(52).fill(0));
+
+    dailyOrderCounts.forEach((count) => {
+      const dayOfWeek = count._id.dayOfWeek - 1; // Adjust to 0-based index
+      const weekOfYear = count._id.weekOfYear - 1; // Adjust to 0-based index
+      dailyOrderCountsArray[dayOfWeek][weekOfYear] = count.count;
+    });
+
+
+    const dailyOrderLabels = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    // Fetch the latest orders
+    const latestOrders = await Order.find().sort({ orderDate: -1 }).limit(5);
+
+    // Additional data fetching based on your needs...
+
+    // Render the dashboard view with the retrieved data
+    res.render('dashboard', {
+      totalProducts,
+      totalCategories,
+      totalUsers,
+      revenue,
+      latestOrders,
+      totalOrders,
+      paymentMethods,
+      dailyOrderCountsArray,
+      dailyOrderLabels
+      // Add more data as needed...
+    });
+  } catch (err) {
+    next(err);
+  }
+};
  
+// const loaddashboard=async(req,res)=>{
+//   try {
+//       res.render('dashboard')
+//   } catch (error) {
+//       console.log(error.message )
+//   }
+// }
+
+const offerLoad = async (req, res) => {
+  try {
+    
+    res.render('offer', { })
+  } catch (error) {
+    console.log(error);
+  }
+};
+const bannerLoad = async (req, res) => {
+  try {
+    
+    res.render('banners', { })
+  } catch (error) {
+    console.log(error);
+  }
+};
+// const salesreportLoad = async (req, res) => {
+//   try {
+    
+//     res.render('salesreport', { })
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+// const salesreportLoad = async (req, res, next) => {
+//   try {
+//     const totalAmount = await Order.aggregate([
+//       { $unwind: '$cart.products' },
+//       { $match: { 'cart.products.orderStatus': 'Delivered' } },
+//       { $group: { _id: null, total: { $sum: '$cart.products.price' } } }
+//     ]);
+
+//     const totalSold = await Order.aggregate([
+//       { $unwind: '$cart.products' },
+//       { $match: { 'cart.products.orderStatus': 'Delivered' } },
+//       { $group: { _id: null, total: { $sum: '$cart.products.quantity' } } }
+//     ]);
+
+//     const products = await Order.find({ 'cart.products.orderStatus': 'Delivered' })
+//       .populate('cart.products.productId')
+//       .populate('user');
+
+//     console.log(totalAmount, totalSold, products);
+
+//     res.render('salesreport', {
+//       totalAmount,
+//       totalSold,
+//       products,
+//     });
+
+//   } catch (err) {
+//     console.log(err.message);
+//     // Handle error appropriately
+//     next(err);
+//   }
+// };
+
+const salesreportLoad = async (req, res, next) => {
+  try {
+    const orders = await Order.find({
+      $or: [
+        { 'paymentOption': 'COD', 'cart.products.orderStatus': 'Delivered', 'status': true },
+        { 'paymentOption': { $in: ['Wallet', 'Razorpay'] }, 'status': true },
+      ],
+    })
+      .populate('cart.products.productId')
+      .populate('user');
+
+    res.render('salesreport', { 
+      orders,
+    });
+
+  } catch (err) {
+    console.log(err.message);
+    // Handle error appropriately
+    next(err);
+  }
+};
+
+
+const sortSalesReport = async (req, res, next) => {
+  try {
+    let fromDate = req.body.startDate ? new Date(req.body.startDate) : null;
+    fromDate.setHours(0, 0, 0, 0);
+    let toDate = req.body.endDate ? new Date(req.body.endDate) : null;
+    toDate.setHours(23, 59, 59, 999);
+
+    const currentDate = new Date();
+
+    if (fromDate && toDate) {
+      if (toDate < fromDate) {
+        const temp = fromDate;
+        fromDate = toDate;
+        toDate = temp;
+      }
+    } else if (fromDate) {
+      toDate = currentDate;
+    } else if (toDate) {
+      fromDate = currentDate;
+    }
+
+    const orders = await Order.find({
+      $or: [
+        { 'paymentOption': 'COD', 'cart.products.orderStatus': 'Delivered', 'status': true },
+        { 'paymentOption': { $in: ['Wallet', 'Razorpay'] }, 'status': true },
+      ],
+      orderDate: { $gte: fromDate, $lte: toDate },
+    })
+    .populate('cart.products.productId')
+    .populate('user');
+
+    res.render('salesreport', {
+      orders,
+    });
+  } catch (err) {
+    console.log(err.message);
+    // Handle error appropriately
+    next(err);
+  }
+};
+
+
+
+
 
 module.exports={
     loginLoad,
@@ -695,6 +916,12 @@ module.exports={
     couponSet,
     deleteCoupon,
     loadCouponEdit,
-    editCoupon
+    editCoupon,
+    offerLoad,
+    bannerLoad,
+    salesreportLoad,
+    sortSalesReport
+
+   
    
 }

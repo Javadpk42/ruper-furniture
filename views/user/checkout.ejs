@@ -789,7 +789,7 @@
 																		</div>
 																	</div>
 																	<div class="product-total">
-																		<span>$<%= product.productId.product_price %>
+																		<span>&#8377;<%= product.productId.product_price %>
 																		</span>
 																	</div>
 																</div>
@@ -803,7 +803,7 @@
 													<div class="cart-subtotal">
 														<h2>Subtotal</h2>
 														<div class="subtotal-price">
-															<span>&#8377; <%= total.toFixed(2) %></span>
+															<span>&#8377; <%= total%></span>
 														</div>
 													</div>
 													<div class="shipping-totals shipping">
@@ -813,7 +813,7 @@
 
 
 															<!-- Coupon Form -->
-															<form action="/apply-coupon" method="POST">
+															<!-- <form action="/apply-coupon" method="POST">
 																<div class="form-group">
 																	<input type="text" id="couponCode" name="couponCode"
 																		placeholder="Enter coupon code">
@@ -822,17 +822,58 @@
 																</div>
 
 
+															</form> -->
+
+															<!-- <form action="/apply-coupon" method="POST">
+																<div class="form-row align-items-center">
+																	<div class="col-md-11 ">
+																		<label for="couponCode" class="sr-only">Select a Coupon:</label>
+																		<select id="couponCode" name="couponCode" class="form-control">
+																			<option value=""></option>
+																			<% coupons.forEach(coupon => { %>
+																				<option value="<%= coupon.code %>"><%= coupon.code %> - <%= coupon.discountPercentage %>% off</option>
+																			<% }); %>
+																		</select>
+																	</div>
+																	<div class="col-md-1">
+																		<button type="submit" class="btn btn-default">Apply Coupon</button>
+																	</div>
+																</div>
+															</form> -->
+															<form action="/apply-coupon" method="POST">
+																<div class="form-row align-items-center">
+																	<div class="col-md-11">
+																		<label for="couponCode" class="sr-only">Select a Coupon:</label>
+																		<select id="couponCode" name="couponCode" class="form-control">
+																			<option value="">No coupon</option>
+																			<% coupons.forEach(coupon => { %>
+																				<option value="<%= coupon.code %>" <% if (appliedCoupon === coupon.code) { %>selected<% } %>>
+																					<%= coupon.code %> - <%= coupon.discountPercentage %>% off
+																				</option>
+																			<% }); %>
+																		</select>
+																	</div>
+																	<div class="col-md-1">
+																		<button type="submit" class="btn btn-default">Apply Coupon</button>
+																	</div>
+																</div>
 															</form>
+															
+															
+															
+															
 
 															<!-- Display applied coupon and total -->
 
 													</div>
-													<div class="shipping-totals shipping">
+													<!-- <div class="shipping-totals shipping">
 														<% if (appliedCoupon) { %>
 															<div class="applied-coupon-info">
 																<h5>Applied Coupon: <%= appliedCoupon %>
 																</h5>
 																<h5>Discount: <%= discount%>%</h5>
+																<h5><%= (total * discount / 100).toFixed(2) %></h5>
+
 																<form action="/remove-coupon" method="POST">
 																	<button type="submit" class="btn btn-default">Remove
 																		Coupon</button>
@@ -844,18 +885,46 @@
 																		<%= error %>
 																	</h5>
 																	<% } %>
-													</div>
+													</div> -->
+<!-- 
+													<% if (appliedCoupon) { %>
+														<div class="applied-coupon-info">
+															<h5>discount amount: <%= (appliedCoupon.discountPercentage / 100) * total.toFixed(2); %></h5>
+														</div>
+													<% } %> -->
+													
 
+													<% if (appliedCoupon) { %>
 
-
+														<div class="order-total">
+														
+															<h2>Discount</h2>
+															<div class="total-price">
+	
+	
+																<strong>
+																	
+																	<span>&#8377; <%= (total * discount / 100) %></span>
+																	
+																</strong>
+	
+	
+															</div>
+														</div>
+														
+													
+														<% } %>
+														
 
 
 													<div class="order-total">
+														
 														<h2>Total</h2>
 														<div class="total-price">
 
 
 															<strong>
+																
 																<span>&#8377; <%= updatedTotal ? updatedTotal :
 																		total.toFixed(2) %></span>
 																<input type="hidden" name="totalAmount"
@@ -865,6 +934,10 @@
 
 														</div>
 													</div>
+
+											
+
+
 												</div>
 												<div id="payment" class="checkout-payment">
 													<ul class="payment-methods methods custom-radio">

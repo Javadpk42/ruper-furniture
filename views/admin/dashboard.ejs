@@ -1,4 +1,7 @@
 <%-include("../adminlayouts/header.ejs")-%>
+
+
+
   <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark" id="sidenav-main">
     <div class="sidenav-header">
       <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
@@ -8,7 +11,9 @@
       </a>
     </div>
     <hr class="horizontal light mt-0 mb-2">
-    <div class="collapse navbar-collapse  w-auto  max-height-vh-100" id="sidenav-collapse-main">
+    <!-- <div class="collapse navbar-collapse  w-auto  max-height-vh-100" id="sidenav-collapse-main"> -->
+          <div class="" id="sidenav-collapse-main">
+
       <ul class="navbar-nav">
         <li class="nav-item">
           <a class="nav-link text-white active bg-gradient-primary" href="">
@@ -16,6 +21,14 @@
               <i class="material-icons opacity-10">dashboard</i>
             </div>
             <span class="nav-link-text ms-1">Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white  " href="/admin/salesreport">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">dashboard</i>
+            </div>
+            <span class="nav-link-text ms-1">Sales Report</span>
           </a>
         </li>
         <li class="nav-item">
@@ -58,52 +71,42 @@
             <span class="nav-link-text ms-1">Coupons</span>
           </a>
         </li>
-        <li class="nav-item mt-3">
-          <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
-        </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/profile.html">
+          <a class="nav-link text-white " href="/admin/offer">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">person</i>
+              <i class="material-icons opacity-10">notifications</i>
             </div>
-            <span class="nav-link-text ms-1">Profile</span>
+            <span class="nav-link-text ms-1">Offers</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/sign-in.html">
+          <a class="nav-link text-white " href="/admin/banner">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">login</i>
+              <i class="material-icons opacity-10">notifications</i>
             </div>
-            <span class="nav-link-text ms-1">Sign In</span>
+            <span class="nav-link-text ms-1">Banners</span>
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/sign-up.html">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">assignment</i>
-            </div>
-            <span class="nav-link-text ms-1">Sign Up</span>
-          </a>
-        </li>
+       
       </ul>
     </div>
-    <div class="sidenav-footer position-absolute w-100 bottom-0 ">
+    <!-- <div class="sidenav-footer position-absolute w-100 bottom-0 ">
       <div class="mx-3">
         <a class="btn bg-gradient-primary mt-4 w-100" href="/admin/logout" type="button">Logout</a>
       </div>
-    </div>
+    </div> -->
   </aside>
   <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
     <!-- Navbar -->
     <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" navbar-scroll="true">
       <div class="container-fluid py-1 px-3">
-        <nav aria-label="breadcrumb">
+        <!-- <nav aria-label="breadcrumb">
           <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
             <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
             <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Dashboard</li>
           </ol>
           <h6 class="font-weight-bolder mb-0">Dashboard</h6>
-        </nav>
+        </nav> -->
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
           <div class="ms-md-auto pe-md-3 d-flex align-items-center">
             <div class="input-group input-group-outline">
@@ -112,12 +115,12 @@
             </div>
           </div>
           <ul class="navbar-nav  justify-content-end">
-            <li class="nav-item d-flex align-items-center">
+            <!-- <li class="nav-item d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-body font-weight-bold px-0">
                 <i class="fa fa-user me-sm-1"></i>
                 <span class="d-sm-inline d-none">Sign In</span>
               </a>
-            </li>
+            </li> -->
             <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
                 <div class="sidenav-toggler-inner">
@@ -127,7 +130,7 @@
                 </div>
               </a>
             </li>
-            <li class="nav-item px-3 d-flex align-items-center">
+            <!-- <li class="nav-item px-3 d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-body p-0">
                 <i class="fa fa-cog fixed-plugin-button-nav cursor-pointer"></i>
               </a>
@@ -204,12 +207,77 @@
                   </a>
                 </li>
               </ul>
-            </li>
+            </li> -->
           </ul>
         </div>
       </div>
     </nav>
     <!-- End Navbar -->
+
+<!-- Display Daily Order Counts for the Last Year -->
+<div>
+  <h3>Daily Order Counts for Each Day of the Week (Last Year)</h3>
+  <ul>
+    <li>Monday: <%= dailyOrderCountsArray[1] %> orders</li>
+    <li>Tuesday: <%= dailyOrderCountsArray[2] %> orders</li>
+    <li>Wednesday: <%= dailyOrderCountsArray[3] %> orders</li>
+    <li>Thursday: <%= dailyOrderCountsArray[4] %> orders</li>
+    <li>Friday: <%= dailyOrderCountsArray[5] %> orders</li>
+    <li>Saturday: <%= dailyOrderCountsArray[6] %> orders</li>
+    <li>Sunday: <%= dailyOrderCountsArray[0] %> orders</li>
+  </ul>
+</div>
+
+    <h1>Welcome to the Dashboard</h1>
+
+    <div>
+        <h2>General Statistics</h2>
+        <p>Total Products: <%= totalProducts %></p>
+        <p>Total Categories: <%= totalCategories %></p>
+        <p>Total Users: <%= totalUsers %></p>
+        <p>Total Revenue: <%= revenue %></p>
+    </div>
+
+    <div>
+        <h2>Latest Orders</h2>
+        <% if (latestOrders && latestOrders.length > 0) { %>
+            <ul>
+                <% latestOrders.forEach(order => { %>
+                    <li>
+                        Order ID: <%= order._id %><br>
+                        Total Amount: <%= order.totalAmount %><br>
+                        Order Date: <%= order.orderDate %>
+                    </li>
+                <% }); %>
+            </ul>
+        <% } else { %>
+            <p>No orders available.</p>
+        <% } %>
+    </div>
+
+    <div>
+      <h2>Total Orders</h2>
+      <p>Total Orders: <%= totalOrders %></p>
+  </div>
+  
+  <div>
+      <h2>Payment Methods Used</h2>
+      <% if (paymentMethods && paymentMethods.length > 0) { %>
+          <ul>
+              <% paymentMethods.forEach(method => { %>
+                  <li>
+                      Payment Method: <%= method._id %><br>
+                      Total Orders: <%= method.count %>
+                  </li>
+              <% }); %>
+          </ul>
+      <% } else { %>
+          <p>No payment methods data available.</p>
+      <% } %>
+  </div>
+
+
+
     <div class="container-fluid py-4">
       <div class="row">
         <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
@@ -219,8 +287,8 @@
                 <i class="material-icons opacity-10">weekend</i>
               </div>
               <div class="text-end pt-1">
-                <p class="text-sm mb-0 text-capitalize">Today's Money</p>
-                <h4 class="mb-0">$53k</h4>
+                <p class="text-sm mb-0 text-capitalize">Total Revenue</p>
+                <h4 class="mb-0"><%= revenue %></h4>
               </div>
             </div>
             <hr class="dark horizontal my-0">
@@ -236,8 +304,8 @@
                 <i class="material-icons opacity-10">person</i>
               </div>
               <div class="text-end pt-1">
-                <p class="text-sm mb-0 text-capitalize">Today's Users</p>
-                <h4 class="mb-0">2,300</h4>
+                <p class="text-sm mb-0 text-capitalize">Total Users</p>
+                <h4 class="mb-0"><%= totalUsers %></h4>
               </div>
             </div>
             <hr class="dark horizontal my-0">
@@ -284,7 +352,7 @@
       <div class="row mt-4">
         <div class="col-lg-4 col-md-6 mt-4 mb-4">
           <div class="card z-index-2 ">
-            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
+            <!-- <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
               <div class="bg-gradient-primary shadow-primary border-radius-lg py-3 pe-1">
                 <div class="chart">
                   <canvas id="chart-bars" class="chart-canvas" height="170"></canvas>
@@ -299,6 +367,19 @@
                 <i class="material-icons text-sm my-auto me-1">schedule</i>
                 <p class="mb-0 text-sm"> campaign sent 2 days ago </p>
               </div>
+            </div> -->
+
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
+              <div class="bg-gradient-primary shadow-primary border-radius-lg py-3 pe-1">
+                <div class="chart">
+                  <canvas id="chart-bars" class="chart-canvas" height="170"></canvas>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <h6 class="mb-0">Orders by Day</h6>
+              <p class="text-sm">Order distribution for the last year</p>
+              <hr class="dark horizontal">
             </div>
           </div>
         </div>
@@ -796,12 +877,12 @@
     </div>
   </div>
   <!--   Core JS Files   -->
-  <script src="../assets/js/core/popper.min.js"></script>
-  <script src="../assets/js/core/bootstrap.min.js"></script>
-  <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
-  <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
-  <script src="../assets/js/plugins/chartjs.min.js"></script>
-  <script>
+  <script src="/public/admin/js/core/popper.min.js"></script>
+  <script src="/public/admin/js/core/bootstrap.min.js"></script>
+  <script src="/public/admin/js/plugins/perfect-scrollbar.min.js"></script>
+  <script src="/public/admin/js/plugins/smooth-scrollbar.min.js"></script>
+  <script src="/public/admin/js/plugins/chartjs.min.js"></script>
+  <!-- <script>
     var ctx = document.getElementById("chart-bars").getContext("2d");
 
     new Chart(ctx, {
@@ -1047,7 +1128,91 @@
         },
       },
     });
+  </script> -->
+
+  <script>
+    var ctx = document.getElementById("chart-bars").getContext("2d");
+  
+    new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: ["M", "T", "W", "T", "F", "S", "S"],
+        datasets: [{
+          label: "Sales",
+          tension: 0.4,
+          borderWidth: 0,
+          borderRadius: 4,
+          borderSkipped: false,
+          backgroundColor: "rgba(255, 255, 255, .8)",
+          data: [50, 20, 10, 22, 50, 10, 40],
+          maxBarThickness: 6
+        }],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false,
+          }
+        },
+        interaction: {
+          intersect: false,
+          mode: 'index',
+        },
+        scales: {
+          y: {
+            grid: {
+              drawBorder: false,
+              display: true,
+              drawOnChartArea: true,
+              drawTicks: false,
+              borderDash: [5, 5],
+              color: 'rgba(255, 255, 255, .2)'
+            },
+            ticks: {
+              suggestedMin: 0,
+              suggestedMax: Math.max.apply(null, [].concat(...dailyOrderCountsArray)) + 5,
+              beginAtZero: true,
+              padding: 10,
+              font: {
+                size: 14,
+                weight: 300,
+                family: "Roboto",
+                style: 'normal',
+                lineHeight: 2
+              },
+              color: "#fff"
+            },
+          },
+          x: {
+            grid: {
+              drawBorder: false,
+              display: true,
+              drawOnChartArea: true,
+              drawTicks: false,
+              borderDash: [5, 5],
+              color: 'rgba(255, 255, 255, .2)'
+            },
+            ticks: {
+              display: true,
+              color: '#f8f9fa',
+              padding: 10,
+              font: {
+                size: 14,
+                weight: 300,
+                family: "Roboto",
+                style: 'normal',
+                lineHeight: 2
+              },
+            }
+          },
+        },
+      },
+    });
   </script>
+  
+  
   <script>
     var win = navigator.platform.indexOf('Win') > -1;
     if (win && document.querySelector('#sidenav-scrollbar')) {
@@ -1060,6 +1225,6 @@
   <!-- Github buttons -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="../assets/js/material-dashboard.min.js?v=3.0.0"></script>
+  <script src="/public/admin/js/material-dashboard.min.js?v=3.0.0"></script>
 
   <%-include("../adminlayouts/footer.ejs")-%>

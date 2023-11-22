@@ -24,3 +24,4 @@ const productImagesUpload = uploadProduct.fields([
 module.exports = {
   productImagesUpload
 };
+

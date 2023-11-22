@@ -703,88 +703,7 @@ const orderDetails = async (req, res) => {
 
 
 
-// const cancelOrderAjax = async (req, res) => {
-//   try {
-//     const orderId = req.params.orderId;
-//     console.log(orderId);
 
-//     // Find the order in the database
-//     const order = await Order.findOne({ 'cart.products._id': orderId })
-//       .populate({
-//         path: 'cart.products.productId',
-//         model: 'product',
-//       });
-//     console.log(order);
-
-//     const canceledProduct = order.cart.products.find(product => product._id.toString() === orderId);
-//     console.log(canceledProduct);
-
-//     // Check if the order exists
-//     if (!order) {
-//       return res.status(404).json({
-//         success: false,
-//         message: 'Order not found',
-//       });
-//     }
-
-//     // Check if all products in the order are either 'Placed' or 'Shipped'
-//     const allProductsPlacedOrShipped = order.cart.products.every(product =>
-//       ['Placed', 'Shipped', 'Cancelled'].includes(product.orderStatus)
-//     );
-
-//     if (!allProductsPlacedOrShipped) {
-//       console.log("Order cannot be canceled at this stage");
-//       return res.status(400).json({
-//         success: false,
-//         message: 'Order cannot be canceled at this stage',
-//       });
-//     }
-
-//     // Refund the amount to the user's wallet for each canceled product
-//     for (const product of order.cart.products) {
-//       if (product._id.toString() === orderId && product.orderStatus === 'Placed') {
-//         const refundedAmount = product.productId.product_price;
-
-//         if (order.paymentOption === 'Razorpay' || order.paymentOption === 'Wallet') {
-//           // Refund the amount to the user's wallet
-//           await userModel.findByIdAndUpdate(
-//             { _id: order.user },
-//             {
-//               $inc: { wallet: refundedAmount },
-//               $push: {
-//                 walletHistory: {
-//                   date: new Date(),
-//                   amount: refundedAmount,
-//                   description: `Refunded for Order cancel - Order ${order._id}`,
-//                   transactionType: 'Credit',
-//                 },
-//               },
-//             }
-//           );
-
-//           // Update the order status to 'Cancelled' for the specific product
-//           product.orderStatus = 'Cancelled';
-//           break; // Exit the loop after processing the specific product
-//         } else if (order.paymentOption === 'COD') {
-//           // Handle COD payment method (replace this comment with actual COD logic)
-//           // Update the order status to 'Cancelled' for the specific product
-//           product.orderStatus = 'Cancelled';
-//           // Handle any specific COD refund logic if needed
-//           break; // Exit the loop after processing the specific product
-//         }
-//       }
-//     }
-
-//     // Save the updated order
-//     await order.save();
-
-//     // Respond with JSON indicating success
-//     res.json({ success: true, message: 'Order canceled successfully' });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ success: false, message: 'Failed to cancel the order' });
-//   }
-// };
 
 const cancelOrderAjax = async (req, res) => {
   try {
@@ -1440,6 +1359,8 @@ const loadCheckout = async (req, res, next) => {
       model: 'product', // Replace with the actual model name for your products
     });
 
+    const coupons = await Coupon.find()
+
     if (!cart || cart.products.length === 0) {
       // Redirect to the cart page
       return res.redirect('/view-cart');
@@ -1484,7 +1405,7 @@ const loadCheckout = async (req, res, next) => {
     const userAddresses = addresses ? addresses.address : null;
 
 
-    res.render('checkout', { cart, addresses: userAddresses, total, userData, appliedCoupon, discount, error, updatedTotal: req.query.updatedTotal });
+    res.render('checkout', { cart, addresses: userAddresses, total, userData, appliedCoupon, discount, error, updatedTotal: req.query.updatedTotal,coupons });
   } catch (err) {
     console.error('Error in loadCheckout:', err);
     next(err);
@@ -1514,7 +1435,7 @@ const applyCoupon = async (req, res, next) => {
     });
 
     const couponCode = req.body.couponCode;
-    // req.session.couponCode = couponCode;
+    req.session.couponCode = couponCode;
 
     if (couponCode) {
       const coupon = await Coupon.findOne({ code: couponCode });
@@ -1529,6 +1450,7 @@ const applyCoupon = async (req, res, next) => {
         // Coupon is valid, apply discount to the total
         const discountAmount = (total * coupon.discountPercentage) / 100;
         total -= discountAmount;
+        req.session.total=total
 
 
 
@@ -1556,7 +1478,8 @@ const applyCoupon = async (req, res, next) => {
 const removeCoupon = (req, res) => {
   try {
     // Remove the applied coupon from the session
-    delete req.session.appliedCoupon;
+    delete req.session.couponCode;
+    delete req.session.total
 
     // Redirect back to the checkout page
     res.redirect('/checkout?couponRemoved=true');
@@ -1790,10 +1713,13 @@ const placeOrder = async (req, res) => {
       },
     }));
     let total;
-    if (req.session.appliedCoupon) {
-      total = req.session.appliedCoupon.updatedTotal;
+    if (req.session.couponCode) {
+      total = req.session.total;
+
       // Clear the applied coupon from the session once used
-      delete req.session.appliedCoupon;
+      delete req.session.couponCode;
+      delete req.session.total;
+
     } else {
       // If no updated total in session, calculate it
       total = await calculateTotalPrice(userId);
@@ -2152,7 +2078,7 @@ const verifyWalletpayment = async (req, res) => {
         { _id: userId },
         {
           $inc: {
-            wallet: amount
+            wallet: amount 
           },
           $push: {
             walletHistory
