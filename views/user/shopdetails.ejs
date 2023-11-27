@@ -685,10 +685,21 @@
 
 												<div class="product-info col-lg-5 col-md-12 col-12 ">
 													<h1 class="title"><%= product.product_name %></h1>
-													<span class="price">
-														<del aria-hidden="true"><span></span></del> 
-														<ins><span>₹<%= product.product_price.toFixed(2) %></span></ins> 
-													</span>
+												
+
+													<% if (product.discountedAmount > 0) { %>
+																			
+														<span class="price">
+															<del aria-hidden="true"><span>₹<%= product.product_price.toFixed(2) %></span></del> 
+															<ins><span>&#8377;<%= product.discountedAmount.toFixed(2) %></span></ins> 
+														</span>
+													  <% } else { %>
+														<span class="price">
+															<del aria-hidden="true"><span></span></del> 
+															<ins><span>₹<%= product.product_price.toFixed(2) %></span></ins> 
+														</span>
+													  <% } %>
+
 													<div class="rating">
 														<div class="star star-5"></div>
 														<div class="review-count">

@@ -800,6 +800,17 @@
 																<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6">
 																  <div class="products-entry clearfix product-wapper">
 																	<div class="products-thumb">
+																		<!-- <% if (product.discountedAmount > 0) { %>
+																		<div class="product-lable">
+																			<div class="onsale">-<%= product.discount %>% off</div>
+																		</div><% } %> -->
+																		<% if (product.discountedAmount > 0) { %>
+																			<div class="product-lable">
+																			  <div class="onsale">-<%= Math.max(product.discount, product.category_discount) %>% off</div>
+																			</div>
+																		  <% } %>
+																		  
+
 																	  <div class="product-thumb-hover">
 																		<a href="/shopdetails/<%= product._id %>">
 																		  <img src="/public/products/images/<%= product.images.image1 %>" alt="<%= product.product_name %>">
@@ -816,7 +827,17 @@
 																		<h3 class="product-title">
 																		  <a href="/shopdetails/<%= product._id %>"><%= product.product_name %></a>
 																		</h3>
-																		<span class="price">&#8377;<%= product.product_price.toFixed(2) %></span>
+																		<!-- <span class="price">&#8377;<%= product.product_price.toFixed(2) %></span> -->
+																		<% if (product.discountedAmount > 0) { %>
+																			
+																			<span class="price">
+																				<del aria-hidden="true"><span>&#8377;<%= product.product_price.toFixed(2) %></span></del> 
+																				<ins><span>&#8377;<%= product.discountedAmount.toFixed(2) %></span></ins>
+																			</span>
+																		  <% } else { %>
+																			<span class="price">&#8377;<%= product.product_price.toFixed(2) %></span>
+																		  <% } %>
+																		  
 																	  </div>
 																	</div>
 																  </div>

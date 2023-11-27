@@ -277,6 +277,7 @@
                               <th class="bg-primary text-white">Discount Percentage</th>
                               <th class="bg-primary text-white">Start Date</th>
                               <th class="bg-primary text-white">Expiry Date</th>
+                              <th class="bg-primary text-white">minPurchaseAmount</th>
                               <th class="bg-primary text-white">Actions</th>
                           </tr>
                       </thead>
@@ -305,13 +306,19 @@
                                       month: 'short' , day: '2-digit' }).replace(/\//g,'-') %>
                                   </div>
                               </td>
+                              <td>
+                                <div class="coupon-title">
+                                    <%= coupon.minPurchaseAmount %> 
+                                </div>
+                            </td>
                               <td class="action">
-                                  <a class="btn btn-danger action-button" onclick="deletecoupon('<%= coupon._id %>')">
+                                <a class="btn btn-outline-dark action-button" href="/admin/coupon-edit?id=<%= coupon._id %>">
+                                  Edit
+                             </a>
+                                  <a class="btn btn-primary action-button" onclick="deletecoupon('<%= coupon._id %>')">
                                      Delete
                                   </a>
-                                  <a class="btn btn-primary action-button" href="/admin/coupon-edit?id=<%= coupon._id %>">
-                                       Edit
-                                  </a>
+                                  
                               </td>
                           </tr>
                           <% }) %>

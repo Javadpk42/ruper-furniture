@@ -21,7 +21,11 @@ const productImagesUpload = uploadProduct.fields([
   { name: "image3", maxCount: 1 },
   { name: "image4", maxCount: 1 },
 ]);
+
+
+
 module.exports = {
-  productImagesUpload
+  productImagesUpload,
+  
 };
 

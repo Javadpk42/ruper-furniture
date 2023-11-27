@@ -1,4 +1,13 @@
 
+
+
+
+
+ 
+  
+
+
+
 <%-include("../adminlayouts/header.ejs")-%>
 
   <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark" id="sidenav-main">
@@ -10,7 +19,9 @@
       </a>
     </div>
     <hr class="horizontal light mt-0 mb-2">
-    <div class="collapse navbar-collapse  w-auto  max-height-vh-100" id="sidenav-collapse-main">
+    <!-- <div class="collapse navbar-collapse  w-auto  max-height-vh-100" id="sidenav-collapse-main"> -->
+      <div class="" id="sidenav-collapse-main">
+
       <ul class="navbar-nav">
         <li class="nav-item">
           <a class="nav-link text-white " href="/admin/dashboard">
@@ -20,6 +31,14 @@
             <span class="nav-link-text ms-1">Dashboard</span>
           </a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link text-white  " href="/admin/salesreport">
+              <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                <i class="material-icons opacity-10">dashboard</i>
+              </div>
+              <span class="nav-link-text ms-1">Sales Report</span>
+            </a>
+          </li>
         <li class="nav-item">
           <a class="nav-link text-white  " href="/admin/customers">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -53,14 +72,31 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white bg-gradient-primary" href="../pages/notifications.html">
+          <a class="nav-link text-white " href="/admin/coupons">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">notifications</i>
             </div>
             <span class="nav-link-text ms-1">Coupons</span>
           </a>
         </li>
-        <li class="nav-item mt-3">
+        <li class="nav-item">
+          <a class="nav-link text-white bg-gradient-primary" href="/admin/offer">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">notifications</i>
+            </div>
+            <span class="nav-link-text ms-1">Offers</span>
+          </a>
+        </li>
+     
+        <li class="nav-item">
+          <a class="nav-link text-white " href="/admin/banner">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">notifications</i>
+            </div>
+            <span class="nav-link-text ms-1">Banners</span>
+          </a>
+        </li>
+        <!-- <li class="nav-item mt-3">
           <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
         </li>
         <li class="nav-item">
@@ -86,14 +122,14 @@
             </div>
             <span class="nav-link-text ms-1">Sign Up</span>
           </a>
-        </li>
+        </li> -->
       </ul>
     </div>
-    <div class="sidenav-footer position-absolute w-100 bottom-0 ">
+    <!-- <div class="sidenav-footer position-absolute w-100 bottom-0 ">
       <div class="mx-3">
         <a class="btn bg-gradient-primary mt-4 w-100" href="https://www.creative-tim.com/product/material-dashboard-pro?ref=sidebarfree" type="button">Upgrade to pro</a>
       </div>
-    </div>
+    </div> -->
   </aside>
   <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
     <!-- Navbar -->
@@ -126,12 +162,12 @@
             </div>
           </div>
           <ul class="navbar-nav  justify-content-end">
-            <li class="nav-item d-flex align-items-center">
+            <!-- <li class="nav-item d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-body font-weight-bold px-0">
                 <i class="fa fa-user me-sm-1"></i>
                 <span class="d-sm-inline d-none">Sign In</span>
               </a>
-            </li>
+            </li> -->
             <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
                 <div class="sidenav-toggler-inner">
@@ -141,12 +177,12 @@
                 </div>
               </a>
             </li>
-            <li class="nav-item px-3 d-flex align-items-center">
+            <!-- <li class="nav-item px-3 d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-body p-0">
                 <i class="fa fa-cog fixed-plugin-button-nav cursor-pointer"></i>
               </a>
-            </li>
-            <li class="nav-item dropdown pe-2 d-flex align-items-center">
+            </li> -->
+            <!-- <li class="nav-item dropdown pe-2 d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="fa fa-bell cursor-pointer"></i>
               </a>
@@ -218,7 +254,7 @@
                   </a>
                 </li>
               </ul>
-            </li>
+            </li> -->
           </ul>
         </div>
       </div>
@@ -230,96 +266,37 @@
           <div class="card my-4">
             <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
               <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                <h6 class="text-white text-capitalize ps-3">Coupons</h6>
+                <h6 class="text-white text-capitalize ps-3">Offers</h6>
               </div>
             </div>
             <div class="card-body px-0 pb-2">
              
 
+
               
-
-
-
-                <div class="container mt-5">
-                    <h1 class="mb-4">Create Coupon</h1>
-  
-                    <!-- <form id="couponForm" action="/admin/addCoupon" method="POST">
-                        <% if (typeof message !== 'undefined') { %>
-                            <p style="color: red;"><%= message %></p>
-                          <% } %>
-                        <div class="form-group">
-                            <label for="code">Code:</label>
-                            <input type="text" class="form-control" id="code" name="code" >
-                            <div class="error-message" style="color: red;" id="codeError"></div>
-                        </div>
-                        <div class="form-group">
-                            <label for="discountPercentage">Discount Percentage:</label>
-                            <div class="input-group">
-                                <input type="number" class="form-control" id="discountPercentage" name="discountPercentage" >
-                                <div class="input-group-append">
-                                    <span class="input-group-text">%</span>
-                                    <div class="error-message" style="color: red;" id="discountError"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="startDate">Start Date:</label>
-                            <input type="date" class="form-control" id="startDate" name="startDate" >
-                            <div class="error-message" style="color: red;" id="startDateError"></div>
-                        </div>
-                        <div class="form-group">
-                            <label for="expireDate">Expire Date:</label>
-                            <input type="date" class="form-control" id="expiryDate" name="expiryDate" >
-                            <div class="error-message" style="color: red;" id="startDateError"></div>
-                        </div>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save"></i> Save Coupon
-                        </button>
-                        <a href="/admin/coupons" class="btn btn-secondary">
-                            <i class="fas fa-times"></i> Cancel
-                        </a>
-                    </form> -->
-                    <form id="couponForm" action="/admin/addCoupon" method="POST">
-                      <% if (typeof message !== 'undefined') { %>
-                        <p style="color: red;"><%= message %></p>
-                      <% } %>
-                      <div class="form-group">
-                        <label for="code">Code:</label>
-                        <input type="text" class="form-control" id="code" name="code">
-                        <div class="error-message" style="color: red;" id="codeError"></div>
-                      </div>
-                      <div class="form-group">
-                        <label for="discountPercentage">Discount Percentage:</label>
-                        <input type="number" class="form-control" id="discountPercentage" name="discountPercentage">
-                        <div class="error-message" style="color: red;" id="discountError"></div>
-                      </div>
-                      <div class="form-group">
-                        <label for="startDate">Start Date:</label>
-                        <input type="date" class="form-control" id="startDate" name="startDate">
-                        <div class="error-message" style="color: red;" id="startDateError"></div>
-                      </div>
-                      <div class="form-group">
-                        <label for="expireDate">Expire Date:</label>
-                        <input type="date" class="form-control" id="expiryDate" name="expiryDate">
-                        <div class="error-message" style="color: red;" id="expiryDateError"></div>
-                      </div>
-                      <div class="form-group">
-                        <label for="minPurchaseAmount">minPurchaseAmount:</label>
-                        <input type="number" class="form-control" id="minPurchaseAmount" name="minPurchaseAmount">
-                        <div class="error-message" style="color: red;" id="minPurchaseAmounterror"></div>
-                      </div>
-                      <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save"></i> Save Coupon
-                      </button>
-                      <!-- Add a cancel button to go back or reset the form -->
-                      <a href="/admin/coupons" class="btn btn-secondary">
-                        <i class="fas fa-times"></i> Cancel
-                      </a>
-                    </form>
-                    
-                </div>
-
-
+            
+                <form action="/admin/product-addoffer" method="post">
+                    <div class="form-group col-sm-12 mb-3">
+                        <label for="product">Select Product:</label>
+                        <select name="productId" id="product" class="form-control custom-select" required>
+                            <option value="" disabled selected>Select Product</option>
+                            <% for(i in products){ %>
+                                <option value="<%= products[i]._id %>" <% if(products[i].block==1){ %>disabled<%}%> ><%= products[i].product_name %></option>
+                            <% } %>
+                        </select>
+                        <p id="product-error" class="error-message"></p>
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="discount">Discount Percentage:</label>
+                        <input type="text" name="discount" id="discount" class="form-control" required>
+                    </div>
+                
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary">Add Offer</button>
+                    </div>
+                </form>
+            
 
 
 
@@ -425,127 +402,8 @@
   <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="/public/admin/js/material-dashboard.min.js?v=3.0.0"></script>
 
-
-  <!-- <script>
-    const couponForm = document.getElementById('couponForm');
+ 
   
-    couponForm.addEventListener('submit', function (event) {
-      event.preventDefault();
-      if (validateForm()) {
-        this.submit();
-      }
-    });
-  
-    function validateForm() {
-      const codeInput = document.getElementById('code');
-      const discountInput = document.getElementById('discountPercentage');
-      const startDateInput = document.getElementById('startDate');
-      const expiryDateInput = document.getElementById('expiryDate');
-  
-      const codeError = document.getElementById('codeError');
-      const discountError = document.getElementById('discountError');
-      const startDateError = document.getElementById('startDateError');
-      const expiryDateError = document.getElementById('expiryDateError');
-  
-      codeError.textContent = '';
-      discountError.textContent = '';
-      startDateError.textContent = '';
-      expiryDateError.textContent = '';
-  
-      let isValid = true;
-  
-      if (codeInput.value.trim() === '') {
-        codeError.textContent = 'Coupon Code is required';
-        isValid = false;
-      }
-  
-      if (discountInput.value === '' || discountInput.value < 10 || discountInput.value > 80) {
-        discountError.textContent = 'Discount Percentage must be between 10 and 80';
-        isValid = false;
-      }
-  
-      if (startDateInput.value.trim() === '') {
-        startDateError.textContent = 'Start Date is required';
-        isValid = false;
-      }
-  
-      if (expiryDateInput.value.trim() === '') {
-        expiryDateError.textContent = 'Expiry Date is required';
-        isValid = false;
-      }
-  
-      return isValid;
-    }
-  </script> -->
-
-  <style>
-    .error-message {
-        color: red;
-        font-size: 14px;
-        margin-top: 5px;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        font-weight: bold;
-    }
-  </style>
-
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const couponForm = document.getElementById('couponForm');
-  
-      couponForm.addEventListener('submit', function (event) {
-        event.preventDefault();
-        if (validateForm()) {
-          this.submit();
-        }
-      });
-  
-      function validateForm() {
-        console.log('Form submitted!');
-        const codeInput = document.getElementById('code');
-        const discountInput = document.getElementById('discountPercentage');
-        const startDateInput = document.getElementById('startDate');
-        const expiryDateInput = document.getElementById('expiryDate');
-  
-        const codeError = document.getElementById('codeError');
-        const discountError = document.getElementById('discountError');
-        const startDateError = document.getElementById('startDateError');
-        const expiryDateError = document.getElementById('expiryDateError');
-  
-        codeError.textContent = '';
-        discountError.textContent = '';
-        startDateError.textContent = '';
-        expiryDateError.textContent = '';
-  
-        let isValid = true;
-  
-        if (codeInput.value.trim() === '') {
-          codeError.textContent = 'Coupon Code is required';
-          isValid = false;
-        }
-  
-        if (discountInput.value === '' || discountInput.value < 2 || discountInput.value > 50) {
-          discountError.textContent = 'Discount Percentage must be between 2 and 50';
-          isValid = false;
-        }
-  
-        if (startDateInput.value.trim() === '') {
-          startDateError.textContent = 'Start Date is required';
-          isValid = false;
-        }
-  
-        if (expiryDateInput.value.trim() === '') {
-          expiryDateError.textContent = 'Expiry Date is required';
-          isValid = false;
-        }
-  
-        return isValid;
-      }
-    });
-  </script>
-
-
-
 
 
   <%-include("../adminlayouts/footer.ejs")-%>

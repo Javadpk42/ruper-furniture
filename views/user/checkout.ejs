@@ -789,9 +789,15 @@
 																		</div>
 																	</div>
 																	<div class="product-total">
-																		<span>&#8377;<%= product.productId.product_price %>
-																		</span>
-																	</div>
+																		<% if (product.productId.discountedAmount > 0) { %>
+																		  <span class="price">
+																			<del aria-hidden="true"><span class="text-danger">&#8377;<%= product.productId.product_price.toFixed(2) %></span></del> 
+																			<ins><span>&#8377;<%= product.productId.discountedAmount.toFixed(2) %></span></ins>
+																		  </span>
+																		<% } else { %>
+																		  <span class="price">&#8377;<%= product.productId.product_price.toFixed(2) %></span>
+																		<% } %>
+																	  </div>
 																</div>
 																<% }); %>
 																	<% } else { %>
@@ -803,7 +809,7 @@
 													<div class="cart-subtotal">
 														<h2>Subtotal</h2>
 														<div class="subtotal-price">
-															<span>&#8377; <%= total%></span>
+															<span>&#8377; <%= total.toFixed(2)%></span>
 														</div>
 													</div>
 													<div class="shipping-totals shipping">

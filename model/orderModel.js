@@ -50,9 +50,9 @@ const orderSchema = new mongoose.Schema({
           default: 1
         },
       
-        // reason:{
-        //   type:String
-        // }
+        reason:{
+          type:String
+        }
         
       },
 
@@ -98,6 +98,14 @@ const orderSchema = new mongoose.Schema({
   totalAmount: {
     type: Number,
     required: true,
+  },
+  couponCode: {
+    type: String,
+    default: null, // or set the default value you prefer
+  },
+  couponDiscount: {
+    type: Number,
+    default: 0,
   },
   orderDate: {
     type: Date,

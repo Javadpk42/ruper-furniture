@@ -10,6 +10,19 @@ const productSchema = mongoose.Schema({
     type:Number,
     required:true,
   },
+  discount: {
+    type: Number,
+    default: 0
+ },
+ category_discount: {
+  type: Number,
+  default: 0
+},
+
+discountedAmount: {
+    type: Number,
+    default: 0
+},
   category:{
     type:String,
     required:true,
@@ -60,7 +73,11 @@ const categorySchema = mongoose.Schema({
   },
   is_listed:{
     type:Boolean,
-  }
+  },
+  discount: {
+    type: Number,
+    default: 0
+ },
 })
 
 const product= mongoose.model('product',productSchema)

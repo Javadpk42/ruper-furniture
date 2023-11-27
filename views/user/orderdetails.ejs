@@ -852,9 +852,11 @@
 																			<%= product.productId.product_name %>
 																		</div>
 																	</td>
-																	<td class="product-price">
-																		<!-- <span class="price">$150.00</span> -->
+																	<!-- <td class="product-price">
 																		<%= product.productId.product_price.toFixed(2) %>
+																	</td> -->
+																	<td class="product-price">
+																		<%= product.price.toFixed(2) %>
 																	</td>
 																	<td class="product-quantity  ">
 																		&nbsp;<%= product.quantity %>
@@ -863,7 +865,7 @@
 
 																	  <!-- Subtotal -->
 <td class="product-subtotal" >
-	<span>&#8377; <span ><%= (parseFloat(product.productId.product_price) * product.quantity).toFixed(2) %></span></span>
+	<span>&#8377; <span ><%= (parseFloat(product.price) * product.quantity).toFixed(2) %></span></span>
   </td>
   
 																	  
@@ -898,6 +900,20 @@
 																		<% if (product.orderStatus !== "Cancelled") { %>
 																		  <% if (product.orderStatus == "Delivered" && !product.returnOrder.status) { %>
 																			<a href="#" onclick="confirmAndReturn('<%= product._id %>')" style="color: red;">Return Product</a>
+																			<div id="returnReasonModal" class="modal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 300px; background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+																				<div class="modal-content">
+																			  
+																				  <label for="returnReason" style="display: block; text-align: center; margin-bottom: 10px; font-weight: bold; color: black;">Return Reason:</label>
+																			  
+																				  <textarea id="returnReason" rows="4" cols="30" style="width: 100%;"></textarea>
+																			  
+																				  <button onclick="submitReturnReason('<%= product._id %>')" style="margin-top: 10px; width: 100%; background-color: black; color: white; font-weight: bold;">Submit</button>
+																				  <button onclick="closeModal()" style="margin-top: 14px; width: 100%; background-color: black; color: white; font-weight: bold;">cancel</button>
+
+
+																				</div>
+																			  </div>
+																			  
 																		  <% } else if (!product.returnOrder.status) { %>
 																			<a href="#" onclick="confirmAndCancel('<%= product._id %>')" style="color: red;">Cancel Order</a>
 																		  <% } %>
@@ -908,6 +924,7 @@
 																
 														
 																<tr class="status-bar-row" id="status-row-<%= product._id %>">
+																	
 																	<!-- <td colspan="7">
 																	  <% if (!(product.orderStatus === "Cancelled" || product.returnOrder.status)){ %>
 																		<div class="progress-track">
@@ -1397,6 +1414,12 @@
 		<!-- Site Scripts -->
 		<script src="/public/usernew/assets/js/app.js"></script>
 
+
+		<!-- Add this modal at the end of your HTML body -->
+	
+		  
+  
+
 <!-- Add this line to include Axios in your HTML file -->
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
@@ -1510,6 +1533,73 @@ function confirmAndCancel(orderId) {
 // }
 
 
+// function confirmAndReturn(orderId, productId) {
+//   console.log('Confirm and return function called');
+
+//   Swal.fire({
+//     title: 'Are you sure?',
+//     text: 'You are about to return this order.',
+//     icon: 'warning',
+//     showCancelButton: true,
+//     confirmButtonColor: '#d33',
+//     cancelButtonColor: '#3085d6',
+//     confirmButtonText: 'Yes, return it!'
+//   }).then(async (result) => {
+//     if (result.isConfirmed) {
+//       console.log('Confirmed to return order');
+
+//       try {
+//         // Send AJAX request to return the order
+//         const response = await axios.post(`/returnorder/${orderId}`);
+//         console.log('Return order AJAX response:', response);
+
+//         if (response.data.success) {
+//           // Update the DOM to remove the status bar row and set order status to 'Returned'
+//           const statusRow = document.querySelector(`#status-row-${orderId}`);
+//           console.log('Selected status row:', statusRow);
+
+//           if (statusRow) {
+//             statusRow.remove();
+//             console.log('Status row removed');
+//           } else {
+//             // If the direct selection doesn't work, try using a different approach
+//             const orderElement = document.querySelector(`#order-${orderId}`);
+//             const statusRowAlternative = orderElement ? orderElement.querySelector('.status-bar-row') : null;
+
+//             if (statusRowAlternative) {
+//               statusRowAlternative.remove();
+//               console.log('Alternative status row removed');
+//             } else {
+//               console.log('Status row not found');
+//             }
+//           }
+
+//           // Update the order status dynamically
+//           const orderStatusElement = document.querySelector(`#orderStatus-${productId}`);
+//           console.log('Selected order status element:', orderStatusElement);
+
+//           if (orderStatusElement) {
+//             orderStatusElement.textContent = 'Returned';
+//             console.log('Order status updated to Returned');
+//           } else {
+//             console.log('Order status element not found');
+//           }
+
+//           Swal.fire('Success!', 'Order return placed successfully!', 'success');
+//           // Optionally reload the page
+//           // location.reload();
+// 		  location.reload();
+//         } else {
+//           Swal.fire('Error!', 'An error occurred during return', 'error');
+//         }
+//       } catch (error) {
+//         console.error('Error in return order AJAX request:', error);
+//         Swal.fire('Error!', 'Cannot return the order at this stage', 'error');
+//       }
+//     }
+//   });
+// }
+
 function confirmAndReturn(orderId, productId) {
   console.log('Confirm and return function called');
 
@@ -1525,60 +1615,87 @@ function confirmAndReturn(orderId, productId) {
     if (result.isConfirmed) {
       console.log('Confirmed to return order');
 
-      try {
-        // Send AJAX request to return the order
-        const response = await axios.post(`/returnorder/${orderId}`);
-        console.log('Return order AJAX response:', response);
+      // Show the return reason modal
+      openModal();
 
-        if (response.data.success) {
-          // Update the DOM to remove the status bar row and set order status to 'Returned'
-          const statusRow = document.querySelector(`#status-row-${orderId}`);
-          console.log('Selected status row:', statusRow);
-
-          if (statusRow) {
-            statusRow.remove();
-            console.log('Status row removed');
-          } else {
-            // If the direct selection doesn't work, try using a different approach
-            const orderElement = document.querySelector(`#order-${orderId}`);
-            const statusRowAlternative = orderElement ? orderElement.querySelector('.status-bar-row') : null;
-
-            if (statusRowAlternative) {
-              statusRowAlternative.remove();
-              console.log('Alternative status row removed');
-            } else {
-              console.log('Status row not found');
-            }
-          }
-
-          // Update the order status dynamically
-          const orderStatusElement = document.querySelector(`#orderStatus-${productId}`);
-          console.log('Selected order status element:', orderStatusElement);
-
-          if (orderStatusElement) {
-            orderStatusElement.textContent = 'Returned';
-            console.log('Order status updated to Returned');
-          } else {
-            console.log('Order status element not found');
-          }
-
-          Swal.fire('Success!', 'Order return placed successfully!', 'success');
-          // Optionally reload the page
-          // location.reload();
-		  location.reload();
-        } else {
-          Swal.fire('Error!', 'An error occurred during return', 'error');
-        }
-      } catch (error) {
-        console.error('Error in return order AJAX request:', error);
-        Swal.fire('Error!', 'Cannot return the order at this stage', 'error');
-      }
+      // Call the submitReturnReason function with orderId and productId
+      document.getElementById('submitReasonButton').onclick = function() {
+        submitReturnReason(orderId, productId);
+      };
     }
   });
 }
 
+// Function to handle the return reason when the user submits
+function submitReturnReason(orderId, productId) {
+	
+  const returnReason = document.getElementById('returnReason').value;
 
+  // Send AJAX request to return the order with the reason
+  axios.post(`/returnorder/${orderId}`, { reason: returnReason ,orderId:orderId})
+    .then((response) => {
+      console.log('Return order AJAX response:', response);
 
+      if (response.data.success) {
+        // Update the DOM to remove the status bar row and set order status to 'Returned'
+        const statusRow = document.querySelector(`#status-row-${orderId}`);
+        console.log('Selected status row:', statusRow);
+
+        if (statusRow) {
+          statusRow.remove();
+          console.log('Status row removed');
+        } else {
+          // If the direct selection doesn't work, try using a different approach
+          const orderElement = document.querySelector(`#order-${orderId}`);
+          const statusRowAlternative = orderElement ? orderElement.querySelector('.status-bar-row') : null;
+
+          if (statusRowAlternative) {
+            statusRowAlternative.remove();
+            console.log('Alternative status row removed');
+          } else {
+            console.log('Status row not found');
+          }
+        }
+
+        // Update the order status dynamically
+        const orderStatusElement = document.querySelector(`#orderStatus-${productId}`);
+        console.log('Selected order status element:', orderStatusElement);
+
+        if (orderStatusElement) {
+          orderStatusElement.textContent = 'Returned';
+          console.log('Order status updated to Returned');
+        } else {
+          console.log('Order status element not found');
+        }
+
+        // Close the return reason modal
+        closeModal();
+
+        Swal.fire('Success!', 'Order return placed successfully!', 'success');
+        // Optionally reload the page
+        // location.reload();
+        location.reload();
+      } else {
+        Swal.fire('Error!', 'An error occurred during return', 'error');
+      }
+    })
+    .catch((error) => {
+      console.error('Error in return order AJAX request:', error);
+      Swal.fire('Error!', 'Cannot return the order at this stage', 'error');
+    });
+}
+
+// Function to open the return reason modal
+function openModal() {
+  const modal = document.getElementById('returnReasonModal');
+  modal.style.display = 'block';
+}
+
+// Function to close the return reason modal
+function closeModal() {
+  const modal = document.getElementById('returnReasonModal');
+  modal.style.display = 'none';
+}
 
 
 

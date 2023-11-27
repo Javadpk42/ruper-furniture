@@ -240,7 +240,7 @@
                 <table class="table">
                   <thead>
                     <tr>
-                      <th>Index No</th>
+                      <!-- <th>Index No</th> -->
                       <th>Product Name</th>
                       <th>Image</th>
                       <th>Price</th>
@@ -248,6 +248,7 @@
                       <th>Order Status</th>
                       <th>Update Status</th>
                       <th>Return Status</th>
+                      <th>Return Reason</th>
                       
                       <th></th>
                     </tr>
@@ -255,7 +256,7 @@
                   <tbody>
                     <% order.cart.products.forEach((product, index) => { %>
                       <tr>
-                        <td><%= index + 1 %></td>
+                        <!-- <td><%= index + 1 %></td> -->
                         <td><%= product.productId.product_name %></td>
                         <td><img src="/public/products/images/<%= product.productId.images.image1 %>" alt="<%= product.productId.product_name %>" width="50" height="50"></td>
                         <td>&#8377;<%= product.productId.product_price %></td>
@@ -290,6 +291,14 @@
                               </select>
                               <button type="submit">Update Status</button>
                             </form>
+                          <% } else { %>
+                            
+                          <% } %>
+                     
+                        </td>
+                        <td>
+                          <% if (product.returnOrder.status) { %>
+                            <%= product.returnOrder.reason %>
                           <% } else { %>
                             
                           <% } %>

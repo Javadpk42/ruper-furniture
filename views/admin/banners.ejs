@@ -133,9 +133,9 @@
                
             </li>
           </ol> -->
-          <!-- <span class="badge badge-sm" style="background-color:#e91e63;">
-            <a class="nav-link text-white text-capitalize" href="/admin/addproducts " style="color: white !important;">Add Product</a>
-        </span> -->
+          <span class="badge badge-sm" style="background-color:#e91e63;">
+            <a class="nav-link text-white text-capitalize" href="/admin/addbanner " style="color: white !important;">Add banner</a>
+        </span>
           <h6 class="font-weight-bolder mb-0">
           
           </h6>
@@ -257,13 +257,71 @@
           <div class="card my-4">
             <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
               <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                <h6 class="text-white text-capitalize ps-3">Coupons</h6>
+                <h6 class="text-white text-capitalize ps-3">Banner</h6>
               </div>
             </div>
             <div class="card-body px-0 pb-2">
              
 
+              <div class="table-responsive p-0">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Image</th>
+                      <th>Main Head</th>
+                      <th>Type Head</th>
+                      <th>url</th>
+                      <!-- <th>Status</th>
+                      <th>Edit</th>
+                      <th>Action</th> -->
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% if (banners.length > 0) { %>
+                      <!-- Loop through and display banners -->
+                      <% for (let i = 0; i < banners.length; i++) { %>
+                        <tr>
+                          <td>
+                            <img class="rounded banner-img-preview img-thumbnail"
+                              src="/public/banners/images/<%= banners[i].image %>"
+                              alt="image"
+                              style="max-width: 100px; max-height: 100px;" />
+                          </td>
+                          <td><%= banners[i].mainHead %></td>
+                          <td><%= banners[i].typeHead %></td>
+                          <td><%= banners[i].bannerURL %></td>
 
+                          <!-- <td>
+                            <% if (banners[i].status === true) { %>
+                              <span class="text-success text-center">Active</span>
+                            <% } else { %>
+                              <span class="text-danger text-center">Inactive</span>
+                            <% } %>
+                          </td> -->
+                          <!-- <td>
+                            <a href="/admin/editbanner?id=<%= banners[i]._id %>" class="btn btn-inverse-info">Edit</a>
+                          </td> -->
+                          <!-- <td>
+                            <a href="javascript:void(0);" onclick="showDeleteConfirmationModal('<%= banners[i]._id %>')">
+                              <button type="button" class="btn btn-inverse-danger btn-fw">Delete</button>
+                            </a>
+                          </td> -->
+                          <td>
+                            <button type="button" class="btn btn-inverse-danger btn-fw" onclick="deleteBanner('<%= banners[i]._id %>')">Delete</button>
+                          </td>
+                          
+                        </tr>
+                      <% } %>
+                    <% } else { %>
+                      <!-- Display no data placeholder when there are no banners -->
+                      <tr>
+                        <td colspan="6" class="text-center">No banners found.</td>
+                      </tr>
+                    <% } %>
+                  </tbody>
+                </table>
+              </div>
+              
               
           
 
@@ -370,8 +428,36 @@
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="/public/admin/js/material-dashboard.min.js?v=3.0.0"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
  
+  <script>
+    function deleteBanner(bannerId) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'Once deleted, you will not be able to recover this banner!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!',
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          // If user confirms, make an AJAX request to delete the banner
+          fetch(`/admin/deletebanner/${bannerId}`, {
+            method: 'GET',
+          })
+          .then(response => response.json())
+          .then(data => {
+            // Handle the response, e.g., refresh the page or update the UI
+            location.reload(); // Refresh the page for simplicity
+          })
+          .catch(error => console.error('Error:', error));
+        }
+      });
+    }
+  </script>
+  
   
 
 

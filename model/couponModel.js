@@ -25,7 +25,11 @@ const couponSchema = new mongoose.Schema({
     expireDate : {
         type :Date, 
         required : true
-    }
+    },
+    minPurchaseAmount: {
+        type: Number,
+        required: true,
+    },
 })
 
 module.exports = mongoose.model('coupon' , couponSchema)

@@ -49,3 +49,45 @@ function zoom(e){
 
 
 
+const removecategoryOffer = async (req, res) => {
+  try {
+    const categoryId = req.body.categoryId;
+
+    // Find the category by ID
+    const category = await Category.findById(categoryId);
+
+    // Check if the category exists
+    if (!category) {
+      return res.status(404).json({ success: false, error: "Category not found" });
+    }
+
+    // Update category discount to 0
+    category.discount = 0;
+    await category.save();
+
+    // Find all products in the category
+    const products = await Product.find({ category: category.category_name });
+
+    // Iterate through each product
+    for (const product of products) {
+      // Check if the product has an existing product offer
+      if (product.discount > 0) {
+        product.category_discount = 0;
+        const originalPrice = product.product_price;
+        const discountedAmount = calculateDiscountedPrice(originalPrice, product.discount);
+        product.discountedAmount=discountedAmount
+        await product.save();
+      }
+
+      // Reset the product's discount and discounted amount to 0
+      product.discountedAmount = 0;
+      product.category_discount = 0;
+      await product.save();
+    }
+
+    res.json({ success: true });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, error: "Internal Server Error" });
+  }
+};

@@ -4,7 +4,7 @@ const user_route=express();
 user_route.use(express.json());
 user_route.use(express.urlencoded({ extended: true }));//common
 
-user_route.set('view engine','ejs'); //
+//
 user_route.set('views','./views/user')
 
 const userAuth = require('../middlewares/userAuth')
