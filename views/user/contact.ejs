@@ -1,21 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 	
-<!-- Mirrored from caketheme.com/html/ruper/shop-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2023 09:38:22 GMT -->
+<!-- Mirrored from caketheme.com/html/ruper/page-contact.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2023 09:38:20 GMT -->
 <head>
 		<!-- Meta Data -->
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Shop Details | Ruper</title>
+		<title>Contact | Ruper</title>
 		
 		<!-- Favicon -->
 		<link rel="shortcut icon" type="image/x-icon" href="/public/usernew/media/favicon.png">
-		<style>
-			.custom-size {
-    font-size: 2.5rem; /* Adjust the value to your desired size */
-}
-		</style>
+		
 		<!-- Dependency Styles -->
 		<link rel="stylesheet" href="/public/usernew/libs/bootstrap/css/bootstrap.min.css" type="text/css">
 		<link rel="stylesheet" href="/public/usernew/libs/feather-font/css/iconfont.css" type="text/css">
@@ -30,16 +26,14 @@
 
 		<!-- Site Stylesheet -->
 		<link rel="stylesheet" href="/public/usernew/assets/css/app.css" type="text/css">
-		<link rel="stylesheet" href="/public/usernew/assets/css/responsive.css" type="text/css"> 
-<!-- link for ajax -->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>  
-
+		<link rel="stylesheet" href="/public/usernew/assets/css/responsive.css" type="text/css">
+		
 		<!-- Google Web Fonts -->
 		<link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@100;200;300;400;500;600;700&amp;display=swap" rel="stylesheet">
 		<link href="https://fonts.googleapis.com/css?family=EB+Garamond:100,100italic,200,200italic,300,300italic,400,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic&amp;display=swap" rel="stylesheet">
 	</head>
 	
-	<body class="shop">
+	<body class="page">
 		<div id="page" class="hfeed page-wrapper">
 			<header id="site-header" class="site-header header-v1 absolute">
 				<div class="header-mobile">
@@ -145,7 +139,7 @@
 									<div class="col-xl-3 col-lg-2 col-md-12 col-sm-12 col-12 header-left">
 										<div class="site-logo">
 											<a href="index.html">
-												<img width="400" height="79" src="/public/usernew/media/logo.png" alt="Ruper – Furniture HTML Theme" />
+												<img width="400" height="79" src="media/logo.png" alt="Ruper – Furniture HTML Theme" />
 											</a>
 										</div>
 									</div>
@@ -155,7 +149,7 @@
 											<nav id="main-navigation">
 												<ul id="menu-main-menu" class="menu">
 													<li class="level-0 menu-item menu-item-has-children mega-menu">
-														<a href="/"><span class="menu-item-text">Home</span></a>
+														<a href="index.html"><span class="menu-item-text">Home</span></a>
 														<div class="sub-menu">
 															<div class="row">
 																<div class="col-md-6">
@@ -220,8 +214,8 @@
 															</div>
 														</div>
 													</li>
-													<li class="level-0 menu-item menu-item-has-children current-menu-item">
-														<a href="/shop"><span class="menu-item-text">Shop</span></a>
+													<li class="level-0 menu-item menu-item-has-children">
+														<a href="shop-grid-left.html"><span class="menu-item-text">Shop</span></a>
 														<ul class="sub-menu">
 															<li class="level-1 menu-item menu-item-has-children">
 																<a href="shop-grid-left.html"><span class="menu-item-text">Shop - Products</span></a>
@@ -347,7 +341,7 @@
 																						</h2>
 																						<div class="post-time">
 																							<span class="post-date">Dec 06, 2022</span>
-																							<span class="post-comment">1 Comment</span>	
+																							<span class="post-comment">1 Comment</span>
 																						</div>
 																					</div>
 																				</li>
@@ -384,7 +378,7 @@
 															</li>
 														</ul>
 													</li>
-													<li class="level-0 menu-item">
+													<li class="level-0 menu-item current-menu-item">
 														<a href="page-contact.html"><span class="menu-item-text">Contact</span></a>
 													</li>
 												</ul>
@@ -396,20 +390,13 @@
 										<div class="header-page-link">
 											<!-- Login -->
 											<div class="login-header">
-												<!-- <a class="active-login" href="#">Login</a> -->
-												<% if (user) { %>
-													<a href="/logout"><span class="menu-item-text">Logout</span></a>
-												<% } else { %>
-													<a href="/login"><span class="menu-item-text">Login</span></a>
-												<% } %>
-
-
+												<a class="active-login" href="#">Login</a>
 												<div class="form-login-register">
 													<div class="box-form-login">
 														<div class="active-login"></div>
 														<div class="box-content">
 															<div class="form-login active">
-																<form id="login_ajax" method="" class="login">
+																<form id="login_ajax" method="post" class="login">
 																	<h2>Sign in</h2>
 																	<p class="status"></p>
 																	<div class="content">
@@ -436,7 +423,7 @@
 																</form>
 															</div>
 															<div class="form-register">
-																<form method="" class="register">
+																<form method="post" class="register">
 																	<h2>REGISTER</h2>
 																	<div class="content">
 																		<div class="email">
@@ -464,7 +451,7 @@
 											
 											<!-- Wishlist -->
 											<div class="wishlist-box">
-												<a href="/wishlist"><i class="icon-heart"></i></a>
+												<a href="shop-wishlist.html"><i class="icon-heart"></i></a>
 												<span class="count-wishlist">1</span>
 											</div>
 											
@@ -472,10 +459,10 @@
 											<div class="ruper-topcart dropdown light">
 												<div class="dropdown mini-cart top-cart">
 													<div class="remove-cart-shadow"></div>
-													<a class="dropdown-toggle cart-icon" href="/view-cart" role="button"  aria-haspopup="true" aria-expanded="false">
+													<a class="dropdown-toggle cart-icon" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 														<div class="icons-cart"><i class="icon-large-paper-bag"></i><span class="cart-count">2</span></div>
 													</a>
-													<!-- <div class="dropdown-menu cart-popup">
+													<div class="dropdown-menu cart-popup">
 														<div class="cart-empty-wrap">
 															<ul class="cart-list">
 																<li class="empty">
@@ -514,14 +501,9 @@
 																<a href="shop-checkout.html" class="button btn checkout btn-default">Check out</a>
 															</div>
 														</div>
-													</div> -->
-												
-
+													</div>
 												</div>
 											</div>
-											<div class="my-profile-box">
-												<a href="/profile" class="btn btn-outline-dark btn-sm">My Profile</a>
-											  </div>
 										</div>
 									</div>
 								</div>
@@ -536,655 +518,133 @@
 					<div id="primary" class="content-area">
 						<div id="title" class="page-title">
 							<div class="section-container">
-								<!-- <div class="content-title-heading">
-									<h1 class="text-title-heading">
-										Bora Armchair
-									</h1>
-								</div> -->
 								<div class="content-title-heading">
 									<h1 class="text-title-heading">
-										<%= product.product_name %>
+										Contact Us
 									</h1>
 								</div>
 								<div class="breadcrumbs">
-									<!-- <a href="index.html">Home</a><span class="delimiter"></span><a href="shop-grid-left.html">Shop</a><span class="delimiter"></span>Bora Armchair -->
-									<a href="/">Home</a><span class="delimiter"></span><a href="/shop">Shop</a>
+									<a href="index.html">Home</a><span class="delimiter"></span>Contact Us
 								</div>
 							</div>
 						</div>
 
 						<div id="content" class="site-content" role="main">
-							<div class="shop-details zoom" data-product_layout_thumb="scroll" data-zoom_scroll="true" data-zoom_contain_lens="true" data-zoomtype="inner" data-lenssize="200" data-lensshape="square" data-lensborder="" data-bordersize="2" data-bordercolour="#f9b61e" data-popup="false">	
-								
-								<!-- Assuming this is your EJS template (shopdetails.ejs) -->
+							<div class="page-contact">
+								<section class="section section-padding">
+									<div class="section-container small">
+										<!-- Block Contact Map -->
+										<div class="block block-contact-map">
+											<div class="block-widget-wrap">
+												<iframe src="https://maps.google.com/maps?q=London%20Eye%2C%20London%2C%20United%20Kingdom&amp;t=m&amp;z=10&amp;output=embed&amp;iwloc=near" aria-label="London Eye, London, United Kingdom"></iframe>
+											</div>
+										</div>
+									</div>
+								</section>	
 
-								<!-- <div class="product-top-info">
-									<div class="section-padding">
-										<div class="section-container p-l-r">
-											<div class="row">
-												<div class="product-images col-lg-7 col-md-12 col-12">
+								<section class="section section-padding m-b-70">
+									<div class="section-container">
+										<!-- Block Contact Info -->
+										<div class="block block-contact-info">
+											<div class="block-widget-wrap">
+												<div class="info-icon">
+													<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svg-icon2 plant" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve"><g><path xmlns="http://www.w3.org/2000/svg" d="m320.174 28.058a8.291 8.291 0 0 0 -7.563-4.906h-113.222a8.293 8.293 0 0 0 -7.564 4.907l-66.425 148.875a8.283 8.283 0 0 0 7.564 11.655h77.336v67.765a20.094 20.094 0 1 0 12 0v-67.765h27.7v288.259h-48.441a6 6 0 0 0 0 12h108.882a6 6 0 0 0 0-12h-48.441v-288.259h117.04a8.284 8.284 0 0 0 7.564-11.657zm-103.874 255.567a8.094 8.094 0 1 1 8.094-8.093 8.1 8.1 0 0 1 -8.094 8.093zm-77.61-107.036 63.11-141.437h108.4l63.11 141.437z" fill="" data-original="" style=""></path></g></svg>
+												</div>
+												<div class="info-title">
+													<h2>Need Help?</h2>
+												</div>
+												<div class="info-items">
 													<div class="row">
-														<div class="col-md-2">
-															<div class="content-thumbnail-scroll">
-																<div class="image-thumbnail slick-carousel slick-vertical" data-asnavfor=".image-additional" data-centermode="true" data-focusonselect="true" data-columns4="5" data-columns3="4" data-columns2="4" data-columns1="4" data-columns="4" data-nav="true" data-vertical="&quot;true&quot;" data-verticalswiping="&quot;true&quot;">
-																	<% for (let i = 1; i <= 4; i++) { %>
-																		<div class="img-item slick-slide">
-																			<span class="img-thumbnail-scroll">
-																				<img width="600" height="600" src="/public/products/images/<%= product.images['image' + i] %>" alt="">
-																			</span>
-																		</div>
-																	<% } %>
+														<div class="col-md-4 sm-m-b-30">
+															<div class="info-item">
+																<div class="item-tilte">
+																	<h2>Phone</h2>
+																</div>
+																<div class="item-content">
+																	810.222.5439
 																</div>
 															</div>
 														</div>
-														<div class="col-md-10">
-															<div class="scroll-image main-image">
-																<div class="image-additional slick-carousel" data-asnavfor=".image-thumbnail" data-fade="true" data-columns4="1" data-columns3="1" data-columns2="1" data-columns1="1" data-columns="1" data-nav="true">
-																	<% for (let i = 1; i <= 4; i++) { %>
-																		<div class="img-item slick-slide">
-																			<img width="900" height="900" src="/public/products/images/<%= product.images['image' + i] %>" alt="" title="">
-																		</div>
-																	<% } %>
+														<div class="col-md-4 sm-m-b-30">
+															<div class="info-item">
+																<div class="item-tilte">
+																	<h2>Customer Service</h2>
+																</div>
+																<div class="item-content">
+																	<p>Monday to Friday</p>
+																	<p>8:00am – 4:00pm Sydney, NSW time (UTC +10)</p>
+																	<p>Saturday and Sunday closed</p>
 																</div>
 															</div>
 														</div>
-													</div>
-												</div>
-								
-												<div class="product-info col-lg-5 col-md-12 col-12">
-													<h1 class="title"><%= product.product_name %></h1>
-													<span class="price">
-														<span>$<%= product.product_price.toFixed(2) %></span>
-													</span>
-													<div class="rating">
-														
-													</div>
-													<div class="description">
-														<p><%= product.product_description %></p>
-													</div>
-													
-													<div class="buttons">
-														
-													</div>
-													
-													<div class="social-share">
-													
-													</div>					
-												</div>
-											</div>
-										</div>
-									</div>
-								</div> -->
-								
-								
-
-								
-								<div class="product-top-info">
-									<div class="section-padding">
-										<div class="section-container p-l-r">
-											<div class="row">
-												<div class="product-images col-lg-7 col-md-12 col-12">
-													<div class="row">
-														<div class="col-md-2">
-															<div class="content-thumbnail-scroll">
-																<div class="image-thumbnail slick-carousel slick-vertical" data-asnavfor=".image-additional" data-centermode="true" data-focusonselect="true" data-columns4="5" data-columns3="4" data-columns2="4" data-columns1="4" data-columns="4" data-nav="true" data-vertical="&quot;true&quot;" data-verticalswiping="&quot;true&quot;">
-																	<% for (let i = 1; i <= 4; i++) { %>
-																		<div class="img-item slick-slide">
-																			<span class="img-thumbnail-scroll">
-																				<img width="600" height="600" src="/public/products/images/<%= product.images['image' + i] %>" alt="">
-																			</span>
-																		</div>
-																	<% } %>
-																	<!-- <div class="img-item slick-slide">
-																		<span class="img-thumbnail-scroll">
-																			<img width="600" height="600" src="media/product/9-2.jpg" alt="">
-																		</span>
-																	</div>
-																	<div class="img-item slick-slide">
-																		<span class="img-thumbnail-scroll">
-																			<img width="600" height="600" src="media/product/9-3.jpg" alt="">
-																		</span>
-																	</div>
-																	<div class="img-item slick-slide">
-																		<span class="img-thumbnail-scroll">
-																			<img width="600" height="600" src="media/product/9.jpg" alt="">
-																		</span>
-																	</div>
-																	<div class="img-item slick-slide">
-																		<span class="img-thumbnail-scroll">
-																			<img width="600" height="600" src="media/product/9-2.jpg" alt="">
-																		</span>
-																	</div> -->
+														<div class="col-md-4">
+															<div class="info-item">
+																<div class="item-tilte">
+																	<h2>Returns</h2>
+																</div>
+																<div class="item-content small-width">
+																	For information on Returns and Refunds, please click <a href="#">here.</a>
 																</div>
 															</div>
-														</div>
-														<div class="col-md-10">
-															<div class="scroll-image main-image">
-																<div class="image-additional slick-carousel" data-asnavfor=".image-thumbnail" data-fade="true" data-columns4="1" data-columns3="1" data-columns2="1" data-columns1="1" data-columns="1" data-nav="true">
-																	<!-- <div class="img-item slick-slide">
-																		<img width="900" height="900" src="media/product/9.jpg" alt="" title="">
-																	</div>
-																	<div class="img-item slick-slide">
-																		<img width="900" height="900" src="media/product/9-2.jpg" alt="" title="">
-																	</div>
-																	<div class="img-item slick-slide">
-																		<img width="900" height="900" src="media/product/9-3.jpg" alt="" title="">
-																	</div>
-																	<div class="img-item slick-slide">
-																		<img width="900" height="900" src="media/product/9.jpg" alt="" title="">
-																	</div>
-																	<div class="img-item slick-slide">
-																		<img width="900" height="900" src="media/product/9-2.jpg" alt="" title="">
-																	</div> -->
-																	<% for (let i = 1; i <= 4; i++) { %>
-																		<div class="img-item slick-slide">
-																			
-																			<img width="900" height="900" src="/public/products/images/<%= product.images['image' + i] %>" alt="" title="">
-																		</div>
-																	<% } %>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-
-												<div class="product-info col-lg-5 col-md-12 col-12 ">
-
-													<!-- <h1 class="title"><%= product.product_name %></h1> -->
-													<div class="title-container d-flex justify-content-between align-items-center">
-														<h1 class="title"><%= product.product_name %></h1>
-														<a class="text-danger" href="#" onclick="addtoWish('<%=product._id%>')">
-															<i class="wpb-icon-heart custom-size"></i>
-														</a>
-														
-																											</div>
-													
-												
-
-													<% if (product.discountedAmount > 0) { %>
-																			
-														<span class="price">
-															<del aria-hidden="true"><span>₹<%= product.product_price.toFixed(2) %></span></del> 
-															<ins><span>&#8377;<%= product.discountedAmount.toFixed(2) %></span></ins> 
-														</span>
-													  <% } else { %>
-														<span class="price">
-															<del aria-hidden="true"><span></span></del> 
-															<ins><span>₹<%= product.product_price.toFixed(2) %></span></ins> 
-														</span>
-													  <% } %>
-
-													<div class="rating">
-														<!-- <div class="star star-5"></div> -->
-														<div class="star star-<%= Math.round(averageRating) %>"></div>
-														<div class="review-count">
-															(<%= product.reviews.length %><span> reviews</span>)
-														</div>
-													</div>
-													<div class="description">
-														<p><%= product.product_description %></p>
-													</div>
-													<div class="variations">
-														<table cellspacing="0">
-															<tbody>
-																<tr>
-																	<td class="label">Size</td>
-																	<td class="attributes">
-																		<ul class="text">
-																			<li><span>L</span></li>
-																			<li><span>M</span></li>
-																			<li><span>S</span></li>
-																		</ul>
-																	</td>
-																</tr>
-																<tr>
-																	<td class="label">Color</td>
-																	<td class="attributes">
-																		<ul class="colors">
-																			<li><span class="color-1"></span></li>
-																			<li><span class="color-2"></span></li>
-																			<li><span class="color-3"></span></li>
-																		</ul>
-																	</td>
-																</tr>
-		        											</tbody>
-														</table>
-													</div>
-													<div class="buttons">
-														<div class="add-to-cart-wrap">
-															<!-- <div class="quantity">
-																<button type="button" class="plus">+</button>
-																<input type="number" class="qty" step="1" min="0" max="" name="quantity" value="1" title="Qty" size="4" placeholder="" inputmode="numeric" autocomplete="off">
-																<button type="button" class="minus">-</button>	
-															</div> -->
-															<!-- <div class="btn-add-to-cart">
-																<a href="#" class="button" tabindex="0">Add to cart</a>
-															</div> -->
-															<!-- <div class="btn-add-to-cart"> -->
-																<div class="btn btn-dark">
-																<a  onclick="addToCart('<%= product._id %>')" class="button text-white" tabindex="0"> Add To Cart</a>
-																 
-
-															</div>
-															
-
-
-														</div>
-														<div class="btn-quick-buy" data-title="Wishlist">
-															<!-- <button class="product-btn">Buy It Now</button> -->
-															<a href="/view-cart" class="btn btn-default">VIEW CART</a>
-														</div>
-														<div class="btn-wishlist" data-title="Wishlist">
-															<!-- <button class="product-btn" onclick="addtoWish('<%=product._id%>')">Add to wishlist</button> -->
-															<!-- <a class="" href="" onclick="addtoWish('<%=product._id%>')"><i class="wpb-icon-heart"></i></a> -->
-														</div>
-														<div class="btn-compare" data-title="Compare">
-															<!-- <button class="product-btn">Compare</button> -->
-
-														</div>
-													</div>
-													<div class="product-meta">
-														<span class="sku-wrapper">SKU: <span class="sku">D2300-3-2-2</span></span>
-														<span class="posted-in">Category: <a href="shop-grid-left.html" rel="tag">Furniture</a></span>
-														<span class="tagged-as">Tags: <a href="shop-grid-left.html" rel="tag">Hot</a>, <a href="shop-grid-left.html" rel="tag">Trend</a></span>
-													</div>
-													<div class="social-share">
-														<a href="#" title="Facebook" class="share-facebook" target="_blank"><i class="fa fa-facebook"></i>Facebook</a>
-														<a href="#" title="Twitter" class="share-twitter"><i class="fa fa-twitter"></i>Twitter</a>
-														<a href="#" title="Pinterest" class="share-pinterest"><i class="fa fa-pinterest"></i>Pinterest</a>
-													</div>					
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-
- 
-
-
-								<!-- image part end -->
-
-
-
-
-
-
-								<div class="product-tabs">
-									<div class="section-padding">
-										<div class="section-container p-l-r">
-											<div class="product-tabs-wrap">
-												<ul class="nav nav-tabs" role="tablist">
-													<li class="nav-item">
-														<a class="nav-link active" data-toggle="tab" href="#description" role="tab">Description</a>
-													</li>
-													<li class="nav-item">
-														<a class="nav-link" data-toggle="tab" href="#additional-information" role="tab">Additional information</a>
-													</li>
-													<li class="nav-item">
-														<a class="nav-link" data-toggle="tab" href="#reviews" role="tab">Reviews (<%= product.reviews.length %>)</a>
-													</li>
-												</ul>
-												<div class="tab-content">
-													<div class="tab-pane fade show active" id="description" role="tabpanel">
-														<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-														<p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
-													</div>
-													<div class="tab-pane fade" id="additional-information" role="tabpanel">
-														<table class="product-attributes">
-															<tbody>
-																<tr class="attribute-item">
-																	<th class="attribute-label">Color</th>
-																	<td class="attribute-value">Black, Blue, Green</td>
-																</tr>
-															</tbody>
-														</table>
-													</div>
-													<div class="tab-pane fade" id="reviews" role="tabpanel">
-														<div id="reviews" class="product-reviews">
-															<!-- <div id="comments">
-																<h2 class="reviews-title">1 review for <span>Bora Armchair</span></h2>
-																<ol class="comment-list">
-																	<li class="review">
-																		<div class="content-comment-container">
-																			<div class="comment-container">
-																				<img src="/public/usernew/media/user.jpg" class="avatar" height="60" width="60" alt="">
-																				<div class="comment-text">
-																					<div class="rating small">
-																						<div class="star star-5"></div>
-																					</div>
-																					<div class="review-author">Peter Capidal</div>
-																					<div class="review-time">January 12, 2022</div>
-																				</div>
-																			</div>
-																			<div class="description">
-																				<p>good</p>
-																			</div>	
-																		</div>
-																	</li>
-																</ol>
-															</div> -->
-
-															<div id="comments">
-																<h2 class="reviews-title">reviews (<%= product.reviews.length %>) for <span><%= product.product_name %></span></h2>
-																<ol class="comment-list">
-																	<% for (const review of product.reviews) { %>
-																		<li class="review">
-																			<div class="content-comment-container">
-																				<div class="comment-container">
-																					<img src="/public/usernew/media/user.jpg" class="avatar" height="60" width="60" alt="">
-																					<div class="comment-text">
-																						<div class="rating small">
-																							<div class="star star-<%= review.rating %>"></div>
-																						</div>
-																						<div class="review-author"><%= review.user.username %></div>
-																						<div class="review-time"><%= review.date.toLocaleDateString() %></div>
-																					</div>
-																				</div>
-																				<div class="description">
-																					<p><%= review.comment %></p>
-																				</div>
-																			</div>
-																		</li>
-																	<% } %>
-																</ol>
-															</div>
-															
-
-															<div id="review-form">
-																<div id="respond" class="comment-respond">
-																	<span id="reply-title" class="comment-reply-title">Add a review</span>
-																	<form action="" method="post" id="comment-form" class="comment-form" onsubmit="submitForm()">
-																		<input type="hidden" id="productId" name="productId" value="<%= product._id %>">
-																		<input type="hidden" id="userId" name="userId" value="<%= user %>">
-																		<!-- <p class="comment-notes">
-																			<span id="email-notes">Your email address will not be published.</span> Required fields are marked <span class="required">*</span>
-																		</p> -->
-																		<div class="comment-form-rating">
-																			<label for="rating">Your rating</label>
-																			<!-- <p class="stars">
-																				<span>
-																					<a class="star-1" href="#">1</a><a class="star-2" href="#">2</a><a class="star-3" href="#">3</a><a class="star-4" href="#">4</a><a class="star-5" href="#">5</a>						
-																				</span>					
-																			</p> -->
-																			<p class="stars">
-																				<input type="radio" id="star-1" name="rating" value="1">
-																				<label for="star-1">1</label>
-																			
-																				<input type="radio" id="star-2" name="rating" value="2">
-																				<label for="star-2">2</label>
-																			
-																				<input type="radio" id="star-3" name="rating" value="3">
-																				<label for="star-3">3</label>
-																			
-																				<input type="radio" id="star-4" name="rating" value="4">
-																				<label for="star-4">4</label>
-																			
-																				<input type="radio" id="star-5" name="rating" value="5">
-																				<label for="star-5">5</label>
-																			  </p>
-																		</div>
-																		
-																		<div class="content-info-reviews">
-																			<p class="comment-form-comment">
-																				<textarea id="comment" name="comment" placeholder="Your Reviews *" cols="45" rows="8" aria-required="true" required=""></textarea>
-																			</p>
-																			<!-- <p class="comment-form-author">
-																				<input id="author" name="author" placeholder="Name *" type="text" value="" size="30" aria-required="true" required="">
-																			</p> -->
-																			<!-- <p class="comment-form-email">
-																				<input id="email" name="email" placeholder="Email *" type="email" value="" size="30" aria-required="true" required="">
-																			</p> -->
-																			<p class="form-submit">
-																				<input name="submit" type="submit" id="submit" class="submit" value="Submit" onclick="submitForm()"> 
-																			</p>	
-																		</div>
-																	</form><!-- #respond -->
-
-
-
-
-
-																</div>
-															</div>
-															<div class="clear"></div>
 														</div>
 													</div>
 												</div>
 											</div>
 										</div>
 									</div>
-								</div>
-								<div class="product-related">
-									<div class="section-padding">
-										<div class="section-container p-l-r">
-											<div class="block block-products slider">
-												<div class="block-title"><h2>Related Products</h2></div>
+								</section>
+
+								<section class="section section-padding contact-background m-b-0">
+									<div class="section-container small">
+										<!-- Block Contact Form -->
+										<div class="block block-contact-form">
+											<div class="block-widget-wrap">
+												<div class="block-title">
+													<h2>Send Us Your Questions!</h2>
+													<div class="sub-title">We’ll get back to you within two days.</div>
+												</div>
 												<div class="block-content">
-													<div class="content-product-list slick-wrap">
-														<div class="slick-sliders products-list grid" data-slidestoscroll="true" data-dots="false" data-nav="1" data-columns4="1" data-columns3="2" data-columns2="3" data-columns1="3" data-columns1440="4" data-columns="4">
-															<div class="item-product slick-slide">
-																<div class="items">
-																	<div class="products-entry clearfix product-wapper">
-																		<div class="products-thumb">
-																			<div class="product-lable">
-																				<div class="hot">Hot</div>
-																			</div>
-																			<div class="product-thumb-hover">
-																				<a href="shop-details.html">
-																					<img width="600" height="600" src="/public/usernew/media/product/1.jpg" class="post-image" alt="">
-																					<img width="600" height="600" src="/public/usernew/media/product/1-2.jpg" class="hover-image back" alt="">
-																				</a>
-																			</div>		
-																			<div class="product-button">
-																				<div class="btn-add-to-cart" data-title="Add to cart">
-																					<a rel="nofollow" href="#" class="product-btn button">Add to cart</a>
-																				</div>
-																				<div class="btn-wishlist" data-title="Wishlist">
-																					<button class="product-btn">Add to wishlist</button>
-																				</div>
-																				<div class="btn-compare" data-title="Compare">
-																					<button class="product-btn">Compare</button>
-																				</div>
-																				<span class="product-quickview" data-title="Quick View">
-																					<a href="#" class="quickview quickview-button">Quick View <i class="icon-search"></i></a>
-																				</span>		
-																			</div>
-																		</div>
-																		<div class="products-content">
-																			<div class="contents text-center">
-																				<h3 class="product-title"><a href="shop-details.html">Zunkel Schwarz</a></h3>
-																				<div class="rating">
-																					<div class="star star-5"></div>
-																				</div>
-																				<span class="price">$100.00</span>
-																			</div>
-																		</div>
-																	</div>
+													<form action="#" method="post" class="contact-form" novalidate="novalidate">
+														<div class="contact-us-form">
+															<div class="row">
+																<div class="col-sm-12 col-md-6">
+															        <label class="required">Name</label><br>
+															        <span class="form-control-wrap">
+															        	<input type="text" name="name" value="" size="40" class="form-control" aria-required="true">
+															        </span>
+															    </div>
+																<div class="col-sm-12 col-md-6">
+															        <label class="required">Email</label><br>
+															        <span class="form-control-wrap">
+														        		<input type="email" name="email" value="" size="40" class="form-control" aria-required="true">
+														        	</span>
+															    </div>
+															</div>
+															<div class="row">
+																<div class="col-sm-12">
+																	<label class="required">Message</label><br>
+																	<span class="form-control-wrap">
+																		<textarea name="message" cols="40" rows="10" class="form-control" aria-required="true"></textarea>
+																	</span>
 																</div>
 															</div>
-															<div class="item-product slick-slide">
-																<div class="items">
-																	<div class="products-entry clearfix product-wapper">
-																		<div class="products-thumb">
-																			<div class="product-lable">
-																				<div class="hot">Hot</div>
-																			</div>
-																			<div class="product-thumb-hover">
-																				<a href="shop-details.html">
-																					<img width="600" height="600" src="/public/usernew/media/product/2.jpg" class="post-image" alt="">
-																					<img width="600" height="600" src="/public/usernew/media/product/2-2.jpg" class="hover-image back" alt="">
-																				</a>
-																			</div>		
-																			<div class="product-button">
-																				<div class="btn-add-to-cart" data-title="Add to cart">
-																					<a rel="nofollow" href="#" class="product-btn button">Add to cart</a>
-																				</div>
-																				<div class="btn-wishlist" data-title="Wishlist">
-																					<button class="product-btn">Add to wishlist</button>
-																				</div>
-																				<div class="btn-compare" data-title="Compare">
-																					<button class="product-btn">Compare</button>
-																				</div>
-																				<span class="product-quickview" data-title="Quick View">
-																					<a href="#" class="quickview quickview-button">Quick View <i class="icon-search"></i></a>
-																				</span>		
-																			</div>
-																		</div>
-																		<div class="products-content">
-																			<div class="contents text-center">
-																				<h3 class="product-title"><a href="shop-details.html">Namaste Vase</a></h3>
-																				<div class="rating">
-																					<div class="star star-4"></div>
-																				</div>
-																				<span class="price">$200.00</span>
-																			</div>
-																		</div>
-																	</div>
-																</div>
-															</div>
-															<div class="item-product slick-slide">
-																<div class="items">
-																	<div class="products-entry clearfix product-wapper">
-																		<div class="products-thumb">
-																			<div class="product-lable">
-																				<div class="hot">Hot</div>
-																			</div>
-																			<div class="product-thumb-hover">
-																				<a href="shop-details.html">
-																					<img width="600" height="600" src="/public/usernew/media/product/3.jpg" class="post-image" alt="">
-																					<img width="600" height="600" src="/public/usernew/media/product/3-2.jpg" class="hover-image back" alt="">
-																				</a>
-																			</div>		
-																			<div class="product-button">
-																				<div class="btn-add-to-cart" data-title="Add to cart">
-																					<a rel="nofollow" href="#" class="product-btn button">Add to cart</a>
-																				</div>
-																				<div class="btn-wishlist" data-title="Wishlist">
-																					<button class="product-btn">Add to wishlist</button>
-																				</div>
-																				<div class="btn-compare" data-title="Compare">
-																					<button class="product-btn">Compare</button>
-																				</div>
-																				<span class="product-quickview" data-title="Quick View">
-																					<a href="#" class="quickview quickview-button">Quick View <i class="icon-search"></i></a>
-																				</span>		
-																			</div>
-																		</div>
-																		<div class="products-content">
-																			<div class="contents text-center">
-																				<h3 class="product-title"><a href="shop-details.html">Chair Oak Matt Lacquered</a></h3>
-																				<div class="rating">
-																					<div class="star star-0"></div>
-																				</div>
-																				<span class="price">$150.00</span>
-																			</div>
-																		</div>
-																	</div>
-																</div>
-															</div>
-															<div class="item-product slick-slide">
-																<div class="items">
-																	<div class="products-entry clearfix product-wapper">
-																		<div class="products-thumb">
-																			<div class="product-lable">
-																				<div class="onsale">-33%</div>
-																			</div>
-																			<div class="product-thumb-hover">
-																				<a href="shop-details.html">
-																					<img width="600" height="600" src="/public/usernew/media/product/4.jpg" class="post-image" alt="">
-																					<img width="600" height="600" src="/public/usernew/media/product/4-2.jpg" class="hover-image back" alt="">
-																				</a>
-																			</div>		
-																			<div class="product-button">
-																				<div class="btn-add-to-cart" data-title="Add to cart">
-																					<a rel="nofollow" href="#" class="product-btn button">Add to cart</a>
-																				</div>
-																				<div class="btn-wishlist" data-title="Wishlist">
-																					<button class="product-btn">Add to wishlist</button>
-																				</div>
-																				<div class="btn-compare" data-title="Compare">
-																					<button class="product-btn">Compare</button>
-																				</div>
-																				<span class="product-quickview" data-title="Quick View">
-																					<a href="#" class="quickview quickview-button">Quick View <i class="icon-search"></i></a>
-																				</span>		
-																			</div>
-																		</div>
-																		<div class="products-content">
-																			<div class="contents text-center">
-																				<h3 class="product-title"><a href="shop-details.html">Pillar Dining Table Round</a></h3>
-																				<div class="rating">
-																					<div class="star star-5"></div>
-																				</div>
-																				<span class="price">
-																					<del aria-hidden="true"><span>$150.00</span></del> 
-																					<ins><span>$100.00</span></ins>
-																				</span>
-																			</div>
-																		</div>
-																	</div>
-																</div>
-															</div>
-															<div class="item-product slick-slide">
-																<div class="items">
-																	<div class="products-entry clearfix product-wapper">
-																		<div class="products-thumb">
-																			<div class="product-lable">
-																				<div class="onsale">-7%</div>
-																			</div>
-																			<div class="product-thumb-hover">
-																				<a href="shop-details.html">
-																					<img width="600" height="600" src="/public/usernew/media/product/5.jpg" class="post-image" alt="">
-																					<img width="600" height="600" src="/public/usernew/media/product/5-2.jpg" class="hover-image back" alt="">
-																				</a>
-																			</div>
-																			<div class="product-button">
-																				<div class="btn-add-to-cart" data-title="Add to cart">
-																					<a rel="nofollow" href="#" class="product-btn button">Add to cart</a>
-																				</div>
-																				<div class="btn-wishlist" data-title="Wishlist">
-																					<button class="product-btn">Add to wishlist</button>
-																				</div>
-																				<div class="btn-compare" data-title="Compare">
-																					<button class="product-btn">Compare</button>
-																				</div>
-																				<span class="product-quickview" data-title="Quick View">
-																					<a href="#" class="quickview quickview-button">Quick View <i class="icon-search"></i></a>
-																				</span>		
-																			</div>
-																			<div class="product-stock">    
-																				<span class="stock">Out Of Stock</span>
-																			</div>
-																		</div>
-																		<div class="products-content">
-																			<div class="contents text-center">
-																				<h3 class="product-title"><a href="shop-details.html">Amp Pendant Light Large</a></h3>
-																				<div class="rating">
-																					<div class="star star-4"></div>
-																				</div>
-																				<span class="price">
-																					<del aria-hidden="true"><span>$150.00</span></del> 
-																					<ins><span>$140.00</span></ins>
-																				</span>
-																			</div>
-																		</div>
-																	</div>
-																</div>
+															<div class="form-button">
+												      			<input type="submit" value="Submit" class="button"></span>
 															</div>
 														</div>
-													</div>
+													</form>
 												</div>
 											</div>
 										</div>
 									</div>
-								</div>
+								</section>
 							</div>
 						</div><!-- #content -->
 					</div><!-- #primary -->
 				</div><!-- #main-content -->
 			</div>
 
-			<footer id="site-footer" class="site-footer background">
+			<footer id="site-footer" class="site-footer m-t-0">
 				<div class="footer">
 					<div class="section-padding">
 						<div class="section-container">
@@ -1262,8 +722,8 @@
 											<h2 class="block-title">Newsletter</h2>
 											<div class="block-content">
 												<div class="newsletter-text">Enter your email below to be the first to know about new collections and product launches.</div>
-												<form action="#" method="" class="newsletter-form">
-													<input type="email" class="bg-white" name="your-email" value="" size="40" placeholder="Email address">
+												<form action="#" method="post" class="newsletter-form">
+													<input type="email" name="your-email" value="" size="40" placeholder="Email address">
 													<span class="btn-submit">
 														<input type="submit" value="Subscribe">
 													</span>
@@ -1271,7 +731,7 @@
 											</div>
 										</div>
 										<div class="block block-image">
-											<img width="309" height="32" src="/public/usernew/media/payments.png" alt="">
+											<img width="309" height="32" src="media/payments.png" alt="">
 										</div>
 									</div>
 								</div>
@@ -1523,6 +983,78 @@
 		    </div>
 		</div>
 
+		<!-- Quickview -->
+		<div class="quickview-popup">
+			<div id="quickview-container"> 
+				<div class="quickview-container"> 
+					<a href="#" class="quickview-close"></a> 
+					<div class="quickview-notices-wrapper"></div> 
+					<div class="product single-product product-type-simple">
+						<div class="product-detail">
+							<div class="row"> 
+								<div class="img-quickview"> 
+									<div class="product-images-slider">
+										<div id="quickview-slick-carousel"> 
+											<div class="images"> 
+												<div class="scroll-image">
+													<div class="slick-wrap">
+														<div class="slick-sliders image-additional" data-dots="true" data-columns4="1" data-columns3="1" data-columns2="1" data-columns1="1" data-columns="1" data-nav="true">
+															<div class="img-thumbnail slick-slide"> 
+																<a href="media/product/3.jpg" class="image-scroll" title="">
+																	<img width="900" height="900" src="media/product/3.jpg" alt="">
+																</a> 
+															</div>
+															<div class="img-thumbnail slick-slide"> 
+																<a href="media/product/3-2.jpg" class="image-scroll" title="">
+																	<img width="900" height="900" src="media/product/3-2.jpg" alt="">
+																</a> 
+															</div>
+														</div>
+													</div>
+												</div> 
+											</div> 
+										</div> 
+									</div> 
+								</div> 
+								<div class="quickview-single-info">
+									<div class="product-content-detail entry-summary">
+										<h1 class="product-title entry-title">Chair Oak Matt Lacquered</h1>
+										<div class="price-single">
+											<div class="price">
+												<del><span>$150.00</span></del>
+												<span>$100.00</span>
+											</div>
+										</div>
+										<div class="product-rating"> 
+											<div class="star-rating" role="img" aria-label="Rated 4.00 out of 5">
+												<span style="width:80%">Rated <strong class="rating">4.00</strong> out of 5 based on <span class="rating">1</span> customer rating</span>
+											</div> 
+											<a href="#" class="review-link">(<span class="count">1</span> customer review)</a> 
+										</div>
+										<div class="description"> 
+											<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore…</p> 
+										</div>
+										<form class="cart" method="post" enctype="multipart/form-data">
+											<div class="quantity-button">
+												<div class="quantity"> 
+													<button type="button" class="plus">+</button> 
+													<input type="number" class="input-text qty text" step="1" min="1" max="" name="quantity" value="1" title="Qty" size="4" placeholder="" inputmode="numeric" autocomplete="off"> 
+													<button type="button" class="minus">-</button> 
+												</div> 
+												<button type="submit" class="single-add-to-cart-button button alt">Add to cart</button> 
+											</div> 
+											<button class="button quick-buy">Buy It Now</button>
+										</form> 
+									</div> 
+								</div> 
+							</div> 
+						</div>
+					</div> 
+					<div class="clearfix"></div> 
+				</div> 
+			</div>
+		</div>
+
 		<!-- Page Loader -->
 		<div class="page-preloader">
 	    	<div class="loader">
@@ -1530,253 +1062,6 @@
 	    		<div></div>
 	    	</div>
 	    </div>
-
-
-		<!-- <script>
-
-			function addToCart(id) {
-			   
-							$.ajax({
-							  url: "/add-to-cart",
-							  method: "post",
-							  encoded: true,
-							  data: {
-								id: id,
-							  },
-							}).done((data) => {
-							  if (data) {
-								console.log('data',data);
-							   alert(data)
-							// swal('Item added to cart')
-							   
-							  }else{
-								
-								alert('failed')
-							  }
-							});
-						  }
-			  </script> -->
-
-			  <script>
-				function addToCart(id) {
-					$.ajax({
-						url: "/add-to-cart",
-						method: "post",
-						data: { id: id },
-					}).done((data) => {
-						if (data.outofstock) {
-							// alert('product is out of stock');
-							Swal.fire('product is out of stock')
-						} else if (data.success) {
-							Swal.fire('product added to cart')
-						} else {
-							Swal.fire('login to add')
-					
-						}
-					}).fail(() => {
-						alert('An error occurred');
-					});
-				}
-			</script>
-
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-<script>
-	function addtoWish(productId) {
-		event.preventDefault()
-   
-    $.ajax({
-        url: '/addToWish',
-        method: 'post',
-        data: {
-            proId: productId
-        },
-        success: (response) => {
-            if (response.success === true) { // Corrected from Response.success to response.success
-                Swal.fire({
-                    title: 'Success!',
-                    text: 'applied',
-                    icon: 'success',
-                    timer: 1500
-                });
-                $('#reloadDiv').load('/detail #reloadDiv');
-            }
-			else if(response.NoUser===true){
-              window.location = '/login'
-            }  else {
-                Swal.fire({
-                    title: 'oops..',
-                    text: response.message,
-                    icon: 'error',
-                    timer: 1500
-                });
-            }
-        },
-        error: (err) => {
-            console.log(err);
-            Swal.fire({
-                title: 'Error',
-                text: 'Something went wrong',
-                icon: 'error',
-                timer: 1500
-            });
-        }
-    });
-}
-
-</script>
-	
-			
-<!-- <script>
-    // Function to handle form submission
-    function submitForm() {
-        $.ajax({
-            url: '/submit_review',
-            method: 'POST',
-            contentType: 'application/json',
-        
-            success: (response) => {
-                
-                    const jsonResponse = JSON.parse(response);
-                    if (jsonResponse.success) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Success!',
-                            text: jsonResponse.message,
-                            onClose: () => {
-                                $('#comment-form').trigger("reset");
-                            }
-                        });
-                    } else if (jsonResponse.NoUser) {
-                        window.location = '/login';
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: jsonResponse.message,
-                        });
-                    }
-               
-            },
-      
-        });
-    }
-</script> -->
-<!-- <script>
-    // Function to handle form submission
-    function submitForm() {
-        $.ajax({
-            url: '/submit_review',
-            method: 'POST',
-            contentType: 'application/json',
-            success: (response) => {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success!',
-                    text: response,
-                    onClose: () => {
-                        $('#comment-form').trigger("reset");
-                    }
-                });
-            },
-            error: (err) => {
-                console.log(err);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Something went wrong',
-                });
-            }
-        });
-    }
-</script> -->
-
-<script>
-// Wait for the DOM to be ready
-document.addEventListener('DOMContentLoaded', function () {
-    // Variable to store the selected rating
-    let selectedRating;
-
-    // Add click event listeners to the star icons
-    document.querySelectorAll('.stars input[type="radio"]').forEach(function (star) {
-        star.addEventListener('click', function () {
-            // Set the value of the selected rating variable
-            selectedRating = parseInt(star.value);
-
-            // Log the selected rating to the console for debugging
-            console.log('Selected Rating: ' + selectedRating);
-
-            // Remove the "checked" attribute from all stars before the selected one
-            document.querySelectorAll('.stars input[type="radio"]:checked').forEach(function (checkedStar) {
-                checkedStar.removeAttribute('checked');
-            });
-
-            // Add the "checked" attribute to the selected star and previous stars
-            for (let i = 1; i <= selectedRating; i++) {
-                document.getElementById('star-' + i).setAttribute('checked', 'checked');
-            }
-        });
-    });
-
-    // Add an event listener to the form submission
-    document.getElementById('comment-form').addEventListener('submit', function (event) {
-        // Prevent the default form submission
-        event.preventDefault();
-
-        // Validate the rating
-        if (!selectedRating) {
-            Swal.fire('Please select a rating.');
-            return;
-        }
-
-        // Get other form data
-        const reviewText = document.getElementById('comment').value;
-
-        // Validate other fields if needed
-        const userId = document.getElementById('userId').value;
-        // Get the product ID dynamically (replace this with the actual way you retrieve the product ID)
-        const productId = document.getElementById('productId').value; // Assuming you have an input with id "productId"
-
-        // Prepare data for submission
-        const formData = {
-            productId: productId,
-            rating: selectedRating,
-            comment: reviewText,
-            userId: userId,
-        };
-
-        // Log the form data to the console for debugging
-        console.log(formData);
-
-        // Send the data to the server using Fetch API
-        fetch('/submit_review', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData),
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Handle the success response
-            if (data.success) {
-                Swal.fire('Success', data.message, 'success');
-                document.getElementById('comment-form').reset();
-            } else {
-                Swal.fire('Error', data.message, 'error');
-            }
-        })
-        .catch(error => {
-            // Handle the error response
-            console.error(error);
-            Swal.fire('Error', 'Internal server error', 'error');
-        });
-    });
-});
-
-
-</script>
-
 
 		<!-- Dependency Scripts -->
 		<script src="/public/usernew/libs/popper/js/popper.min.js"></script>
@@ -1789,11 +1074,10 @@ document.addEventListener('DOMContentLoaded', function () {
 		<script src="/public/usernew/libs/slider/js/jquery.dependClass-0.1.js"></script>
 		<script src="/public/usernew/libs/slider/js/draggable-0.1.js"></script>
 		<script src="/public/usernew/libs/slider/js/jquery.slider.js"></script>
-		<script src="/public/usernew/libs/elevatezoom/js/jquery.elevatezoom.js"></script>
 		
 		<!-- Site Scripts -->
 		<script src="/public/usernew/assets/js/app.js"></script>
 	</body>
 
-<!-- Mirrored from caketheme.com/html/ruper/shop-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2023 09:38:23 GMT -->
+<!-- Mirrored from caketheme.com/html/ruper/page-contact.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2023 09:38:20 GMT -->
 </html>

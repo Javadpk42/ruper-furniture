@@ -100,7 +100,13 @@ admin_route.get('/deletebanner/:id',adminAuth.isAdminLogin,adminController.delet
 
 admin_route.get('/salesreport',adminAuth.isAdminLogin,adminController.salesreportLoad)
 admin_route.post('/salesreport' , adminController.sortSalesReport)
-
- 
+// admin_route.get("/export-sales",  adminController.exportReport);
+admin_route.use((err,req, res, next) => {
+    res.status(500).render("500");
+  });
+  
+  admin_route.use((req, res, next)=>{
+    res.status(404).render("404");
+  })
 
 module.exports=admin_route;

@@ -56,7 +56,30 @@ discountedAmount: {
       required:true
     }
 
-  }
+  },
+  reviews: [
+    {
+      user: {
+        userId:{
+          type:String
+        },
+        username: {
+          type: String,
+        },
+       
+      },
+      rating: {
+        type: Number,
+      },
+      comment: {
+        type: String,
+      },
+      date: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+  ],
 
 })
 

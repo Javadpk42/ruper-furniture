@@ -567,10 +567,11 @@
 															<table>
 																<thead>
 																  <tr>
-																	<th>Date</th>
-																	<th>Amount</th>
-																	<th>Description</th>
-																	<th>Transaction Type</th>
+																	<th class="pr-5">Date</th>
+																	<th class="pr-5">Amount</th>
+																	<th class="pr-5">Description</th>
+																	<th class="pr-5">Type</th>
+																	
 																	<th>Balance</th>
 																  </tr>
 																</thead>
@@ -579,7 +580,7 @@
 																  <% walletHistory.forEach(entry => { %>
 																	<tr>
 																	  <td><%= entry.date %></td>
-																	  <td><%= entry.amount %></td>
+																	  <td><%= entry.amount.toFixed(2)  %></td>
 																	  <td><%= entry.description %></td>
 																	  <td><%= entry.transactionType %></td>
 																	  <% if (entry.transactionType === 'Debit') { %>
@@ -587,7 +588,8 @@
 																	  <% } else { %>
 																		<% balance += entry.amount; %>
 																	  <% } %>
-																	  <td><%= balance %></td>
+																	  
+																	  <td><%= balance.toFixed(2)  %></td>
 																	</tr>
 																  <% }); %>
 																</tbody>

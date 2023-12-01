@@ -243,6 +243,13 @@
                 </li>
               </ul>
             </li> -->
+
+            <form action="/admin/salesreport" method="get" class="d-inline">
+              <input type="hidden" name="export" value="csv">
+              <button type="submit" class="btn btn-primary">Export to CSV</button>
+            </form>
+            
+
           </ul>
         </div>
       </div>
@@ -269,50 +276,51 @@
               </div>
     <div class="card-body px-0 pb-2">
 
-       
+      
         
        
           
 
         <div class="table-responsive p-0">
-            <table class="table">
-                <thead>
-                  <tr>
-                    <th>Order ID</th>
-                    <th>Username</th>
-                    <th>Product</th>
-                    <th>Category</th>
-                    <th>Price</th>
-                    <th>Qty</th>
-                    <th>Order Date</th>
-                    <th>Time</th>
-                    <th>Payment Method</th>
-                    <th>Order Status</th>
-                    <th>Return Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                    <% orders.forEach(order => { %>
-                      <% order.cart.products.forEach(cartProduct => { %>
-                        <tr>
-                          <td><%= order._id %></td>
-                          <td><%= order.user.username %></td>
-                          <td><%= cartProduct.productId.product_name %></td>
-                          <td><%= cartProduct.productId.category %></td>
-                          <td>&#8377; <%= cartProduct.productId.product_price.toFixed(2) %></td>
-                          <td><%= cartProduct.quantity %></td>
-                          <td><%= order.orderDate.toDateString() %></td>
-                          <td><%= order.orderDate.toLocaleTimeString() %></td>
-                          <td><%= order.paymentOption %></td>
-                          <td><%= cartProduct.orderStatus %></td>
-                          <td><%= cartProduct.returnOrder.returnStatus %></td>
-                        </tr>
-                      <% }) %>
-                    <% }) %>
-                  </tbody>
-                  
-              </table>
-              
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Username</th>
+                <th>Product</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Qty</th>
+                <th>Order Date</th>
+                <th>Time</th>
+                <th>Payment Method</th>
+                <th>Order Status</th>
+                <th>Return Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% salesData.forEach(sale => { %>
+                <tr>
+                  <td><%= sale._id %></td>
+                  <td><%= sale.userData[0]?.username || '' %></td>
+                  <td><%= sale.productDetails[0]?.product_name || '' %></td>
+                  <td><%= sale.productDetails[0]?.category || '' %></td>
+                  <td>&#8377; <%= sale.cart.products.price.toFixed(2) || '' %></td>
+                  <td><%= sale.cart.products.quantity  || '' %></td>
+                  <!-- Add other columns as needed -->
+                  <td><%= sale.orderDate.toDateString() %></td>
+                <td><%= sale.orderDate.toLocaleTimeString() %></td>
+                <td><%= sale.paymentOption || '' %></td>
+                <td><%= sale.cart.products.orderStatus || '' %></td>
+                <td><%= sale.cart.products[0]?.returnOrder?.returnStatus || '' %></td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+          
+          
+          
+          
        </div>
        
 
@@ -328,7 +336,7 @@
 </div>
 
 
-      <footer class="footer py-4  ">
+      <!-- <footer class="footer py-4  ">
         <div class="container-fluid">
           <div class="row align-items-center justify-content-lg-between">
             <div class="col-lg-6 mb-lg-0 mb-4">
@@ -359,7 +367,7 @@
             </div>
           </div>
         </div>
-      </footer>
+      </footer> -->
     </div>
   </main>
   <div class="fixed-plugin">

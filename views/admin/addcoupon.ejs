@@ -506,16 +506,20 @@
         const discountInput = document.getElementById('discountPercentage');
         const startDateInput = document.getElementById('startDate');
         const expiryDateInput = document.getElementById('expiryDate');
+        const minPurchaseInput = document.getElementById('minPurchaseAmount');
   
         const codeError = document.getElementById('codeError');
         const discountError = document.getElementById('discountError');
         const startDateError = document.getElementById('startDateError');
         const expiryDateError = document.getElementById('expiryDateError');
+        const minPurchaseAmountError= document.getElementById('minPurchaseAmounterror');
+
   
         codeError.textContent = '';
         discountError.textContent = '';
         startDateError.textContent = '';
         expiryDateError.textContent = '';
+        minPurchaseAmountError.textContent = '';
   
         let isValid = true;
   
@@ -538,7 +542,10 @@
           expiryDateError.textContent = 'Expiry Date is required';
           isValid = false;
         }
-  
+        if (minPurchaseInput.value.trim() === '') {
+          minPurchaseAmountError.textContent = 'Min purchase amount is required';
+          isValid = false;
+        }
         return isValid;
       }
     });

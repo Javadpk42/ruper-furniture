@@ -65,7 +65,30 @@ const homeLoad = async (req, res,next) => {
     next(error); 
   }
 }
-
+const aboutLoad = async (req, res,next) => {
+  try {
+    
+    res.render('about')
+  } catch (error) {
+    next(error); 
+  }
+}
+const faqLoad = async (req, res,next) => {
+  try {
+    
+    res.render('faq')
+  } catch (error) {
+    next(error); 
+  }
+}
+const contactLoad = async (req, res,next) => {
+  try {
+    
+    res.render('contact')
+  } catch (error) {
+    next(error); 
+  }
+}
 //registration
 
 //load registration
@@ -722,7 +745,7 @@ const orderDetails = async (req, res) => {
 const cancelOrderAjax = async (req, res) => {
   try {
     const orderId = req.params.orderId;
-    const returnReason = req.body.reason;
+    // const returnReason = req.body.reason;
     console.log(orderId);
 
     // Find the order in the database
@@ -747,10 +770,58 @@ const cancelOrderAjax = async (req, res) => {
         product._id.toString() === orderId &&
         (product.orderStatus === 'Placed' || product.orderStatus === 'Shipped' || product.orderStatus === 'Out for delivery')
       ) {
-        const refundedAmount = product.productId.product_price;
+        // const refundedAmount = product.productId.product_price;
+       
+        let refundedAmount;
 
+        if (order.couponDiscount > 0) {
+            // Calculate proportionate refund for the coupon discount
+            const totalPrice = order.totalAmount;
+            console.log(totalPrice)
+            const canceledProductPrice = product.price; 
+            console.log(canceledProductPrice)// Assuming product.price is the price of the canceled product
+            // const refundPercentage = canceledProductPrice / totalPrice;
+            // console.log(refundPercentage)
+           const productdiscount = (canceledProductPrice * order.couponDiscount)/100;
+           console.log(productdiscount)
+            refundedAmount = canceledProductPrice - productdiscount;
+            console.log(refundedAmount)
+        } else {
+            refundedAmount = product.price;
+        }
+//         const updatedTotalAmount = order.totalAmount - product.price;
+// console.log(updatedTotalAmount)
+// let minPurchaseAmount=10000
+//         if (updatedTotalAmount < minPurchaseAmount) {
+//             // Reduce refundedAmount by the coupon discount for each canceled product
+//             let minusdiscount=(order.couponDiscount*updatedTotalAmount)/100
+//             console.log(minusdiscount)
+//             const canceledProductPrice = product.price; 
+            
+//             console.log(canceledProductPrice)// Assuming product.price is the price of the canceled product
+//             // const refundPercentage = canceledProductPrice / totalPrice;
+//             // console.log(refundPercentage)
+//            const productdiscount = (canceledProductPrice * order.couponDiscount)/100;
+//             refundedAmount = minusdiscount-productdiscount;
+//             console.log(refundedAmount)
+//         }
+        
+
+        // const updatedTotalAmount = order.totalAmount - refundedAmount;
+
+        // if (updatedTotalAmount < minPurchaseAmount) {
+        //     // Calculate the percentage reduction in total amount
+        //     const reductionPercentage = updatedTotalAmount / order.totalAmount;
+        
+        //     // Reduce refundedAmount by the coupon discount proportionally
+        //     const reducedCouponDiscount = order.couponDiscount * reductionPercentage;
+        //     refundedAmount -= reducedCouponDiscount;
+        // }
+
+                
         if (order.paymentOption === 'Razorpay' || order.paymentOption === 'Wallet') {
           // Refund the amount to the user's wallet
+        
           await userModel.findByIdAndUpdate(
             { _id: order.user },
             {
@@ -1123,9 +1194,68 @@ const deleteAddress = async (req, res) => {
 
 
 
+// const shopLoad = async (req, res) => {
+//   try {
+//     const { search, category: selectedCategory } = req.query;
+//     const page = parseInt(req.query.page) || 1;
+//     const limit = 6;
+
+//     // Fetch categories
+//     const categories = await Category.find({ is_listed: true });
+
+//     // Construct the filter criteria based on search and category
+//     const filterCriteria = {
+//       is_listed: true,
+//     };
+
+//     if (search) {
+//       filterCriteria.$or = [
+//         { product_name: { $regex: '.*' + search + '.*', $options: 'i' } },
+//         { category: { $regex: '.*' + search + '.*', $options: 'i' } },
+//       ];
+//     }
+
+//     if (selectedCategory) {
+//       filterCriteria.category = { $regex: '.*' + selectedCategory + '.*', $options: 'i' };
+//     }
+
+//     // Fetch products based on search, filter, and pagination
+//     const products = await Product.find(filterCriteria)
+//       .skip((page - 1) * limit)
+//       .limit(limit);
+
+//     const count = await Product.find(filterCriteria).countDocuments();
+
+//     const totalPages = Math.ceil(count / limit);
+
+//     const allProducts = await Product.find(filterCriteria);
+//     const totalRatings = allProducts.reduce((sum, product) => {
+//       const productTotalRatings = product.reviews.reduce((sum, review) => sum + review.rating, 0);
+//       return sum + productTotalRatings;
+//     }, 0);
+
+//     const averageRating = allProducts.length > 0 ? totalRatings / allProducts.length : 0;
+
+
+//     res.render('shop', {
+//       categories,
+//       products,
+//       search,
+//       selectedCategory,
+//       currentPage: page,
+//       totalPages,
+//       user: req.session.user_id,
+//       averageRating
+//     });
+//   } catch (error) {
+//     console.log(error.message);
+//     res.status(500).send('Internal Server Error');
+//   }
+// };
+
 const shopLoad = async (req, res) => {
   try {
-    const { search, category: selectedCategory } = req.query;
+    const { search, category: selectedCategory, sort } = req.query;
     const page = parseInt(req.query.page) || 1;
     const limit = 6;
 
@@ -1148,14 +1278,34 @@ const shopLoad = async (req, res) => {
       filterCriteria.category = { $regex: '.*' + selectedCategory + '.*', $options: 'i' };
     }
 
-    // Fetch products based on search, filter, and pagination
-    const products = await Product.find(filterCriteria)
+    // Sort products based on the selected option
+    let sortOption = {};
+
+    if (sort === 'lowtohigh') {
+      sortOption = { product_price: 1 };
+    } else if (sort === 'hightolow') {
+      sortOption = { product_price: -1 };
+    }
+
+    // Fetch products based on search, filter, sorting, and pagination
+    const productsQuery = Product.find(filterCriteria)
+      .sort(sortOption)
       .skip((page - 1) * limit)
       .limit(limit);
 
-    const count = await Product.find(filterCriteria).countDocuments();
+    const countQuery = Product.find(filterCriteria).countDocuments();
+
+    const [products, count] = await Promise.all([productsQuery, countQuery]);
 
     const totalPages = Math.ceil(count / limit);
+
+    // Calculate average rating
+    const totalRatings = products.reduce((sum, product) => {
+      const productTotalRatings = product.reviews.reduce((sum, review) => sum + review.rating, 0);
+      return sum + productTotalRatings;
+    }, 0);
+
+    const averageRating = count > 0 ? totalRatings / count : 0;
 
     res.render('shop', {
       categories,
@@ -1165,6 +1315,8 @@ const shopLoad = async (req, res) => {
       currentPage: page,
       totalPages,
       user: req.session.user_id,
+      averageRating,
+      currentSort: sort, // Pass the current sorting option to the view
     });
   } catch (error) {
     console.log(error.message);
@@ -1182,9 +1334,12 @@ const shopdetailsLoad = async (req, res) => {
 
     // Fetch the product details based on productId
     const product = await Product.findById(productId);
+    const totalRatings = product.reviews.reduce((sum, review) => sum + review.rating, 0);
+    const averageRating = product.reviews.length > 0 ? totalRatings / product.reviews.length : 0;
+
 
     // Render the shopdetails template with the product data
-    res.render('shopdetails', { product, user: req.session.user_id });
+    res.render('shopdetails', { product, user: req.session.user_id ,averageRating});
   } catch (error) {
     console.log(error.message);
     // Handle errors, e.g., render an error page
@@ -1314,7 +1469,7 @@ const addToCart = async (req, res) => {
           quantity: 1,
         });
       }
-
+      req.session.cart_count += 1;
       // Save the updated cart
       await userCart.save();
 
@@ -1587,7 +1742,17 @@ const applyCoupon = async (req, res, next) => {
 
     // Calculate total
     cart.products.forEach((product) => {
-      total += product.quantity * product.productId.product_price;
+      // total += product.quantity * product.productId.product_price;
+      let priceToUse = product.productId.product_price;
+    
+      // Check if discountedAmount is greater than 0
+      if (product.productId.discountedAmount > 0) {
+        // Calculate the price with the discounted amount
+        priceToUse = product.productId.discountedAmount;
+      }
+    
+      // Update the total with the adjusted price
+      total += product.quantity * priceToUse;
     });
 
     const couponCode = req.body.couponCode;
@@ -1606,10 +1771,12 @@ const applyCoupon = async (req, res, next) => {
           console.log('Total does not meet the minimum purchase requirement.');
           return res.redirect('/checkout?error=insufficient-purchase');
         }
-
+console.log(total)
         // Coupon is valid, apply discount to the total
         const discountAmount = (total * coupon.discountPercentage) / 100;
+        console.log(discountAmount)
         total -= discountAmount;
+        console.log(total)
         req.session.total=total
 
 
@@ -2310,8 +2477,9 @@ const verifyWalletpayment = async (req, res) => {
 const loadWishlist = async (req, res,next) => {
   try {
       
-      const wishlist = await Wishlist.findOne({ user: req.session.userid }).populate('products.productId')
-      res.render('wishlist', { session: req.session.userid, wish: wishlist })
+      const wishlist = await Wishlist.findOne({ user: req.session.user_id }).populate('products.productId')
+      console.log(wishlist)
+      res.render('wishlist', { session: req.session.user_id, wish: wishlist })
 
   } catch (err) {
       next(err)
@@ -2321,7 +2489,7 @@ const loadWishlist = async (req, res,next) => {
 const addWishlist=async(req,res,next)=>{
   try {
       const product = req.body.proId
-      const userId = req.session.userid
+      const userId = req.session.user_id
 
       if(userId===undefined){
           res.json({ NoUser: true})
@@ -2352,11 +2520,13 @@ const addWishlist=async(req,res,next)=>{
                   productId: product
               }]
           })
-             console.log(wishlist);
+
           const newWish = await wishlist.save()
         
         
           if (newWish) {
+              req.session.wishlist_count += 1;
+
               res.json({ success: true })
           } else {
               res.json({ success: false, message: 'Something went wrong' })
@@ -2374,16 +2544,16 @@ const deleteWishlist = async (req , res , next) => {
   try {
 
       const productId = req.body.proId
-      const wishData = await Wishlist.findOne({ user : req.session.userid })
+      const wishData = await Wishlist.findOne({ user : req.session.user_id })
       console.log(wishData);
       console.log(wishData.products.length);
 
       if(wishData.products.length === 1) {
-          await Wishlist.deleteOne({ user : req.session.userid})
+          await Wishlist.deleteOne({ user : req.session.user_id})
           
           res.json({ success : true })
       }else{
-          await Wishlist.findOneAndUpdate({ user : req.session.userid } , {
+          await Wishlist.findOneAndUpdate({ user : req.session.user_id } , {
               $pull : { products : { productId : productId }}
           })
 
@@ -2395,9 +2565,149 @@ const deleteWishlist = async (req , res , next) => {
   }
 }
 
+// const submitReview = async (req, res) => {
+//   try {
+//       console.log("Start of submitReview function");
+
+//       const { productId, rating, comment, userId } = req.body;
+//       console.log("Destructured variables:", { productId, rating, comment, userId });
+
+//       // Validate rating
+//       console.log("Validating rating");
+//       if (rating < 1 || rating > 5) {
+//           return res.json({ success: false, message: 'Invalid rating. Please select a rating between 1 and 5.' });
+//       }
+
+//       // Find the product by ID
+//       console.log("Finding product by ID");
+//       const product = await Product.findById(productId);
+
+//       if (!product) {
+//           console.log("Product not found");
+//           return res.json({ success: false, message: 'Product not found.' });
+//       }
+
+//       // Check if the user with the provided userId exists
+//       const user = await userModel.findById(userId);
+
+//       if (!user) {
+//           console.log("User not found");
+//           return res.json({ success: false, message: 'User not found.' });
+//       }
+
+//       const existingReview = product.reviews.find(review => review.user.userId === userId);
+
+//       if (existingReview) {
+//           console.log("User has already reviewed the product");
+//           return res.json({ success: false, message: 'You have already reviewed this product.' });
+//       }
+
+//       // Check if the user has a delivered order for the product
+//       const deliveredOrder = await Order.findOne({
+//           user: userId,
+//           'products.product_Id': productId,
+//           'products.status': 'Delivered',
+//       });
+
+//       if (!deliveredOrder) {
+//           console.log("User has not received the product yet");
+//           return res.json({ success: false, message: 'You can only review or rate a product after receiving it.' });
+//       }
+//       console.log(deliveredOrder)
+
+//       // Add the review to the product's reviews array
+//       console.log("Adding review to product's reviews array");
+//       product.reviews.push({
+          
+//           user: {
+//               userId: userId,
+//               firstName: user.firstName,
+//               lastName: user.lastName,
+//           },
+//           rating,
+//           comment,
+//           date: new Date(),
+//       });
+
+//       console.log("Updated product with review:", product);
+
+//       // Save the updated product with the new review
+//       console.log("Saving updated product");
+//       await product.save();
+
+//       console.log("Review submitted successfully!");
+//       res.json({ success: true, message: 'Review submitted successfully!' });
+//   } catch (error) {
+//       console.error("Error:", error);
+//       res.status(500).json({ success: false, message: 'Internal server error' });
+//   }
+// };
+
+const submitReview = async (req, res, next) => { 
+  try {
+    console.log("entered")
+    console.log(req.body)
+    const { productId, rating, comment, userId } = req.body;
+
+    if (rating < 1 || rating > 5) {
+      return res.json({ success: false, message: 'Invalid rating. Please select a rating between 1 and 5.' });
+    }
+
+    const product = await Product.findById(productId);
+
+    if (!product) {
+      console.log("Product not found");
+      return res.json({ success: false, message: 'Product not found.' });
+    }
+
+    const user = await userModel.findById(userId);
+
+    if (!user) {
+      console.log("User not found");
+      return res.json({ success: false, message: 'Login to review.' });
+    }
+
+    const existingReview = product.reviews.find(review => review.user.userId === userId);
+
+    if (existingReview) {
+      return res.json({ success: false, message: 'You have already reviewed this product.' });
+    }
+
+    const deliveredOrder = await Order.findOne({
+      'cart.products.productId': productId,
+      'cart.products.orderStatus': 'Delivered',
+      'user': userId,
+    });
+
+    if (!deliveredOrder) {
+      return res.json({ success: false, message: 'You can only review or rate a product after receiving it.' });
+    }
+
+    product.reviews.push({
+      user: {
+        userId: userId,
+        username: user.username,
+      },
+      rating,
+      comment,
+      date: new Date(),
+    });
+
+    await product.save();
+
+    res.json({ success: true, message: 'Review submitted successfully!' });
+  } catch (err) {
+    next(err);
+  }
+};
+
+ 
 
 module.exports = {
   homeLoad,
+  aboutLoad,
+  faqLoad,
+  contactLoad,
 
   loadSignup,
   loadOtp,
@@ -2452,7 +2762,9 @@ module.exports = {
 
   loadWishlist,
   addWishlist,
-  deleteWishlist
+  deleteWishlist,
+
+  submitReview
 
   
   

@@ -447,7 +447,7 @@
        }
      }).done((response)=>{
        if(response.success){
-        
+        location.reload()
          $("#reloadDiv").load("/admin/category-offers #reloadDiv")
        }else{
          alert('failed')

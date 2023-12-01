@@ -18,6 +18,7 @@ const Product = require('../model/productModel').product;
 const bcrypt=require('bcrypt');
 const { name } = require('ejs');
 const fs = require('fs');
+const { Parser } = require('json2csv');
 const moment = require('moment');
 
 const path=require("path")
@@ -518,6 +519,8 @@ const updateReturnStatus = async (req, res) => {
     
     const productId = req.params.orderId;
     const newStatus = req.body.returnstatus;
+    console.log(productId)
+    console.log(newStatus)
 
     // Find the order containing the product
     const order = await Order.findOne({ 'cart.products._id': new mongoose.Types.ObjectId(productId) });
@@ -547,11 +550,12 @@ const updateReturnStatus = async (req, res) => {
           product.returnOrder.statusLevel = 4;
 
           // Fetch the product by ID to get its price
-          const refundedProduct = await Product.findById(product.productId);
+          // const refundedProduct = await Product.findById(product.productId);
+          const refundedProduct= product
 
           // Increase user's wallet balance
           const user = await userModel.findById(order.user);
-          const refundAmount = refundedProduct.product_price;
+          const refundAmount = refundedProduct.price;
           user.wallet += refundAmount;
           await user.save();
 
@@ -918,7 +922,7 @@ const loaddashboard = async (req, res, next) => {
 
     const totalUsers = await userModel.countDocuments();
     // console.log("Total Users:", totalUsers);
-
+    const totalOrders=await Order.countDocuments()
   
     const paymentMethodsData = await Order.aggregate([
       {
@@ -929,7 +933,7 @@ const loaddashboard = async (req, res, next) => {
       },
     ]);
     
-    console.log("Payment Methods Data:", paymentMethodsData);
+    // console.log("Payment Methods Data:", paymentMethodsData);
     
     const paymentMethodsLabels = paymentMethodsData.map(method => method._id);
     const paymentMethodsCount = paymentMethodsData.map(method => method.count);
@@ -951,7 +955,7 @@ const loaddashboard = async (req, res, next) => {
 
     const totalAllOrdersRevenue = allOrdersRevenue.length > 0 ? allOrdersRevenue[0].totalAmount : 0;
     // console.log("Total All Orders Revenue:", totalAllOrdersRevenue);
-
+    const averageOrderValue =totalAllOrdersRevenue > 0 ? totalAllOrdersRevenue / totalOrders : 0;
 //
     const revenueOrders = await Order.aggregate([
       {
@@ -1097,7 +1101,7 @@ console.log("All Category Labels:", allCategoryLabels);
 // Take only the top 4 categories
 const top4Categories = sortedCategories.slice(0, 4);
 
-console.log("Top 4 Categories:", top4Categories);
+// console.log("Top 4 Categories:", top4Categories);
 
 const categoryLabels = top4Categories.map(category => category.name);
 const categoryRevenues = top4Categories.map(category => category.revenue);
@@ -1120,9 +1124,9 @@ const weeklyrevenueOrders = await Order.aggregate([
       ],
     },
   },
-  {
-    $unwind: "$cart.products",
-  },
+  // {
+  //   $unwind: "$cart.products",
+  // },
   {
     $group: {
       _id: { $dateToString: { format: "%Y-%m-%d", date: "$orderDate" } },
@@ -1135,6 +1139,8 @@ const weeklyrevenueOrders = await Order.aggregate([
     },
   },
 ]);
+
+console.log('wwwwww',weeklyrevenueOrders)
 
 // Generate an array of all days of the last 7 days
 const allDaysOfLastWeek = [];
@@ -1157,8 +1163,8 @@ const formattedWeeklyRevenueChartData = allDaysOfLastWeek.map(day => {
 const weeklyRevenueLabels = formattedWeeklyRevenueChartData.map(entry => entry.date);
 const weeklyRevenueData = formattedWeeklyRevenueChartData.map(entry => entry.amount);
 
-// console.log(weeklyRevenueData);
-// console.log(weeklyRevenueLabels);
+console.log(weeklyRevenueData);
+console.log(weeklyRevenueLabels);
 
 
 
@@ -1298,6 +1304,8 @@ const yearlyRevenueData = formattedFiveYearsRevenueChartData.map(entry => entry.
 res.render('dashboard', {
   totalUsers,
   totalRevenue,
+  totalOrders,
+  averageOrderValue,
   paymentMethodsCount,
   paymentMethodsLabels,
   productLabels,
@@ -1870,20 +1878,105 @@ const deleteBanner = async (req, res) => {
 //   }
 // };
 
+// const salesreportLoad = async (req, res, next) => {
+//   try {
+//     const orders = await Order.find({
+//       $or: [
+//         { 'paymentOption': 'COD', 'cart.products.orderStatus': 'Delivered', 'status': true },
+//         { 'paymentOption': { $in: ['Wallet', 'Razorpay'] }, 'status': true },
+//       ],
+//     })
+//       .populate('cart.products.productId')
+//       .populate('user');
+
+//     res.render('salesreport', { 
+//       orders,
+//     });
+
+//   } catch (err) {
+//     console.log(err.message);
+//     // Handle error appropriately
+//     next(err);
+//   }
+// };
+
+
 const salesreportLoad = async (req, res, next) => {
   try {
-    const orders = await Order.find({
-      $or: [
-        { 'paymentOption': 'COD', 'cart.products.orderStatus': 'Delivered', 'status': true },
-        { 'paymentOption': { $in: ['Wallet', 'Razorpay'] }, 'status': true },
-      ],
-    })
-      .populate('cart.products.productId')
-      .populate('user');
+    const salesData = await Order.aggregate([
+      {
+        $match: {
+          $or: [
+            { 'paymentOption': 'COD', 'cart.products.orderStatus': 'Delivered', 'status': true },
+            { 'paymentOption': { $in: ['Wallet', 'Razorpay'] }, 'status': true },
+          ],
+        },
+      },
+      {
+        $unwind: "$cart.products",
+      },
+      {
+        $lookup: {
+          from: 'products', // Assuming your products collection is named 'products'
+          localField: 'cart.products.productId',
+          foreignField: '_id',
+          as: 'productDetails',
+        },
+      },
+      {
+        $lookup: {
+          from: 'users', // Assuming your users collection is named 'users'
+          localField: 'user',
+          foreignField: '_id',
+          as: 'userData',
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          orderDate: 1,
+          totalAmount: 1,
+          paymentOption: 1,
+          'cart.products.productId': 1,
+          'cart.products.orderStatus': 1,
+          'cart.products.quantity': 1,
+          'cart.products.price': 1, // Include price in the projection
+          'productDetails.product_name': 1,
+          'productDetails.category': 1,
+          'productDetails.product_price': 1,
+          'userData.username': 1,
+        },
+      },
+    ]);
+    
+   
+    
 
-    res.render('salesreport', { 
-      orders,
-    });
+    if (req.query.export === 'csv') {
+      console.log("ahfsdff")
+      const excelData = salesData.map(order => ({
+        'Order ID': order._id,
+        'Username': order.userData[0]?.username || '',
+        'Product': order.productDetails[0]?.product_name || '',
+        'Category': order.productDetails[0]?.category || '',
+        'Price': `₹${order.cart.products.price.toFixed(2) || ''}`,
+        'Quantity': order.cart.products.quantity || '',
+        'Order Date': order.orderDate.toDateString(),
+        'Time': order.orderDate.toLocaleTimeString(),
+        'Payment Method': order.paymentOption || '',
+        'Order Status': order.cart.products.orderStatus || '',
+        'Return Status': order.cart.products[0]?.returnOrder?.returnStatus || '',
+      }));
+
+      const json2csvParser = new Parser();
+      const excel = json2csvParser.parse(excelData);
+
+      res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+      res.setHeader('Content-Disposition', 'attachment; filename=sales-report.csv');
+      res.status(200).send(excel);
+    }  else {
+      res.render('salesreport', { salesData });
+    }
 
   } catch (err) {
     console.log(err.message);
@@ -1892,6 +1985,84 @@ const salesreportLoad = async (req, res, next) => {
   }
 };
 
+
+// const exportReport = async (req, res) => {
+//   try {
+//     const orders = await Order.find().sort({ createdAt: -1 });
+//     console.log(orders);
+
+//     // Transform the data to the format needed for CSV
+//     const csvData = orders.map(order => {
+//       const orderDate = order.createdAt ? order.createdAt.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).replace(/\//g, '-') : '';
+//       const productStatus = order.products && order.products.length > 0 && order.products[0].status ? order.products[0].status : '';
+//       console.log(orderDate);
+//       console.log(productStatus);
+
+//       return {
+//         'Order Id': order._id,
+//         'Order Date': orderDate,
+//         'Amount': order.totalAmount,
+//         'Payment': order.paymentMethod,
+//         'Payment Status': order.paymentStatus,
+//         'Status': productStatus,
+//       };
+//     });
+
+//     const json2csvParser = new Parser();
+//     const csv = json2csvParser.parse(csvData);
+
+//     res.setHeader('Content-Type', 'text/csv');
+//     res.setHeader('Content-Disposition', 'attachment; filename=sales-report.csv');
+//     res.status(200).send(csv);
+//   } catch (error) {
+//     console.log(error.message);
+//     res.status(500).send('Internal Server Error');
+//   }
+// };
+
+
+
+
+// const sortSalesReport = async (req, res, next) => {
+//   try {
+//     let fromDate = req.body.startDate ? new Date(req.body.startDate) : null;
+//     fromDate.setHours(0, 0, 0, 0);
+//     let toDate = req.body.endDate ? new Date(req.body.endDate) : null;
+//     toDate.setHours(23, 59, 59, 999);
+
+//     const currentDate = new Date();
+
+//     if (fromDate && toDate) {
+//       if (toDate < fromDate) {
+//         const temp = fromDate;
+//         fromDate = toDate;
+//         toDate = temp;
+//       }
+//     } else if (fromDate) {
+//       toDate = currentDate;
+//     } else if (toDate) {
+//       fromDate = currentDate;
+//     }
+
+//     const orders = await Order.find({
+//       $or: [
+//         { 'paymentOption': 'COD', 'cart.products.orderStatus': 'Delivered', 'status': true },
+//         { 'paymentOption': { $in: ['Wallet', 'Razorpay'] }, 'status': true },
+//       ],
+//       orderDate: { $gte: fromDate, $lte: toDate },
+//     })
+//     .populate('cart.products.productId')
+//     .populate('user');
+
+//     res.render('salesreport', {
+//       orders,
+//     });
+//   } catch (err) {
+//     console.log(err.message);
+//     // Handle error appropriately
+//     next(err);
+//   }
+// };
 
 const sortSalesReport = async (req, res, next) => {
   try {
@@ -1914,26 +2085,61 @@ const sortSalesReport = async (req, res, next) => {
       fromDate = currentDate;
     }
 
-    const orders = await Order.find({
-      $or: [
-        { 'paymentOption': 'COD', 'cart.products.orderStatus': 'Delivered', 'status': true },
-        { 'paymentOption': { $in: ['Wallet', 'Razorpay'] }, 'status': true },
-      ],
-      orderDate: { $gte: fromDate, $lte: toDate },
-    })
-    .populate('cart.products.productId')
-    .populate('user');
+    const salesData = await Order.aggregate([
+      {
+        $match: {
+          $or: [
+            { 'paymentOption': 'COD', 'cart.products.orderStatus': 'Delivered', 'status': true },
+            { 'paymentOption': { $in: ['Wallet', 'Razorpay'] }, 'status': true },
+          ],
+          orderDate: { $gte: fromDate, $lte: toDate },
+        },
+      },
+      {
+        $unwind: "$cart.products",
+      },
+      {
+        $lookup: {
+          from: 'products',
+          localField: 'cart.products.productId',
+          foreignField: '_id',
+          as: 'productDetails',
+        },
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'user',
+          foreignField: '_id',
+          as: 'userData',
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          orderDate: 1,
+          totalAmount: 1,
+          paymentOption: 1,
+          'cart.products.productId': 1,
+          'cart.products.orderStatus': 1,
+          'cart.products.quantity': 1,
+          'cart.products.price': 1,
+          'productDetails.product_name': 1,
+          'productDetails.category': 1,
+          'productDetails.product_price': 1,
+          'userData.username': 1,
+        },
+      },
+    ]);
 
-    res.render('salesreport', {
-      orders,
-    });
+    res.render('salesreport', { salesData });
+
   } catch (err) {
     console.log(err.message);
     // Handle error appropriately
     next(err);
   }
 };
-
 
 
 
@@ -1981,7 +2187,8 @@ module.exports={
     deleteBanner,
 
     salesreportLoad,
-    sortSalesReport
+    sortSalesReport,
+    // exportReport
 
    
    

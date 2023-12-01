@@ -271,10 +271,32 @@
             </div>
             <div class="card-body px-0 pb-2">
              
-
+              <form id="productOfferForm" action="/admin/product-addoffer" method="post" onsubmit="return validateProductOfferForm();">
+                <div class="form-group col-sm-12 mb-3">
+                  <label for="product">Select Product:</label>
+                  <select name="productId" id="product" class="form-control custom-select" >
+                    <option value="" disabled selected>Select Product</option>
+                    <% for(i in products){ %>
+                      <option value="<%= products[i]._id %>" <% if(products[i].block==1){ %>disabled<%}%> ><%= products[i].product_name %></option>
+                    <% } %>
+                  </select>
+                  <p id="product-error" class="error-message"></p>
+                </div>
+              
+                <div class="form-group">
+                  <label for="discount">Discount Percentage:</label>
+                  <input type="text" name="discount" id="discount" class="form-control" >
+                  <p id="discount-error" class="error-message"></p>
+                </div>
+              
+                <div class="mt-4">
+                  <button type="submit" class="btn btn-primary" >Add Offer</button>
+                </div>
+              </form>
+              
 
               
-            
+<!--             
                 <form action="/admin/product-addoffer" method="post">
                     <div class="form-group col-sm-12 mb-3">
                         <label for="product">Select Product:</label>
@@ -295,7 +317,7 @@
                     <div class="mt-4">
                         <button type="submit" class="btn btn-primary">Add Offer</button>
                     </div>
-                </form>
+                </form> -->
             
 
 
@@ -403,7 +425,41 @@
   <script src="/public/admin/js/material-dashboard.min.js?v=3.0.0"></script>
 
  
-  
+  <script>
+    function validateProductOfferForm() {
+  const productId = document.getElementById('product').value;
+  const discount = document.getElementById('discount').value;
+
+  // Clear previous error messages
+  document.getElementById('product-error').textContent = '';
+  document.getElementById('discount-error').textContent = '';
+
+  // Validate product selection
+  if (productId === '' || productId === null) {
+    document.getElementById('product-error').textContent = 'Select a valid product.';
+    return false;
+  }
+
+  // Validate discount
+  if (!discount || isNaN(discount) || parseFloat(discount) <= 0 || parseFloat(discount) > 100) {
+    document.getElementById('discount-error').textContent = 'Enter a valid discount percentage (between 0 and 100).';
+    return false;
+  }
+
+  return true; // Return true if validation passes, false otherwise
+}
+
+  </script>
+
+<style>
+  .error-message {
+      color: red;
+      font-size: 14px;
+      margin-top: 5px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-weight: bold;
+  }
+</style>
 
 
   <%-include("../adminlayouts/footer.ejs")-%>

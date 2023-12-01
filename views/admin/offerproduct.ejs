@@ -458,7 +458,7 @@
        }
      }).done((response)=>{
        if(response.success){
-        
+        location.reload()
          $("#reloadDiv").load("/admin/product-offers #reloadDiv")
        }else{
          alert('failed')

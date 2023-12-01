@@ -8,10 +8,16 @@ user_route.use(express.urlencoded({ extended: true }));//common
 user_route.set('views','./views/user')
 
 const userAuth = require('../middlewares/userAuth')
+
+const fetchCartData = require('../middlewares/cartCount');
 const userController=require('../controllers/userController')
+user_route.use(fetchCartData); 
 
 
 user_route.get('/',userController.homeLoad) 
+user_route.get('/about',userController.aboutLoad) 
+user_route.get('/faq',userController.faqLoad) 
+user_route.get('/contact',userController.contactLoad) 
 
 user_route.get('/signup',userController.loadSignup);
 user_route.post('/signup',userController.sendOtp);
@@ -31,7 +37,7 @@ user_route.post('/resetpassword',userController.resetPassword)
  
 user_route.get('/profile',userController.profileLoad)
 
-user_route.get('/wallethistory', userController.loadwalletHistory) 
+user_route.get('/wallethistory',userAuth.isUserLogin,userController.loadwalletHistory) 
 user_route.get('/add_wallet', userController.loadaddwallet)  
 user_route.post('/add_wallet',userController.addMoneyWallet)
 user_route.post('/verify_wallet',userController.verifyWalletpayment)
@@ -72,16 +78,26 @@ user_route.get('/orderplaced',userAuth.isUserLogin, userController.orderPlaced)
 
 user_route.post('/addToWish',userController.addWishlist)
 
-user_route.get('/wishlist',userController.loadWishlist)
+user_route.get('/wishlist',userAuth.isUserLogin,userController.loadWishlist)
 
 user_route.delete('/wish-delete', userController.deleteWishlist)
- 
+user_route.post('/submit_review',userController.submitReview)
   
+// Error Handling Middleware
+// user_route.use((err,req, res, next) => {
+//   res.status(500).render("500");
+// });
+
+// user_route.use((req, res, next)=>{
+//   res.status(404).render("404");
+// })
+
+
 module.exports=user_route;
 
 
  
  
-
+  
 
    

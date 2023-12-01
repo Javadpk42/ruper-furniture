@@ -151,9 +151,9 @@
 										<div class="site-navigation">
 											<nav id="main-navigation">
 												<ul id="menu-main-menu" class="menu">
-													<li class="level-0 menu-item menu-item-has-children mega-menu current-menu-item">
+													<li class="level-0 menu-item  mega-menu current-menu-item">
 														<a href="index.html"><span class="menu-item-text">Home</span></a>
-														<div class="sub-menu">
+														<!-- <div class="sub-menu">
 															<div class="row">
 																<div class="col-md-6">
 																	<div class="menu-section">
@@ -215,11 +215,11 @@
 																	</div>
 																</div>
 															</div>
-														</div>
+														</div> -->
 													</li>
-													<li class="level-0 menu-item menu-item-has-children">
+													<li class="level-0 menu-item ">
 														<a href="/shop"><span class="menu-item-text">Shop</span></a>
-														<ul class="sub-menu">
+														<!-- <ul class="sub-menu">
 															<li class="level-1 menu-item menu-item-has-children">
 																<a href="shop-grid-left.html"><span class="menu-item-text">Shop - Products</span></a>
 																<ul class="sub-menu">
@@ -252,11 +252,11 @@
 															<li>
 																<a href="shop-wishlist.html"><span class="menu-item-text">Shop - Wishlist</span></a>
 															</li>
-														</ul>
+														</ul> -->
 													</li>
-													<li class="level-0 menu-item menu-item-has-children mega-menu mega-menu-fullwidth align-center">
-														<a href="/profile"><span class="menu-item-text">Blog</span></a>
-														<div class="sub-menu">
+													<li class="level-0 menu-item  mega-menu mega-menu-fullwidth align-center">
+														<a href="/about"><span class="menu-item-text">About Us</span></a>
+														<!-- <div class="sub-menu">
 															<div class="row">
 																<div class="col-md-5">
 																	<div class="menu-section">
@@ -353,11 +353,11 @@
 																	</div>
 																</div>
 															</div>
-														</div>
+														</div> -->
 													</li>
-													<li class="level-0 menu-item menu-item-has-children">
-														<a href="#"><span class="menu-item-text">Pages</span></a>
-														<ul class="sub-menu">
+													<li class="level-0 menu-item ">
+														<a href="/faq"><span class="menu-item-text">FAQ</span></a>
+														<!-- <ul class="sub-menu">
 															<li>
 																<a href="/login"><span class="menu-item-text">Login</span></a>
 															</li>
@@ -379,10 +379,10 @@
 															<li>
 																<a href="page-404.html"><span class="menu-item-text">Page 404</span></a>
 															</li>
-														</ul>
+														</ul> -->
 													</li>
 													<li class="level-0 menu-item">
-														<a href="page-contact.html"><span class="menu-item-text">Contact</span></a>
+														<a href="/contact"><span class="menu-item-text">Contact</span></a>
 													</li>
 												</ul>
 											</nav>
@@ -397,7 +397,7 @@
 										
 										<div class="header-page-link">
 											<!-- Login -->
-											<div class="login-header">
+											<div >
 												
 
 												<% if (user) { %>
@@ -461,31 +461,37 @@
 											</div>
 
 											<!-- Search -->
-											<div class="search-box">
+											<!-- <div class="search-box">
 												<div class="search-toggle"><i class="icon-search"></i></div>
-											</div>
+											</div> -->
 											
 										
 
 											<!-- Wishlist -->
+											
+											<% if (session.user_id) { %>
 											<div class="wishlist-box">
-												<a href="shop-wishlist.html"><i class="icon-heart"></i></a>
-												<span class="count-wishlist">1</span>
+												<a href="/wishlist"><i class="icon-heart"></i></a>
+												<span class="count-wishlist"><%= session.wishlist_count %></span>
+												
 											</div>
-										
+											<% } %>
 
   
 										
 											  
 											  
-											  
 											
 											<!-- Cart -->
+											<% if (session.user_id) { %>
 											<div class="ruper-topcart dropdown light">
 												<div class="dropdown mini-cart top-cart">
 													<div class="remove-cart-shadow"></div>
 													<a class="dropdown-toggle cart-icon" href="/view-cart" role="button" aria-haspopup="true" aria-expanded="false">
-														<div class="icons-cart"><i class="icon-large-paper-bag"></i><span class="cart-count">2</span></div>
+														<div class="icons-cart"><i class="icon-large-paper-bag"></i>
+															<span class="cart-count"><%= session.cart_count %></span>
+															<!-- <span></span> -->
+														</div>
 													</a>
 													<!-- <div class="dropdown-menu cart-popup">
 														<div class="cart-empty-wrap">
@@ -529,15 +535,16 @@
 													</div> -->
 												</div>
 											</div>
-
+											<% } %>
 										<!-- Profile Icon -->
 										<!-- <div class="my-profile-box">
 											<a href="/my-profile" class="btn btn-outline-primary btn-sm">My Profile</a>
 										  </div> -->
+										  <% if (session.user_id) { %>
 										  <div class="my-profile-box">
 											<a href="/profile" class="btn btn-outline-dark btn-sm">My Profile</a>
 										  </div>
-
+										  <% } %>
 										</div>
 
 								
@@ -669,7 +676,7 @@
 																	<div class="banner-wrapper-infor">
 																		<div class="info">
 																			<div class="content">
-																				<a class="button button-white" href="shop-grid-left.html">Furniture</a>
+																				<a class="button button-white" href="/shop?category=Furniture">Furniture</a>
 																			</div>
 																		</div>
 																	</div>
@@ -698,7 +705,7 @@
 																						<div class="banner-wrapper-infor">
 																							<div class="info">
 																								<div class="content">
-																									<a class="button button-white" href="shop-grid-left.html">Lighting</a>
+																									<a class="button button-white" href="/shop?category=Lighting">Lighting</a>
 																								</div>
 																							</div>
 																						</div>
@@ -720,7 +727,7 @@
 																						<div class="banner-wrapper-infor">
 																							<div class="info">
 																								<div class="content">
-																									<a class="button button-white" href="shop-grid-left.html">Modern</a>
+																									<a class="button button-white" href="/shop?category=Dining%20and%20Kitchen">Dining</a>
 																								</div>
 																							</div>
 																						</div>
@@ -748,7 +755,7 @@
 																						<div class="banner-wrapper-infor">
 																							<div class="info">
 																								<div class="content">
-																									<a class="button button-white" href="shop-grid-left.html">Accessories</a>
+																									<a class="button button-white" href="/shop?category=Home%20Decor">Home Decor</a>
 																								</div>
 																							</div>
 																						</div>
