@@ -10,12 +10,12 @@ const userSchema=new mongoose.Schema({
    },
    mobile:{
     type:String,
-    required:true
+    required:false
    },
    
    password:{
     type:String,
-    required:true
+    required:false
    },
    
    is_verified: {
@@ -53,7 +53,11 @@ const userSchema=new mongoose.Schema({
           type:String
         },
       },
-    ]
+    ],
+    registrationDate: {
+      type: Date,
+      default: Date.now,
+    },
          
 
 });

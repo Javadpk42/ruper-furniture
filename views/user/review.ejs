@@ -1,0 +1,257 @@
+<%-include("../userlayouts/header.ejs")-%>
+
+<style>
+.rating {
+  display: flex;
+  justify-content: left;
+  flex-direction: row-reverse;
+  gap: 0.3rem;
+  --stroke: #666;
+  --fill: #ffc73a;
+  
+}
+
+
+.rating input {
+  appearance: unset;
+}
+
+.rating label {
+  cursor: pointer;
+}
+
+.rating svg {
+  width: 2rem;
+  height: 2rem;
+  overflow: visible;
+  fill: transparent;
+  stroke: var(--stroke);
+  stroke-linejoin: bevel;
+  stroke-dasharray: 12;
+  animation: idle 4s linear infinite;
+  transition: stroke 0.2s, fill 0.5s;
+}
+
+@keyframes idle {
+  from {
+    stroke-dashoffset: 24;
+  }
+}
+
+.rating label:hover svg {
+  stroke: var(--fill);
+}
+
+.rating input:checked ~ label svg {
+  transition: 0s;
+  animation: idle 4s linear infinite, yippee 0.75s backwards;
+  fill: var(--fill);
+  stroke: var(--fill);
+  stroke-opacity: 0;
+  stroke-dasharray: 0;
+  stroke-linejoin: miter;
+  stroke-width: 8px;
+}
+
+@keyframes yippee {
+  0% {
+    transform: scale(1);
+    fill: var(--fill);
+    fill-opacity: 0;
+    stroke-opacity: 1;
+    stroke: var(--stroke);
+    stroke-dasharray: 10;
+    stroke-width: 1px;
+    stroke-linejoin: bevel;
+  }
+
+  30% {
+    transform: scale(0);
+    fill: var(--fill);
+    fill-opacity: 0;
+    stroke-opacity: 1;
+    stroke: var(--stroke);
+    stroke-dasharray: 10;
+    stroke-width: 1px;
+    stroke-linejoin: bevel;
+  }
+
+  30.1% {
+    stroke: var(--fill);
+    stroke-dasharray: 0;
+    stroke-linejoin: miter;
+    stroke-width: 8px;
+  }
+
+  60% {
+    transform: scale(1.2);
+    fill: var(--fill);
+  }
+}
+
+</style>
+
+<div id="site-main" class="site-main">
+    <div id="main-content" class="main-content">
+        <div id="primary" class="content-area">
+            <div id="title" class="page-title">
+                <div class="section-container">
+
+                    <div class="content-title-heading">
+                        <h1 class="text-title-heading">
+                            Review this product
+                        </h1>
+                    </div>
+                    <div class="breadcrumbs">
+                        <a href="/">Home</a><span class="delimiter"></span><a href="/shop">Shop</a>
+                    </div>
+                </div>
+            </div>
+
+
+            
+
+
+
+
+<div class="product-tabs">
+    <div class="section-padding">
+        <div class="section-container p-l-r">
+            <div class="product-tabs-wrap">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#reviews" role="tab">Review this product</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="reviews" role="tabpanel">
+                        <div id="reviews" class="product-reviews">
+                            <div id="review-form">
+                                <div id="respond" class="comment-respond">
+                                    <form action="" method="post" id="comment-form" class="comment-form">
+                                        <input type="hidden" id="productId" name="productId" value="<%= product._id %>">
+                                        <input type="hidden" id="userId" name="userId" value="<%= user %>">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="rating d-flex align-items-center">
+                                                    <div class="rating">
+                                                        <input type="radio" id="star-1" name="rating" value="5">
+                                                        <label for="star-1">
+                                                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path></svg>
+                                                        </label>
+                                                        <input type="radio" id="star-2" name="rating" value="4">
+                                                        <label for="star-2">
+                                                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path></svg>
+                                                        </label>
+                                                        <input type="radio" id="star-3" name="rating" value="3">
+                                                        <label for="star-3">
+                                                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path></svg>
+                                                        </label>
+                                                        <input type="radio" id="star-4" name="rating" value="2">
+                                                        <label for="star-4">
+                                                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path></svg>
+                                                        </label>
+                                                        <input type="radio" id="star-5" name="rating" value="1">
+                                                        <label for="star-5">
+                                                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path></svg>
+                                                        </label>
+                                                    </div>                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="content-info-reviews">
+                                                    <p class="comment-form-comment">
+                                                        <textarea id="comment" name="comment" placeholder="Your Reviews *" cols="45" rows="8" aria-required="true" required=""></textarea>
+                                                    </p>
+                                                    <p class="form-submit">
+                                                        <input name="submit" style="background-color: black; color: white;" type="submit" id="submit" class="submit" value="Submit" onclick="submitForm()">
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</div>
+</div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let selectedRating;
+
+        document.querySelectorAll('.rating input[type="radio"]').forEach(function (star) {
+            star.addEventListener('click', function () {
+                selectedRating = parseInt(star.value);
+
+                console.log('Selected Rating: ' + selectedRating);
+
+                document.querySelectorAll('.rating input[type="radio"]:checked').forEach(function (checkedStar) {
+                    checkedStar.removeAttribute('checked');
+                });
+
+                for (let i = 1; i <= selectedRating; i++) {
+            setAttribute('checked');
+                }
+            });
+        });
+
+        document.getElementById('comment-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            if (!selectedRating) {
+                Swal.fire('Please select a rating.');
+                return;
+            }
+
+            const reviewText = document.getElementById('comment').value;
+
+            const userId = document.getElementById('userId').value;
+            const productId = document.getElementById('productId').value; 
+
+            const formData = {
+                productId: productId,
+                rating: selectedRating,
+                comment: reviewText,
+                userId: userId,
+            };
+
+            console.log(formData);
+
+            fetch('/submit_review', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire('Success', data.message, 'success');
+                        document.getElementById('comment-form').reset();
+
+                        window.location.href = '/shopdetails/<%= product._id%>';
+                    } else {
+                        Swal.fire('Error', data.message, 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                    Swal.fire('Error', 'Internal server error', 'error');
+                });
+        });
+    });
+
+
+</script>
+
+<%-include("../userlayouts/footer.ejs")-%>

@@ -1,34 +1,4 @@
-// const Cart = require("../model/cartModel");
 
-// const fetchCartData = async (req, res, next) => {
-//   try {
-//     const userId = req.session.user_id;
-
-//     if (userId) {
-//       const cart = await Cart.findOne({ user: userId }).populate('products.productId');
-
-//       if (cart) {
-//         // Update cart count in session based on the fetched cart data
-//         req.session.cart_count = cart.products.length;
-
-//         res.locals.productsInCart = cart;
-//         console.log(res.locals.productsInCart);
-//       } else {
-//         // If the cart is empty, set cart count to 0
-//         req.session.cart_count = 0;
-//       }
-//     }
-
-//     // Add session to res.locals
-//     res.locals.session = req.session;
-
-//     next();
-//   } catch (error) {
-//     next(error);
-//   }
-// };
-
-// module.exports = fetchCartData;
 
 
 const Cart = require("../model/cartModel");

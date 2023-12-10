@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from caketheme.com/html/ruper/shop-grid-left.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2023 09:38:20 GMT -->
+
+<head>
+	<!-- Meta Data -->
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Ruper</title>
+
+	<!-- Favicon -->
+	<link rel="shortcut icon" type="image/x-icon" href="/public/usernew/media/favicon.png">
+
+	<!-- Dependency Styles -->
+	<link rel="stylesheet" href="/public/usernew/libs/bootstrap/css/bootstrap.min.css" type="text/css">
+	<link rel="stylesheet" href="/public/usernew/libs/feather-font/css/iconfont.css" type="text/css">
+	<link rel="stylesheet" href="/public/usernew/libs/icomoon-font/css/icomoon.css" type="text/css">
+	<link rel="stylesheet" href="/public/usernew/libs/font-awesome/css/font-awesome.css" type="text/css">
+	<link rel="stylesheet" href="/public/usernew/libs/wpbingofont/css/wpbingofont.css" type="text/css">
+	<link rel="stylesheet" href="/public/usernew/libs/elegant-icons/css/elegant.css" type="text/css">
+	<link rel="stylesheet" href="/public/usernew/libs/slick/css/slick.css" type="text/css">
+	<link rel="stylesheet" href="/public/usernew/libs/slick/css/slick-theme.css" type="text/css">
+	<link rel="stylesheet" href="/public/usernew/libs/mmenu/css/mmenu.min.css" type="text/css">
+	<link rel="stylesheet" href="/public/usernew/libs/slider/css/jslider.css">
+
+
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+	<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+
+	<!-- Site Stylesheet -->
+	<link rel="stylesheet" href="/public/usernew/assets/css/app.css" type="text/css">
+	<link rel="stylesheet" href="/public/usernew/assets/css/responsive.css" type="text/css">
+
+	<!-- Google Web Fonts -->
+	<link
+		href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@100;200;300;400;500;600;700&amp;display=swap"
+		rel="stylesheet">
+	<link
+		href="https://fonts.googleapis.com/css?family=EB+Garamond:100,100italic,200,200italic,300,300italic,400,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic&amp;display=swap"
+		rel="stylesheet">
+</head>
+
+<body class="shop">
+	<div id="page" class="hfeed page-wrapper">
+		<header id="site-header" class="site-header header-v1 absolute">
+			<div class="header-mobile">
+				<div class="section-padding">
+					<div class="section-container">
+						<div class="row">
+							<div class="col-xl-4 col-lg-4 col-md-4 col-sm-3 col-3 header-left">
+								<div class="navbar-header">
+									<button type="button" id="show-megamenu" class="navbar-toggle"></button>
+								</div>
+							</div>
+							<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-6 header-center">
+								<div class="site-logo">
+									<a href="/">
+										<img width="400" height="79" src="/public/usernew/media/logo.png"
+											alt="Ruper – Furniture HTML Theme" />
+									</a>
+								</div>
+							</div>
+							<div class="col-xl-4 col-lg-4 col-md-4 col-sm-3 col-3 header-right">
+								<div class="ruper-topcart dropdown">
+									<div class="dropdown mini-cart top-cart">
+										<div class="remove-cart-shadow"></div>
+										<a class="dropdown-toggle cart-icon" href="/view-cart" role="button"
+											aria-haspopup="true" aria-expanded="false">
+											<div class="icons-cart"><i class="icon-large-paper-bag"></i><span
+													class="cart-count">
+													<%= session.cart_count %>
+												</span></div>
+										</a>
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="header-mobile-fixed">
+					<!-- Shop -->
+					<div class="shop-page">
+						<a href="/shop"><i class="wpb-icon-shop"></i></a>
+					</div>
+
+					<!-- Login -->
+					<div class="my-account">
+						<div class="login-header">
+							<a href="/profile"><i class="wpb-icon-user"></i></a>
+						</div>
+					</div>
+
+
+
+
+
+
+					<!-- Wishlist -->
+					<div class="wishlist-box">
+						<a href="/wishlist"><i class="wpb-icon-heart"></i></a>
+					</div>
+				</div>
+			</div>
+
+			<div class="header-desktop">
+				<div class="header-wrapper">
+					<div class="section-padding">
+						<div class="section-container p-l-r">
+							<div class="row">
+								<div class="col-xl-3 col-lg-2 col-md-12 col-sm-12 col-12 header-left">
+									<div class="site-logo">
+										<a href="/">
+											<img width="400" height="79" src="/public/usernew/media/logo.png"
+												alt="Ruper – Furniture HTML Theme" />
+										</a>
+									</div>
+								</div>
+
+								<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 text-center header-center">
+									<div class="site-navigation">
+										<nav id="main-navigation">
+											<ul id="menu-main-menu" class="menu">
+												<li class="level-0 menu-item  mega-menu">
+													<a href="/"><span class="menu-item-text">Home</span></a>
+
+												</li>
+												<li class="level-0 menu-item  ">
+													<a href="/shop"><span class="menu-item-text">Shop</span></a>
+
+												</li>
+												<li
+													class="level-0 menu-item  mega-menu mega-menu-fullwidth align-center">
+													<a href="/about"><span class="menu-item-text">About Us</span></a>
+
+												</li>
+												<li class="level-0 menu-item ">
+													<a href="/faq"><span class="menu-item-text">FAQ</span></a>
+
+												</li>
+												<li class="level-0 menu-item">
+													<a href="/contact"><span class="menu-item-text">Contact</span></a>
+												</li>
+											</ul>
+										</nav>
+									</div>
+								</div>
+
+								<div class="col-xl-3 col-lg-4 col-md-12 col-sm-12 col-12 header-right">
+									<div class="header-page-link">
+										<!-- Login -->
+										<div class="">
+											<% if (user) { %>
+												<a href="/logout"><span class="menu-item-text">
+														<h5>Logout</h5>
+													</span></a>
+												<% } else { %>
+													<a href="/login"><span class="menu-item-text">
+															<h5>Login</h5>
+														</span></a>
+													<% } %>
+
+										</div>
+
+										<% if (session.user_id) { %>
+											<!-- Wishlist -->
+											<div class="wishlist-box">
+												<a href="/wishlist"><i class="icon-heart"></i></a>
+												<span class="count-wishlist">
+													<%= session.wishlist_count %>
+												</span>
+											</div>
+
+											<!-- Cart -->
+											<div class="ruper-topcart dropdown light">
+												<div class="dropdown mini-cart top-cart">
+													<div class="remove-cart-shadow"></div>
+													<a class="dropdown-toggle cart-icon" href="/view-cart" role="button"
+														aria-haspopup="true" aria-expanded="false">
+														<div class="icons-cart"><i
+																class="icon-large-paper-bag"></i><span
+																class="cart-count">
+																<%= session.cart_count %>
+															</span></div>
+													</a>
+
+
+
+												</div>
+											</div>
+											<div class="my-profile-box">
+												<a href="/profile" class="btn btn-outline-dark btn-sm">My Profile</a>
+											</div>
+											<% } %>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</header>

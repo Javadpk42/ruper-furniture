@@ -1,0 +1,120 @@
+<%-include("../userlayouts/header.ejs")-%>
+
+
+		<div id="site-main" class="site-main">
+			<div id="main-content" class="main-content">
+				<div id="primary" class="content-area">
+					<div id="title" class="page-title">
+						<div class="section-container">
+							<div class="content-title-heading">
+								<h1 class="text-title-heading">
+									All Orders
+								</h1>
+							</div>
+							<div class="breadcrumbs">
+								<a href="/">Home</a><span class="delimiter"></span>All Orders
+							</div>
+						</div>
+					</div>
+
+
+                    <div class="container">
+						<div id="content" class="site-content" role="main">
+							<div class="section-padding">
+								<div class="section-container p-l-r">
+									<div class="page-my-account"> 
+									<!-- Assuming this is your /viewallorders route template -->
+
+
+<!-- Assuming this is your /viewallorders route template -->
+<!-- <div class="tab-pane " id="viewAllOrders">
+    <div class="my-account-orders">
+        <div class="table-responsive">
+            <% if (orders.length > 0) { %>
+            <table class="table table-bordered table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Order</th>
+                        <th>Order Date</th>
+                        <th>Expected Delivery</th>
+                        <th>Total</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% orders.forEach(order => { %>
+                    <tr>
+                        <td>#<%= order._id %></td>
+                        <td><%= order.orderDate.toDateString() %></td>
+                        <td><%= order.expectedDelivery.toDateString() %></td>
+                        <td>&#8377;<%= order.totalAmount.toFixed(2) %></td>
+                        <td><a href="/orderdetails/<%= order._id %>" class="btn btn-info">View</a></td> 
+                        <td><a href="/invoice?orderId=<%= order._id %>" class="btn btn-success">Download Invoice</a></td> 
+                    </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+            <% } else { %>
+            <p class="alert alert-warning">No orders available.</p> 
+            <% } %>
+        </div>
+    </div>
+</div> -->
+
+
+
+<div class="tab-pane " id="viewAllOrders" role="tabpanel">
+    <div class="my-account-orders">
+        <div class="table-responsive">
+            <% if (orders.length > 0) { %>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Order</th>
+                        <th>Order Date</th>
+                        <th>Expected Delivery</th>
+                        <th>Total</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% orders.forEach(order => { %>
+                    <tr>
+                        <td>#<%= order._id %></td>
+                        <td><%= order.orderDate.toDateString() %></td>
+                        <td><%= order.expectedDelivery.toDateString() %></td>
+                        <td>&#8377;<%= order.totalAmount.toFixed(2) %></td>
+                        <td><a href="/orderdetails/<%= order._id %>" class="btn-small d-block">View</a></td>
+                        <td><a href="/invoice?orderId=<%= order._id %>" class="btn-small d-block">Download Invoice</a></td>
+                    </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+            <% } else { %>
+            <p>No orders available.</p>
+            <% } %>
+        </div>
+    </div>
+</div>
+
+
+
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div> 
+
+
+
+
+				</div>
+			</div>
+		</div>
+
+	
+
+<%-include("../userlayouts/footer.ejs")-%>

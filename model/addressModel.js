@@ -17,10 +17,7 @@ const addressSchema = new mongoose.Schema({
         type:Number,
         required:true
     },
-    // email:{
-    //     type:String,
-    //     required:true,
-    // },
+   
     housename: {
         type: String,
         required:true,
@@ -36,8 +33,7 @@ const addressSchema = new mongoose.Schema({
       district:{
         type:String,
         required:true,
-        trim:true,  //"   John    Doe   " to "John Doe"
-
+        trim:true, 
       },
     pin:{
         type:String,

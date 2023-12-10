@@ -198,9 +198,10 @@
                     <h2><strong>Total: </strong></h2>
                   </td>
                   <td class="text-left text-danger">
-                    <h4><i class="fa fa-inr"></i>₹ <%= sumTotal %>.00/-</h4>
-                    <h4><i class="fa fa-inr"></i>₹ <%= sumTotal - order.totalAmount %>.00/-</h4>
-                    <h2><strong><i class="fa fa-inr"></i>₹ <%= order.totalAmount %>.00/-</strong></h2>
+                    <h4><i class="fa fa-inr"></i>₹ <%= sumTotal.toFixed(2) %></h4>
+                    <h4><i class="fa fa-inr"></i>₹ <%= (sumTotal - order.totalAmount).toFixed(2) %></h4>
+                    <h2><strong><i class="fa fa-inr"></i>₹ <%= order.totalAmount.toFixed(2) %></strong></h2>
+                    
                   </td>
                 </tr>
               </tbody>
