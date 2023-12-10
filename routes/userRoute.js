@@ -165,7 +165,6 @@ user_route.post('/delete_address/:addressId', userController.deleteAddress);
 
 
   
-// Error Handling Middleware
 user_route.use((err,req, res, next) => {
   res.status(500).render("500");
 });

@@ -1,10 +1,9 @@
 const mongoose = require('mongoose');
 
-// Define the order schema
 const orderSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // Reference to the User model
+    ref: 'User',
     required: true,
   },
   cart: {
@@ -101,7 +100,7 @@ const orderSchema = new mongoose.Schema({
   },
   couponCode: {
     type: String,
-    default: null, // or set the default value you prefer
+    default: null, 
   },
   couponDiscount: {
     type: Number,
@@ -117,13 +116,11 @@ const orderSchema = new mongoose.Schema({
   },
   status: {
     type: Boolean,
-    default: false, // Set the default value to false
+    default: false,
   },
 
 
 
-  // You can add more fields as needed, such as order items, order status, etc.
 });
 
-// Create and export the Order model
 module.exports = mongoose.model('order', orderSchema);

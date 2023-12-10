@@ -1,9 +1,9 @@
 const isAdminLogin = async (req, res, next) => {
     try {
       if (req.session.admin_id) {
-        next(); // User is logged in, proceed to the next middleware or route
+        next(); 
       } else {
-        res.redirect('/admin'); // User is not logged in, redirect to login page
+        res.redirect('/admin'); 
       }
     } catch (error) {
       console.log(error.message);
@@ -13,9 +13,9 @@ const isAdminLogin = async (req, res, next) => {
   const isAdminLogout = async (req, res, next) => {
     try {
       if (req.session.admin_id) {
-        res.redirect('/admin/dashboard'); // User is logged in, redirect to home
+        res.redirect('/admin/dashboard'); 
       } else {
-        next(); // User is logged out, proceed to the next middleware or route
+        next(); 
       }
     } catch (error) {
       console.log(error.message);

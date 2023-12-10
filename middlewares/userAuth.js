@@ -3,9 +3,9 @@ module.exports = {
     isUserLogin: async (req, res, next) => {
       try {
         if (req.session.user_id) {
-          next(); // User is logged in, proceed to the next middleware or route
+          next();
         } else {
-          res.redirect('/login'); // User is not logged in, redirect to login page
+          res.redirect('/login'); 
         }
       }
       catch (error) {
