@@ -165,13 +165,13 @@ user_route.post('/delete_address/:addressId', userController.deleteAddress);
 
 
   
-user_route.use((err,req, res, next) => {
-  res.status(500).render("500");
-});
+// user_route.use((err,req, res, next) => {
+//   res.status(500).render("500");
+// });
 
-user_route.use((req, res, next)=>{
-  res.status(404).render("404");
-})
+// user_route.use((req, res, next)=>{
+//   res.status(404).render("404");
+// })
 
 
 

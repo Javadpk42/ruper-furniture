@@ -23,7 +23,8 @@ const { name } = require("ejs");
 const ejs = require("ejs");
 
 const fs = require("fs");
-const puppeteer = require("puppeteer");
+
+const pdf = require("html-pdf");
 const otpGenerator = require("otp-generator");
 const nodemailer = require("nodemailer");
 const path = require("path");
@@ -502,6 +503,7 @@ const allordersLoad = async (req, res, next) => {
 };
 
 
+
 const invoiceDownload = async (req, res, next) => {
   try {
     const { orderId } = req.query;
@@ -528,7 +530,7 @@ const invoiceDownload = async (req, res, next) => {
     const data = {
       order: orderData,
       user: userData,
-      date,
+      date, 
       sumTotal,
     };
 
@@ -536,22 +538,26 @@ const invoiceDownload = async (req, res, next) => {
     const html = fs.readFileSync(filepathName).toString();
     const ejsData = ejs.render(html, data);
 
-    const browser = await puppeteer.launch({ headless: true });
-    const page = await browser.newPage();
-    await page.setContent(ejsData, { waitUntil: "networkidle0" });
-    const pdfBytes = await page.pdf({ format: "Letter" });
-    await browser.close();
+    const pdfOptions = { format: "Letter" };
 
-    res.setHeader("Content-Type", "application/pdf");
-    res.setHeader(
-      "Content-Disposition",
-      "attachment; filename=order_invoice.pdf"
-    );
-    res.send(pdfBytes);
+    pdf.create(ejsData, pdfOptions).toBuffer((err, buffer) => {
+      if (err) {
+        return next(err);
+      }
+
+      res.setHeader("Content-Type", "application/pdf");
+      res.setHeader(
+        "Content-Disposition",
+        "attachment; filename=order_invoice.pdf"
+      );
+      res.send(buffer);
+    });
+
   } catch (error) {
     next(error);
   }
-}; 
+};
+
 
 const orderDetails = async (req, res,next) => {
   try {
@@ -1756,7 +1762,7 @@ const loadwalletHistory = async (req, res,next) => {
       return res.status(404).send("User not found");
     }
 
-    res.render("walletHistory", {
+    res.render("wallethistory", {
       walletHistory: user.walletHistory,
       user: req.session.user_id,
     });

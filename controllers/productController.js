@@ -71,7 +71,7 @@ const productsLoad = async (req, res,next) => {
 const addProductLoad = async (req, res,next) => {
   try {
     const categories = await Category.find({});
-    res.render("addProduct", { categories: categories });
+    res.render("addproduct", { categories: categories });
   } catch (error) {
     next(error);
 
