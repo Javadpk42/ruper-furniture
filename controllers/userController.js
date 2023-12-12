@@ -1,4 +1,3 @@
-
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
 const userModel = require("../model/userModel");
@@ -24,15 +23,11 @@ const ejs = require("ejs");
 
 const fs = require("fs");
 
-const pdf = require("html-pdf");
 const otpGenerator = require("otp-generator");
 const nodemailer = require("nodemailer");
 const path = require("path");
 const randomstring = require("randomstring");
 const { product } = require("../model/productModel");
-
-
-
 
 const securePassword = async (password) => {
   try {
@@ -77,20 +72,18 @@ const loadSignup = async (req, res, next) => {
     res.render("registration", { message: null, user: req.session.user_id });
   } catch (error) {
     next(error);
-
   }
 };
 
-const loadOtp = async (req, res,next) => {
+const loadOtp = async (req, res, next) => {
   try {
     res.render("otp", { user: req.session.user_id });
   } catch (error) {
     next(error);
-
   }
 };
 
-const sendOtp = async (req, res,next) => {
+const sendOtp = async (req, res, next) => {
   try {
     const otp = otpGenerator.generate(6, {
       upperCase: false,
@@ -149,11 +142,10 @@ const sendOtp = async (req, res,next) => {
     }
   } catch (error) {
     next(error);
-
   }
 };
 
-const resendOtp = async (req, res, next ) => {
+const resendOtp = async (req, res, next) => {
   try {
     req.session.otp = req.session.otp || {};
 
@@ -174,7 +166,6 @@ const resendOtp = async (req, res, next ) => {
     });
   } catch (error) {
     next(error);
-
   }
 };
 
@@ -200,9 +191,9 @@ const otpSent = async (email, otp) => {
 
     await transporter.sendMail(mailOptions);
   } catch (error) {}
-};   
+};
 
-const verifyOtp = async (req, res,next) => { 
+const verifyOtp = async (req, res, next) => {
   try {
     const enteredOTP = req.body.otp;
     const storedOTP = req.session.otp.code;
@@ -266,22 +257,20 @@ const verifyOtp = async (req, res,next) => {
     }
   } catch (error) {
     next(error);
-
   }
 };
 
-const loginLoad = async (req, res,next) => {
+const loginLoad = async (req, res, next) => {
   try {
     const errorMessage = req.query.errors;
 
     res.render("login", { errors: errorMessage, user: req.session.user_id });
   } catch (error) {
     next(error);
-
   }
 };
 
-const verifyLogin = async (req, res,next) => {
+const verifyLogin = async (req, res, next) => {
   try {
     const email = req.body.email;
     const password = req.body.password;
@@ -316,26 +305,23 @@ const verifyLogin = async (req, res,next) => {
     }
   } catch (error) {
     next(error);
-
   }
 };
 
-const userLogout = async (req, res,next) => {
+const userLogout = async (req, res, next) => {
   try {
     req.session.destroy();
     res.redirect("/");
   } catch (error) {
     next(error);
-
   }
 };
 
-const forgotLoad = async (req, res,next) => {
+const forgotLoad = async (req, res, next) => {
   try {
     res.render("forgot", { user: req.session.user_id });
   } catch (error) {
     next(error);
-
   }
 };
 const resetPasswordMail = async (username, email, token) => {
@@ -362,7 +348,7 @@ const resetPasswordMail = async (username, email, token) => {
   } catch (error) {}
 };
 
-const forgotVerify = async (req, res,next) => {
+const forgotVerify = async (req, res, next) => {
   try {
     const email = req.body.email;
     const userData = await userModel.findOne({ email: email });
@@ -387,7 +373,7 @@ const forgotVerify = async (req, res,next) => {
   }
 };
 
-const resetpasswordLoad = async (req, res,next) => {
+const resetpasswordLoad = async (req, res, next) => {
   try {
     const token = req.query.token;
 
@@ -400,11 +386,10 @@ const resetpasswordLoad = async (req, res,next) => {
     }
   } catch (error) {
     next(error);
-
   }
 };
 
-const resetPassword = async (req, res,next) => {
+const resetPassword = async (req, res, next) => {
   try {
     const id = req.body.id;
 
@@ -446,7 +431,7 @@ const takeUserData = async (userId) => {
   }
 };
 
-const profileLoad = async (req, res,next) => {
+const profileLoad = async (req, res, next) => {
   try {
     if (!req.session.user_id) {
       return res.redirect("/login?errors=Please log in to view");
@@ -484,13 +469,12 @@ const profileLoad = async (req, res,next) => {
     }
   } catch (error) {
     next(error);
-
   }
 };
 
 const allordersLoad = async (req, res, next) => {
   try {
-    const userId = req.session.user_id; 
+    const userId = req.session.user_id;
 
     const orders = await Order.find({ user: userId }).sort({ orderDate: -1 });
 
@@ -503,11 +487,9 @@ const allordersLoad = async (req, res, next) => {
 };
 
 
-
 const invoiceDownload = async (req, res, next) => {
   try {
     const { orderId } = req.query;
-
     const orderData = await Order.findById(orderId)
       .populate("cart.products.productId")
       .populate("user");
@@ -517,8 +499,9 @@ const invoiceDownload = async (req, res, next) => {
     }
 
     const userId = req.session.user_id;
-    let sumTotal = 0;
     const userData = await userModel.findById(userId);
+
+    let sumTotal = 0;
 
     orderData.cart.products.forEach((item) => {
       const total = item.productId.product_price * item.quantity;
@@ -527,39 +510,13 @@ const invoiceDownload = async (req, res, next) => {
 
     const date = new Date();
 
-    const data = {
-      order: orderData,
-      user: userData,
-      date, 
-      sumTotal,
-    };
-
-    const filepathName = path.resolve(__dirname, "../views/user/invoice.ejs");
-    const html = fs.readFileSync(filepathName).toString();
-    const ejsData = ejs.render(html, data);
-
-    const pdfOptions = { format: "Letter" };
-
-    pdf.create(ejsData, pdfOptions).toBuffer((err, buffer) => {
-      if (err) {
-        return next(err);
-      }
-
-      res.setHeader("Content-Type", "application/pdf");
-      res.setHeader(
-        "Content-Disposition",
-        "attachment; filename=order_invoice.pdf"
-      );
-      res.send(buffer);
-    });
-
+    res.render("invoice", { order: orderData, user: userData, date, sumTotal });
   } catch (error) {
     next(error);
   }
 };
 
-
-const orderDetails = async (req, res,next) => {
+const orderDetails = async (req, res, next) => {
   try {
     const orderId = req.params.orderId;
 
@@ -595,11 +552,10 @@ const orderDetails = async (req, res,next) => {
     });
   } catch (error) {
     next(error);
-
   }
 };
 
-const cancelOrderAjax = async (req, res,next) => {
+const cancelOrderAjax = async (req, res, next) => {
   try {
     const orderId = req.params.orderId;
 
@@ -662,11 +618,10 @@ const cancelOrderAjax = async (req, res,next) => {
     res.json({ success: true, message: "Order canceled successfully" });
   } catch (error) {
     next(error);
-
   }
 };
 
-const returnOrderAjax = async (req, res,next) => {
+const returnOrderAjax = async (req, res, next) => {
   try {
     const orderId = req.body.orderId;
     const reason = req.body.reason;
@@ -717,7 +672,6 @@ const returnOrderAjax = async (req, res,next) => {
     return res.json({ success: true, message: "Order returned successfully" });
   } catch (error) {
     next(error);
-
   }
 };
 
@@ -842,7 +796,7 @@ const addAddress = async (req, res, next) => {
   }
 };
 
-const editAddressPage = async (req, res,next) => {
+const editAddressPage = async (req, res, next) => {
   try {
     const userId = req.session.user_id;
     const usersData = await takeUserData(userId);
@@ -902,7 +856,7 @@ const editAddress = async (req, res) => {
   }
 };
 
-const deleteAddress = async (req, res,next) => {
+const deleteAddress = async (req, res, next) => {
   try {
     const addressId = req.params.addressId;
     const userId = req.session.user_id;
@@ -922,9 +876,6 @@ const deleteAddress = async (req, res,next) => {
   }
 };
 
-
-
-
 const shopLoad = async (req, res, next) => {
   try {
     const { search, category: selectedCategory, sort } = req.query;
@@ -936,7 +887,9 @@ const shopLoad = async (req, res, next) => {
     const categoryCounts = await Promise.all(
       categories.map(async (category) => {
         const count = await Product.countDocuments({
-          category: { $regex: new RegExp(".*" + category.category_name + ".*", "i") },
+          category: {
+            $regex: new RegExp(".*" + category.category_name + ".*", "i"),
+          },
         });
         return { name: category.category_name, count };
       })
@@ -964,7 +917,7 @@ const shopLoad = async (req, res, next) => {
     if (sort === "lowtohigh") {
       sortOption = { product_price: 1 };
     } else if (sort === "hightolow") {
-      sortOption = {  product_price: -1 };
+      sortOption = { product_price: -1 };
     }
 
     const productsQuery = Product.find(filterCriteria)
@@ -1006,11 +959,7 @@ const shopLoad = async (req, res, next) => {
   }
 };
 
-
-
-
-
-const shopdetailsLoad = async (req, res,next) => {
+const shopdetailsLoad = async (req, res, next) => {
   try {
     const productId = req.params.productId;
 
@@ -1033,25 +982,24 @@ const shopdetailsLoad = async (req, res,next) => {
     next(error);
   }
 };
-const reviewLoad = async (req, res,next) => {
+const reviewLoad = async (req, res, next) => {
   try {
     const productId = req.params.productId;
-console.log(productId)
+    console.log(productId);
     const product = await Product.findById(productId);
-  
-   console.log(product)
+
+    console.log(product);
 
     res.render("review", {
       product,
       user: req.session.user_id,
-      
     });
   } catch (error) {
     next(error);
   }
 };
 
-const addToCart = async (req, res,next) => {
+const addToCart = async (req, res, next) => {
   try {
     if (req.session.user_id) {
       const productId = req.body.id;
@@ -1111,7 +1059,7 @@ const addToCart = async (req, res,next) => {
   }
 };
 
-const getCartProducts = async (req, res,next) => {
+const getCartProducts = async (req, res, next) => {
   try {
     if (req.session.user_id) {
       const userId = req.session.user_id;
@@ -1149,7 +1097,7 @@ const getCartProducts = async (req, res,next) => {
   }
 };
 
-const cartQuantity = async (req, res,next) => {
+const cartQuantity = async (req, res, next) => {
   try {
     const number = parseInt(req.body.count);
     const proId = req.body.product;
@@ -1188,7 +1136,7 @@ const cartQuantity = async (req, res,next) => {
   }
 };
 
-const removeProductRouteHandler = async (req, res,next) => {
+const removeProductRouteHandler = async (req, res, next) => {
   try {
     const proId = req.body.product;
     const user = req.session.user_id;
@@ -1277,7 +1225,6 @@ const loadCheckout = async (req, res, next) => {
       updatedTotal: req.session.total,
       coupons,
       razorpayKeyId: process.env.RAZORPAY_KEY_ID,
-
     });
   } catch (err) {
     next(err);
@@ -1337,7 +1284,7 @@ const applyCoupon = async (req, res, next) => {
   }
 };
 
-const removeCoupon = (req, res,next) => {
+const removeCoupon = (req, res, next) => {
   try {
     delete req.session.couponCode;
     delete req.session.total;
@@ -1399,7 +1346,7 @@ const addShippingAddress = async (req, res, next) => {
   }
 };
 
-const editAddressPagecheckout = async (req, res,next) => {
+const editAddressPagecheckout = async (req, res, next) => {
   try {
     const userId = req.session.user_id;
     const usersData = await takeUserData(userId);
@@ -1422,7 +1369,7 @@ const editAddressPagecheckout = async (req, res,next) => {
   }
 };
 
-const editAddresscheckout = async (req, res,next) => {
+const editAddresscheckout = async (req, res, next) => {
   try {
     const userId = req.session.user_id;
     const addressId = req.body.addressId;
@@ -1491,7 +1438,7 @@ const calculateTotalPrice = async (userId) => {
   }
 };
 
-const placeOrder = async (req, res,next) => {
+const placeOrder = async (req, res, next) => {
   try {
     const addressId = req.body.address;
     const paymentType = req.body.payment;
@@ -1690,7 +1637,7 @@ const placeOrder = async (req, res,next) => {
   }
 };
 
-const verifyPayment = async (req, res,next) => {
+const verifyPayment = async (req, res, next) => {
   try {
     const cartData = await Cart.findOne({ user: req.session.user_id });
     const details = req.body;
@@ -1736,24 +1683,25 @@ const verifyPayment = async (req, res,next) => {
   }
 };
 
-const orderPlaced = async (req, res,next) => {
+const orderPlaced = async (req, res, next) => {
   try {
     res.render("orderplaced", { user: req.session.user_id });
   } catch (error) {
     next(error);
-
   }
 };
 
-const loadaddwallet = async (req, res,next) => {
+const loadaddwallet = async (req, res, next) => {
   try {
-    res.render("wallet", { user: req.session.user_id,razorpayKeyId: process.env.RAZORPAY_KEY_ID });
+    res.render("wallet", {
+      user: req.session.user_id,
+      razorpayKeyId: process.env.RAZORPAY_KEY_ID,
+    });
   } catch (error) {
     next(error);
-
   }
 };
-const loadwalletHistory = async (req, res,next) => {
+const loadwalletHistory = async (req, res, next) => {
   try {
     const userId = req.session.user_id;
     const user = await userModel.findById(userId);
@@ -1768,11 +1716,10 @@ const loadwalletHistory = async (req, res,next) => {
     });
   } catch (error) {
     next(error);
-
   }
 };
 
-const addMoneyWallet = async (req, res,next) => {
+const addMoneyWallet = async (req, res, next) => {
   try {
     const { amount } = req.body;
     const id = crypto.randomBytes(8).toString("hex");
@@ -1791,11 +1738,10 @@ const addMoneyWallet = async (req, res,next) => {
     });
   } catch (error) {
     next(error);
-
   }
 };
 
-const verifyWalletpayment = async (req, res,next) => {
+const verifyWalletpayment = async (req, res, next) => {
   try {
     const userId = req.session.user_id;
 
@@ -1833,7 +1779,6 @@ const verifyWalletpayment = async (req, res,next) => {
     }
   } catch (error) {
     next(error);
-
   }
 };
 

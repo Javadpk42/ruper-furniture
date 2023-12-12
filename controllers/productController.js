@@ -68,7 +68,7 @@ const productsLoad = async (req, res,next) => {
 
 
 
-const addProductLoad = async (req, res,next) => {
+const addProductLoad = async (_, res,next) => {
   try {
     const categories = await Category.find({});
     res.render("addproduct", { categories: categories });

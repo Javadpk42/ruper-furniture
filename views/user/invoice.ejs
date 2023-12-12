@@ -227,5 +227,22 @@
         </div>
       </div>
     </div>
+
+    <script>
+      window.onload = function () {
+          print();
+      };
+
+      document.getElementById('downloadButton').addEventListener('click', function () {
+         
+          const pdf = new jsPDF();
+          
+          pdf.save('order_invoice.pdf');
+      });
+  </script>
+
   </body>
+
+  
+
 </html>
