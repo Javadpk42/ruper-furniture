@@ -146,60 +146,7 @@
 										</div>
 
 
-										<!-- <div class="tab-pane fade" id="orders" role="tabpanel">
-											<div class="my-account-orders">
-												<div class="table-responsive">
-													<% if (orders.length > 0) { %>
-													<table class="table">
-														<thead>
-															<tr>
-																<th>Order</th>
-																<th>Order Date</th>
-																<th>Expected Delivery</th>
-																<th>Total</th>
-																<th></th>
-																<th></th>
-															</tr>
-														</thead>
-														<tbody>
-															<% orders.forEach(order=> { %>
-																<tr>
-																	<td>#<%= order._id %>
-																	</td>
-																	<td>
-																		<%= order.orderDate.toDateString() %>
-																	</td>
-																	<td>
-																		<%= order.expectedDelivery.toDateString() %>
-																	</td>
-																	<td>
-																		&#8377;<%= order.totalAmount.toFixed(2) %>
-
-																	</td>
-																	<td><a href="/orderdetails/<%= order._id %>"
-																			class="btn-small d-block">View</a></td>
-																	<td><a href="/invoice?orderId=<%= order._id %>"
-																			class="btn-small d-block">Download
-																			Invoice</a></td>
-
-																</tr>
-																<% }); %>
-
-
-														</tbody>
-													</table>
-
-
-
-													
-													<% } else { %>
-														
-															<p>No orders available.</p>
-														
-													<% } %>
-												</div>
-											</div>
-										</div> -->
+									
 
 
 										<div class="tab-pane fade" id="orders" role="tabpanel">
@@ -266,7 +213,9 @@
 														
 														</header>
 														<address>
-															<strong>&#8377;<%= users.wallet.toFixed(2) %></strong><br>
+															<strong>&#8377;<%= users.wallet !== null ? users.wallet.toFixed(2) : 'N/A' %></strong><br>
+
+															<!-- <strong>&#8377;<%= users.wallet.toFixed(2) %></strong><br> -->
 
 														</address>
 														<br>
