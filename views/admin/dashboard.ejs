@@ -510,28 +510,28 @@
 
 <script>
   // Assuming monthlyRevenueLabels and monthlyRevenueData are passed from the server
-  let  monthlyData = JSON.parse('<%- JSON.stringify(formattedMonthlyRevenueChartData) %>');
-  console.log(monthlyData)
-  const monthlyRevenueLabels = [];
-  const monthlyRevenueData = [];
-  for(let i = 0 ; i < monthlyData.length ; i++){
-    monthlyRevenueLabels[i] = monthlyData[i].month;
-    monthlyRevenueData[i] = monthlyData[i].amount;
-  }
+  // let  monthlyData = JSON.parse('<%- JSON.stringify(formattedMonthlyRevenueChartData) %>');
+  // console.log(monthlyData)
+  // const monthlyRevenueLabels = [];
+  // const monthlyRevenueData = [];
+  // for(let i = 0 ; i < monthlyData.length ; i++){
+  //   monthlyRevenueLabels[i] = monthlyData[i].month;
+  //   monthlyRevenueData[i] = monthlyData[i].amount;
+  // }
 
 
-  // const monthlyRevenueLabels = JSON.parse('<%- JSON.stringify(monthlyRevenueLabels) %>');
-  // const monthlyRevenueData = JSON.parse('<%- JSON.stringify(monthlyRevenueData) %>');
+  const monthlyRevenueLabels = JSON.parse('<%- JSON.stringify(monthlyRevenueLabels) %>');
+  const monthlyRevenueData = JSON.parse('<%- JSON.stringify(monthlyRevenueData) %>');
 
   // Chart.js code for the bar chart
   var ctx = document.getElementById("chart-line").getContext('2d');
   var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: monthlyRevenueLabels,
+      labels: monthlyRevenueLabels.slice(0,monthlyRevenueLabels.length),
       datasets: [{
         label: 'Monthly Revenue',
-        data: monthlyRevenueData,
+        data: monthlyRevenueData.slice(0,monthlyRevenueData.length),
         backgroundColor: 'rgba(255, 99, 132, 0.2)', // You can customize the color
         borderColor: 'rgba(255, 99, 132, 1)',
         borderWidth: 1
@@ -566,10 +566,10 @@
   var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: yearlyRevenueLabels,
+      labels: yearlyRevenueLabels.slice(0,yearlyRevenueData.length),
       datasets: [{
         label: 'Yearly Revenue',
-        data: yearlyRevenueData,
+        data: yearlyRevenueData.slice(0,yearlyRevenueDataslice.length),
         backgroundColor: 'rgba(255, 159, 64, 0.2)', // You can customize the color
         borderColor: 'rgba(255, 159, 64, 1)',
         borderWidth: 1
