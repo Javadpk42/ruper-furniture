@@ -848,33 +848,14 @@ const monthlyRevenueOrders = await Order.aggregate([
       orderDate: { $lte: today },
       $or: [
         { paymentOption: 'COD', 'cart.products.orderStatus': 'Delivered' },
-        {
-          paymentOption: { $in: ['Razorpay', 'Wallet'] },
-          'cart.products.orderStatus': { $in: ['Placed', 'Shipped', 'Out for delivery', 'Delivered'] },
-        },
+        { paymentOption: { $in: ['Razorpay', 'Wallet'] }, 'cart.products.orderStatus': { $in: ['Placed', 'Shipped', 'Out for delivery', 'Delivered'] } },
       ],
-    },
-  },
-  {
-    $unwind: "$cart.products",
-  },
-  {
-    $match: {
-      'cart.products.returnOrder.returnStatus': { $ne: 'Refund' },
     },
   },
   {
     $group: {
       _id: { $dateToString: { format: "%Y-%m", date: "$orderDate" } },
-      totalAmount: {
-        $sum: {
-          $cond: {
-            if: { $eq: ['$cart.products.returnOrder.returnStatus', 'Refund'] },
-            then: 0, // Exclude refund products
-            else: { $multiply: ['$cart.products.price', '$cart.products.quantity'] },
-          },
-        },
-      },
+      totalAmount: { $sum: "$totalAmount" },
     },
   },
   {
@@ -884,18 +865,15 @@ const monthlyRevenueOrders = await Order.aggregate([
   },
 ]);
 
-
-
-
+// Generate an array of all months from the start of the year to the current month
 const allMonths = [];
-let currentMonthDate = new Date(today.getFullYear(), 0, 1); 
+let currentMonthDate = new Date(today.getFullYear(), 0, 1); // Start from January
 while (currentMonthDate <= today) {
-  allMonths.push(currentMonthDate.toISOString().split('T')[0].substring(0, 7)); 
+  allMonths.push(currentMonthDate.toISOString().split('T')[0].substring(0, 7)); // Format as "YYYY-MM"
   currentMonthDate.setMonth(currentMonthDate.getMonth() + 1);
 }
 
-console.log('allMonths',allMonths)
-
+// Fill in the revenue data for each month, even if it's zero
 const formattedMonthlyRevenueChartData = allMonths.map(month => {
   const matchingMonthEntry = monthlyRevenueOrders.find(entry => entry._id === month);
   return {
@@ -904,7 +882,7 @@ const formattedMonthlyRevenueChartData = allMonths.map(month => {
   };
 });
 
-
+// Calculate and add the revenue for the current month up to today
 const currentMonth = today.toISOString().split('T')[0].substring(0, 7);
 const currentMonthRevenue = monthlyRevenueOrders.reduce((total, entry) => {
   if (entry._id === currentMonth) {
@@ -918,12 +896,16 @@ formattedMonthlyRevenueChartData.push({
   amount: currentMonthRevenue,
 });
 
+// Extract the labels (months) and data (amounts) for the line chart
 const monthlyRevenueLabels = formattedMonthlyRevenueChartData.map(entry => entry.month);
 const monthlyRevenueData = formattedMonthlyRevenueChartData.map(entry => entry.amount);
 
+// console.log(monthlyRevenueData);
+// console.log(monthlyRevenueLabels);
 
 
 
+// Fetch revenue data for each year in the last five years
 const fiveYearsRevenueOrders = await Order.aggregate([
   {
     $match: {
@@ -935,25 +917,9 @@ const fiveYearsRevenueOrders = await Order.aggregate([
     },
   },
   {
-    $unwind: "$cart.products",
-  },
-  {
-    $match: {
-      'cart.products.returnOrder.returnStatus': { $ne: 'Refund' },
-    },
-  },
-  {
     $group: {
       _id: { $dateToString: { format: "%Y", date: "$orderDate" } },
-      totalAmount: {
-        $sum: {
-          $cond: {
-            if: { $eq: ['$cart.products.returnOrder.returnStatus', 'Refund'] },
-            then: 0, // Exclude refund products
-            else: { $multiply: ['$cart.products.price', '$cart.products.quantity'] },
-          },
-        },
-      },
+      totalAmount: { $sum: "$totalAmount" },
     },
   },
   {
@@ -963,16 +929,15 @@ const fiveYearsRevenueOrders = await Order.aggregate([
   },
 ]);
 
-
-
-
+// Generate an array of all years in the last five years
 const allYearsFiveYears = [];
-let currentYearDateFiveYears = new Date(today.getFullYear() - 5, 0, 1);
+let currentYearDateFiveYears = new Date(today.getFullYear() - 5, 0, 1); // Go back five years from January
 while (currentYearDateFiveYears.getFullYear() <= today.getFullYear()) {
   allYearsFiveYears.push(currentYearDateFiveYears.toISOString().split('T')[0].substring(0, 4)); // Format as "YYYY"
   currentYearDateFiveYears.setFullYear(currentYearDateFiveYears.getFullYear() + 1);
 }
 
+// Fill in the revenue data for each year, even if it's zero
 const formattedFiveYearsRevenueChartData = allYearsFiveYears.map(year => {
   const matchingYearEntry = fiveYearsRevenueOrders.find(entry => entry._id === year);
   return {
@@ -981,6 +946,7 @@ const formattedFiveYearsRevenueChartData = allYearsFiveYears.map(year => {
   };
 });
 
+// Calculate and add the revenue for the current year up to today
 const currentYear = today.toISOString().split('T')[0].substring(0, 4);
 const currentYearRevenue = fiveYearsRevenueOrders.reduce((total, entry) => {
   if (entry._id === currentYear) {
@@ -994,8 +960,11 @@ formattedFiveYearsRevenueChartData.push({
   amount: currentYearRevenue,
 });
 
+// Extract the labels (years) and data (amounts) for the line chart
 const yearlyRevenueLabels = formattedFiveYearsRevenueChartData.map(entry => entry.year);
 const yearlyRevenueData = formattedFiveYearsRevenueChartData.map(entry => entry.amount);
+
+
 
 
 
