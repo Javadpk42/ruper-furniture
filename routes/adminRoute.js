@@ -1,6 +1,7 @@
 const express=require('express');
 const admin_route=express();
-const multer= require('multer') 
+const multer= require('multer')
+
 
 admin_route.use(express.urlencoded({ extended: true }));
 const adminAuth = require('../middlewares/admin')

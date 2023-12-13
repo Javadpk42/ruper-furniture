@@ -608,7 +608,7 @@ const  expireDate= req.body.expiryDate
 const loaddashboard = async (req, res, next) => {
   try {
  
-
+console.log("checking")
     const totalUsers = await userModel.countDocuments();
     const totalOrders=await Order.countDocuments()
   
