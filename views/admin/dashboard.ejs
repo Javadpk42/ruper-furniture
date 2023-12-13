@@ -510,16 +510,6 @@
 
 <script>
   // Assuming monthlyRevenueLabels and monthlyRevenueData are passed from the server
-  // let  monthlyData = JSON.parse('<%- JSON.stringify(formattedMonthlyRevenueChartData) %>');
-  // console.log(monthlyData)
-  // const monthlyRevenueLabels = [];
-  // const monthlyRevenueData = [];
-  // for(let i = 0 ; i < monthlyData.length ; i++){
-  //   monthlyRevenueLabels[i] = monthlyData[i].month;
-  //   monthlyRevenueData[i] = monthlyData[i].amount;
-  // }
-
-
   const monthlyRevenueLabels = JSON.parse('<%- JSON.stringify(monthlyRevenueLabels) %>');
   const monthlyRevenueData = JSON.parse('<%- JSON.stringify(monthlyRevenueData) %>');
 
@@ -528,10 +518,10 @@
   var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: monthlyRevenueLabels.slice(0,monthlyRevenueLabels.length),
+      labels: monthlyRevenueLabels,
       datasets: [{
         label: 'Monthly Revenue',
-        data: monthlyRevenueData.slice(0,monthlyRevenueData.length),
+        data: monthlyRevenueData,
         backgroundColor: 'rgba(255, 99, 132, 0.2)', // You can customize the color
         borderColor: 'rgba(255, 99, 132, 1)',
         borderWidth: 1
@@ -566,10 +556,10 @@
   var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: yearlyRevenueLabels.slice(0,yearlyRevenueData.length),
+      labels: yearlyRevenueLabels,
       datasets: [{
         label: 'Yearly Revenue',
-        data: yearlyRevenueData.slice(0,yearlyRevenueDataslice.length),
+        data: yearlyRevenueData,
         backgroundColor: 'rgba(255, 159, 64, 0.2)', // You can customize the color
         borderColor: 'rgba(255, 159, 64, 1)',
         borderWidth: 1
