@@ -821,6 +821,7 @@ while (currentDate <= today) {
   currentDate.setDate(currentDate.getDate() + 1);
 }
 
+
 const formattedWeeklyRevenueChartData = allDaysOfLastWeek.map(day => {
   const matchingEntry = weeklyrevenueOrders.find(entry => entry._id === day);
   return {
@@ -832,8 +833,8 @@ const formattedWeeklyRevenueChartData = allDaysOfLastWeek.map(day => {
 const weeklyRevenueLabels = formattedWeeklyRevenueChartData.map(entry => entry.date);
 const weeklyRevenueData = formattedWeeklyRevenueChartData.map(entry => entry.amount);
 
-console.log(weeklyRevenueData);
-console.log(weeklyRevenueLabels);
+// console.log(weeklyRevenueData);
+// console.log(weeklyRevenueLabels);
 
 
 
@@ -893,6 +894,8 @@ while (currentMonthDate <= today) {
   currentMonthDate.setMonth(currentMonthDate.getMonth() + 1);
 }
 
+console.log('allMonths',allMonths)
+
 const formattedMonthlyRevenueChartData = allMonths.map(month => {
   const matchingMonthEntry = monthlyRevenueOrders.find(entry => entry._id === month);
   return {
@@ -900,6 +903,8 @@ const formattedMonthlyRevenueChartData = allMonths.map(month => {
     amount: matchingMonthEntry ? matchingMonthEntry.totalAmount : 0,
   };
 });
+
+console.log('formattedMonthlyRevenueChartData',formattedMonthlyRevenueChartData)
 
 const currentMonth = today.toISOString().split('T')[0].substring(0, 7);
 const currentMonthRevenue = monthlyRevenueOrders.reduce((total, entry) => {
@@ -916,6 +921,9 @@ formattedMonthlyRevenueChartData.push({
 
 const monthlyRevenueLabels = formattedMonthlyRevenueChartData.map(entry => entry.month);
 const monthlyRevenueData = formattedMonthlyRevenueChartData.map(entry => entry.amount);
+
+console.log('monthlyRevenueLabels',monthlyRevenueLabels)
+console.log('monthlyRevenueData',monthlyRevenueData)
 
 
 
