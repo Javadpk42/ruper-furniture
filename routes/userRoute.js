@@ -162,8 +162,6 @@ user_route.get('/edit_address/:addressId',userAuth.isUserLogin, userController.e
 user_route.post('/edit_address/:addressId', userController.editAddress);
 user_route.post('/delete_address/:addressId', userController.deleteAddress); 
 
-
-
   
 user_route.use((err,req, res, next) => {
   res.status(500).render("500");
@@ -172,7 +170,6 @@ user_route.use((err,req, res, next) => {
 user_route.use((req, res, next)=>{
   res.status(404).render("404");
 })
-
 
 
 module.exports=user_route;

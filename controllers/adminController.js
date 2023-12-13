@@ -792,25 +792,17 @@ const weeklyrevenueOrders = await Order.aggregate([
   {
     $match: {
       orderDate: { $gte: lastWeekStartDate, $lte: today },
-      'cart.products.orderStatus': 'Delivered',
       $or: [
-        { paymentOption: 'COD' },
-        { paymentOption: { $in: ['Razorpay', 'Wallet'] } },
+        { paymentOption: 'COD', 'cart.products.orderStatus': 'Delivered' },
+        { paymentOption: { $in: ['Razorpay', 'Wallet'] }, 'cart.products.orderStatus': { $in: ['Placed', 'Shipped', 'Out for delivery', 'Delivered'] } },
       ],
     },
   },
-  {
-    $unwind: "$cart.products",
-  },
-  {
-    $match: {
-      'cart.products.returnOrder.returnStatus': { $ne: 'Refund' },
-    },
-  },
+
   {
     $group: {
       _id: { $dateToString: { format: "%Y-%m-%d", date: "$orderDate" } },
-      totalAmount: { $sum: { $multiply: ['$cart.products.price', '$cart.products.quantity'] } },
+      totalAmount: { $sum: "$totalAmount" },
     },
   },
   {
@@ -820,7 +812,7 @@ const weeklyrevenueOrders = await Order.aggregate([
   },
 ]);
 
-
+console.log('wwwwww',weeklyrevenueOrders)
 
 const allDaysOfLastWeek = [];
 let currentDate = new Date(lastWeekStartDate);
@@ -839,6 +831,9 @@ const formattedWeeklyRevenueChartData = allDaysOfLastWeek.map(day => {
 
 const weeklyRevenueLabels = formattedWeeklyRevenueChartData.map(entry => entry.date);
 const weeklyRevenueData = formattedWeeklyRevenueChartData.map(entry => entry.amount);
+
+console.log(weeklyRevenueData);
+console.log(weeklyRevenueLabels);
 
 
 
