@@ -904,7 +904,6 @@ const formattedMonthlyRevenueChartData = allMonths.map(month => {
   };
 });
 
-console.log('formattedMonthlyRevenueChartData',formattedMonthlyRevenueChartData)
 
 const currentMonth = today.toISOString().split('T')[0].substring(0, 7);
 const currentMonthRevenue = monthlyRevenueOrders.reduce((total, entry) => {
@@ -921,9 +920,6 @@ formattedMonthlyRevenueChartData.push({
 
 const monthlyRevenueLabels = formattedMonthlyRevenueChartData.map(entry => entry.month);
 const monthlyRevenueData = formattedMonthlyRevenueChartData.map(entry => entry.amount);
-
-console.log('monthlyRevenueLabels',monthlyRevenueLabels)
-console.log('monthlyRevenueData',monthlyRevenueData)
 
 
 
@@ -1021,6 +1017,7 @@ res.render('dashboard', {
   categoryRevenues,
   weeklyRevenueData,
   weeklyRevenueLabels,
+  formattedMonthlyRevenueChartData,
   monthlyRevenueData,
   monthlyRevenueLabels,
   yearlyRevenueData,
